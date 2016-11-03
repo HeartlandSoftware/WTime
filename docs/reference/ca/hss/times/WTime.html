@@ -1,0 +1,4823 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <meta name="description" content="Javadoc API documentation for WTime." />
+
+<link rel="shortcut icon" type="image/x-icon" href="../../../favicon.ico" />
+<title>
+
+  WTime
+
+
+| WTime
+
+</title>
+<link href="../../../../assets/doclava-developer-docs.css" rel="stylesheet" type="text/css" />
+<link href="../../../../assets/customizations.css" rel="stylesheet" type="text/css" />
+<script src="../../../../assets/search_autocomplete.js" type="text/javascript"></script>
+<script src="../../../../assets/jquery-resizable.min.js" type="text/javascript"></script>
+<script src="../../../../assets/doclava-developer-docs.js" type="text/javascript"></script>
+<script src="../../../../assets/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+  setToRoot("../../../", "../../../../assets/");
+</script>
+<script src="../../../../assets/doclava-developer-reference.js" type="text/javascript"></script>
+<script src="../../../../assets/navtree_data.js" type="text/javascript"></script>
+<script src="../../../../assets/customizations.js" type="text/javascript"></script>
+<noscript>
+  <style type="text/css">
+    html,body{overflow:auto;}
+    #body-content{position:relative; top:0;}
+    #doc-content{overflow:visible;border-left:3px solid #666;}
+    #side-nav{padding:0;}
+    #side-nav .toggle-list ul {display:block;}
+    #resize-packages-nav{border-bottom:3px solid #666;}
+  </style>
+</noscript>
+</head>
+
+<body class="">
+
+<div id="header">
+    <div id="headerLeft">
+    
+      <span id="masthead-title">WTime</span>
+    
+    </div>
+    <div id="headerRight">
+      
+  <div id="search" >
+      <div id="searchForm">
+          <form accept-charset="utf-8" class="gsc-search-box" 
+                onsubmit="return submit_search()">
+            <table class="gsc-search-box" cellpadding="0" cellspacing="0"><tbody>
+                <tr>
+                  <td class="gsc-input">
+                    <input id="search_autocomplete" class="gsc-input" type="text" size="33" autocomplete="off"
+                      title="search developer docs" name="q"
+                      value="search developer docs"
+                      onFocus="search_focus_changed(this, true)"
+                      onBlur="search_focus_changed(this, false)"
+                      onkeydown="return search_changed(event, true, '../../../')"
+                      onkeyup="return search_changed(event, false, '../../../')" />
+                  <div id="search_filtered_div" class="no-display">
+                      <table id="search_filtered" cellspacing=0>
+                      </table>
+                  </div>
+                  </td>
+                  <td class="gsc-search-button">
+                    <input type="submit" value="Search" title="search" id="search-button" class="gsc-search-button" />
+                  </td>
+                  <td class="gsc-clear-button">
+                    <div title="clear results" class="gsc-clear-button">&nbsp;</div>
+                  </td>
+                </tr></tbody>
+              </table>
+          </form>
+      </div><!-- searchForm -->
+  </div><!-- search -->
+      
+    </div>
+</div><!-- header -->
+
+
+  <div class="g-section g-tpl-240" id="body-content">
+    <div class="g-unit g-first side-nav-resizable" id="side-nav">
+      <div id="swapper">
+        <div id="nav-panels">
+          <div id="resize-packages-nav">
+            <div id="packages-nav">
+              <div id="index-links">
+                <a href="../../../packages.html"  >Package Index</a> | 
+                <a href="../../../classes.html" >Class Index</a>
+              </div>
+              <ul>
+                
+    <li class="selected api apilevel-">
+  <a href="../../../ca/hss/times/package-summary.html">ca.hss.times</a></li>
+              </ul><br/>
+            </div> <!-- end packages -->
+          </div> <!-- end resize-packages -->
+          <div id="classes-nav">
+            <ul>
+              
+              
+    <li><h2>Classes</h2>
+      <ul>
+          <li class="api apilevel-"><a href="../../../ca/hss/times/SunriseSunsetCalc.html">SunriseSunsetCalc</a></li>
+          <li class="api apilevel-"><a href="../../../ca/hss/times/TimeZoneInfo.html">TimeZoneInfo</a></li>
+          <li class="api apilevel-"><a href="../../../ca/hss/times/WorldLocation.html">WorldLocation</a></li>
+          <li class="selected api apilevel-"><a href="../../../ca/hss/times/WTime.html">WTime</a></li>
+          <li class="api apilevel-"><a href="../../../ca/hss/times/WTime.WTimeComparator.html">WTime.WTimeComparator</a></li>
+          <li class="api apilevel-"><a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a></li>
+          <li class="api apilevel-"><a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a></li>
+      </ul>
+    </li>
+              
+              
+    <li><h2>Enums</h2>
+      <ul>
+          <li class="api apilevel-"><a href="../../../ca/hss/times/WorldLocation.TimeZoneGroup.html">WorldLocation.TimeZoneGroup</a></li>
+      </ul>
+    </li>
+              
+              
+            </ul><br/>
+          </div><!-- end classes -->
+        </div><!-- end nav-panels -->
+        <div id="nav-tree" style="display:none">
+          <div id="index-links">
+            <a href="../../../packages.html"  >Package Index</a> | 
+            <a href="../../../classes.html" >Class Index</a>
+          </div>
+        </div><!-- end nav-tree -->
+      </div><!-- end swapper -->
+    </div> <!-- end side-nav -->
+    <script>
+      if (!isMobile) {
+        $("<a href='#' id='nav-swap' onclick='swapNav();return false;' style='font-size:10px;line-height:9px;margin-left:1em;text-decoration:none;'><span id='tree-link'>Use Tree Navigation</span><span id='panel-link' style='display:none'>Use Panel Navigation</span></a>").appendTo("#side-nav");
+        chooseDefaultNav();
+        if ($("#nav-tree").is(':visible')) {
+          init_default_navtree("../../../");
+        } else {
+          addLoadEvent(function() {
+            scrollIntoView("packages-nav");
+            scrollIntoView("classes-nav");
+          });
+        }
+        $("#swapper").css({borderBottom:"2px solid #aaa"});
+      } else {
+        swapNav(); // tree view should be used on mobile
+      }
+    </script>
+
+
+
+<div class="g-unit" id="doc-content">
+
+<div id="api-info-block">
+
+
+
+  
+   
+  
+  
+  
+  
+
+  
+  
+  
+  
+
+  
+   
+  
+  
+  
+  
+
+
+<div class="sum-details-links">
+
+
+Summary:
+
+  <a href="#nestedclasses">Nested Classes</a>
+  
+
+
+
+
+
+  &#124; <a href="#constants">Constants</a>
+  
+
+
+
+  &#124; <a href="#lfields">Fields</a>
+  
+
+
+
+  &#124; <a href="#pubctors">Ctors</a>
+  
+
+
+
+  &#124; <a href="#pubmethods">Methods</a>
+  
+
+
+
+  &#124; <a href="#inhmethods">Inherited Methods</a>
+
+&#124; <a href="#" onclick="return toggleAllClassInherited()" id="toggleAllClassInherited">[Expand All]</a>
+
+</div><!-- end sum-details-links -->
+<div class="api-level">
+  
+
+
+  
+  
+
+</div>
+</div><!-- end api-info-block -->
+
+
+<!-- ======== START OF CLASS DATA ======== -->
+
+<div id="jd-header">
+    public
+     
+     
+    
+    class
+<h1>WTime</h1>
+
+
+
+  
+    extends Object<br/>
+  
+  
+  
+
+  
+  
+      implements 
+      
+        Serializable 
+      
+        Comparable&lt;T&gt; 
+      
+  
+  
+
+
+</div><!-- end header -->
+
+<div id="naMessage"></div>
+
+<div id="jd-content" class="api apilevel-">
+<table class="jd-inheritance-table">
+
+
+    <tr>
+         	
+        <td colspan="2" class="jd-inheritance-class-cell">java.lang.Object</td>
+    </tr>
+    
+
+    <tr>
+        
+            <td class="jd-inheritance-space">&nbsp;&nbsp;&nbsp;&#x21b3;</td>
+         	
+        <td colspan="1" class="jd-inheritance-class-cell">ca.hss.times.WTime</td>
+    </tr>
+    
+
+</table>
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<h2>Class Overview</h2>
+<p>A class for storing time information. I can handle timezones
+ with or without DST as defined in WorldLocation.java. It can
+ parse dates from strings as well as convert the to strings
+ in a provided format.
+</p>
+
+
+
+
+
+</div><!-- jd-descr -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="jd-descr">
+
+
+<h2>Summary</h2>
+
+
+
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<table id="nestedclasses" class="jd-sumtable"><tr><th colspan="12">Nested Classes</th></tr>
+
+
+  
+    <tr class="alt-color api apilevel-" >
+      <td class="jd-typecol">
+        
+         
+         
+        
+        class</td>
+      <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.WTimeComparator.html">WTime.WTimeComparator</a></td>
+      <td class="jd-descrcol" width="100%">A comparator that can be used for sorting times.&nbsp;</td>
+    </tr>
+    
+    
+
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- =========== ENUM CONSTANT SUMMARY =========== -->
+<table id="constants" class="jd-sumtable"><tr><th colspan="12">Constants</th></tr>
+
+
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_ABBREV">FORMAT_ABBREV</a></td>
+        <td class="jd-descrcol" width="100%">Abbreviate the month.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_AS_LOCAL">FORMAT_AS_LOCAL</a></td>
+        <td class="jd-descrcol" width="100%">Format the date as local time.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_AS_SOLAR">FORMAT_AS_SOLAR</a></td>
+        <td class="jd-descrcol" width="100%">Format the date as solar time.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_CONDITIONAL_TIME">FORMAT_CONDITIONAL_TIME</a></td>
+        <td class="jd-descrcol" width="100%">If there is a day but no hours, minutes, or seconds,
+ then don't print the hours, minutes, and seconds.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_DATE">FORMAT_DATE</a></td>
+        <td class="jd-descrcol" width="100%">Format both the day and the month.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_DAY">FORMAT_DAY</a></td>
+        <td class="jd-descrcol" width="100%">Format with the day of the month.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_DAY_OF_WEEK">FORMAT_DAY_OF_WEEK</a></td>
+        <td class="jd-descrcol" width="100%">Format the date with the day of week.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_EXCLUDE_SECONDS">FORMAT_EXCLUDE_SECONDS</a></td>
+        <td class="jd-descrcol" width="100%">Exclude the seconds when formatting times.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_INCLUDE_USECS">FORMAT_INCLUDE_USECS</a></td>
+        <td class="jd-descrcol" width="100%">Include the microseconds when formatting times.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_MONTH">FORMAT_MONTH</a></td>
+        <td class="jd-descrcol" width="100%">Include the month when formatting dates.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_PARSE_USING_SYSTEM">FORMAT_PARSE_USING_SYSTEM</a></td>
+        <td class="jd-descrcol" width="100%">Not currently implemented.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_STRING_DD_MM_YYYY">FORMAT_STRING_DD_MM_YYYY</a></td>
+        <td class="jd-descrcol" width="100%">Format the date as DD MM YYYY.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_STRING_DDhMMhYYYY">FORMAT_STRING_DDhMMhYYYY</a></td>
+        <td class="jd-descrcol" width="100%">Format the date with delimiters between the values in the order DD MM YYYY.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_STRING_MM_DD_YYYY">FORMAT_STRING_MM_DD_YYYY</a></td>
+        <td class="jd-descrcol" width="100%">Format the date as MM DD YYYY.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_STRING_MMhDDhYYYY">FORMAT_STRING_MMhDDhYYYY</a></td>
+        <td class="jd-descrcol" width="100%">Format the date with delimiters between the values in the order MM DD YYYY.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_STRING_YYYYMMDD">FORMAT_STRING_YYYYMMDD</a></td>
+        <td class="jd-descrcol" width="100%">Format the date as YYYYMMDD.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_STRING_YYYYMMDDHH">FORMAT_STRING_YYYYMMDDHH</a></td>
+        <td class="jd-descrcol" width="100%">Format the date as YYYYMMDDHH.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_STRING_YYYYMMDDT">FORMAT_STRING_YYYYMMDDT</a></td>
+        <td class="jd-descrcol" width="100%">Format the date with a T at the end in the order YYYY MM DD.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_STRING_YYYY_MM_DD">FORMAT_STRING_YYYY_MM_DD</a></td>
+        <td class="jd-descrcol" width="100%">Format the date as YYYY MM DD.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_STRING_YYYYhMMhDD">FORMAT_STRING_YYYYhMMhDD</a></td>
+        <td class="jd-descrcol" width="100%">Format the date with delimiters between the values in the order YYYY MM DD.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_STRING_YYYYhMMhDDT">FORMAT_STRING_YYYYhMMhDDT</a></td>
+        <td class="jd-descrcol" width="100%">Format the date with a T at the end and delimiters between the values
+ in the order YYYY MM DD.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_TIME">FORMAT_TIME</a></td>
+        <td class="jd-descrcol" width="100%">Format with the time.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_WITHDST">FORMAT_WITHDST</a></td>
+        <td class="jd-descrcol" width="100%">Format the time with the DST offset.</td>
+    </tr>
+    
+    
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#FORMAT_YEAR">FORMAT_YEAR</a></td>
+        <td class="jd-descrcol" width="100%">Format with the year.</td>
+    </tr>
+    
+    
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">long</td>
+        <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#serialVersionUID">serialVersionUID</a></td>
+        <td class="jd-descrcol" width="100%"></td>
+    </tr>
+    
+    
+
+</table>
+
+
+
+
+
+
+
+<!-- =========== FIELD SUMMARY =========== -->
+<table id="lfields" class="jd-sumtable"><tr><th colspan="12">Fields</th></tr>
+
+
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          String[]</td>
+          <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#days">days</a></td>
+          <td class="jd-descrcol" width="100%">The names of the days of the week.</td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          String[]</td>
+          <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#days_abbrev">days_abbrev</a></td>
+          <td class="jd-descrcol" width="100%">Abbreviations for the days of the week.</td>
+      </tr>
+      
+    
+      <tr class="alt-color api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          String[]</td>
+          <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#months">months</a></td>
+          <td class="jd-descrcol" width="100%">The names of the months.</td>
+      </tr>
+      
+    
+      <tr class=" api apilevel-" >
+          <td class="jd-typecol">
+          public
+          static
+          final
+          String[]</td>
+          <td class="jd-linkcol"><a href="../../../ca/hss/times/WTime.html#months_abbrev">months_abbrev</a></td>
+          <td class="jd-descrcol" width="100%">Abbreviations for the months.</td>
+      </tr>
+      
+    
+
+</table>
+
+
+
+
+
+
+
+<!-- ======== CONSTRUCTOR SUMMARY ======== -->
+<table id="pubctors" class="jd-sumtable"><tr><th colspan="12">Public Constructors</th></tr>
+
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#WTime(ca.hss.times.WTimeManager)">WTime</a></span>(<a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)
+        
+        <div class="jd-descrdiv">Construct a new WTime.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#WTime(long, ca.hss.times.WTimeManager)">WTime</a></span>(long time, <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)
+        
+        <div class="jd-descrdiv">Construct a WTime with a given UTC offset in seconds.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#WTime(long, ca.hss.times.WTimeManager, boolean)">WTime</a></span>(long time, <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm, boolean units_are_seconds)
+        
+        <div class="jd-descrdiv">Construct a WTime with either a second or microsecond offset from UTC.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#WTime(long, long, long, long, long, long, ca.hss.times.WTimeManager)">WTime</a></span>(long nYear, long nMonth, long nDay, long nHour, long nMin, long nSec, <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)
+        
+        <div class="jd-descrdiv">Construct a WTime with a given set of values all in UTC</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#WTime(long, long, long, long, long, long, long, ca.hss.times.WTimeManager)">WTime</a></span>(long nYear, long nMonth, long nDay, long nHour, long nMin, long nSec, long uSec, <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)
+        
+        <div class="jd-descrdiv">Construct a WTime with a given set of values all in UTC</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#WTime(ca.hss.times.WTime)">WTime</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> timeSrc)
+        
+        <div class="jd-descrdiv">Copy constructor.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#WTime(ca.hss.times.WTime, long, short)">WTime</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> timeSrc, long flags, short direction)
+        
+        <div class="jd-descrdiv">Copy a time either to or from UTC.</div>
+  
+  </td></tr>
+
+
+
+</table>
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<table id="pubmethods" class="jd-sumtable"><tr><th colspan="12">Public Methods</th></tr>
+
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../ca/hss/times/WTime.html">WTime</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#Add(ca.hss.times.WTime, ca.hss.times.WTimeSpan)">Add</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> t, <a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a> s)
+        
+        <div class="jd-descrdiv">+</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../ca/hss/times/WTime.html">WTime</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#Add(ca.hss.times.WTimeSpan)">Add</a></span>(<a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a> s)
+        
+        <div class="jd-descrdiv">+=</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#Equal(ca.hss.times.WTime, ca.hss.times.WTime)">Equal</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)
+        
+        <div class="jd-descrdiv">==</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetDay(long)">GetDay</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the day of the month.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            double
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetDayFractionOfYear(long)">GetDayFractionOfYear</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the fraction of days into the year.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetDayOfWeek(long)">GetDayOfWeek</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the day of the week.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetDayOfYear(long)">GetDayOfYear</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the day of the year.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetHour(long)">GetHour</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the hour with the given formatting flags.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetMicroSeconds(long)">GetMicroSeconds</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the microseconds with the given formatting flags.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetMinute(long)">GetMinute</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the minutes with the given formatting flags.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetMonth(long)">GetMonth</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the month.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetSecond(long)">GetSecond</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the seconds with the given formatting flags.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetSecondsIntoYear(long)">GetSecondsIntoYear</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the number of seconds into the year.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetTime(long)">GetTime</a></span>(long mode)
+        
+        <div class="jd-descrdiv">Get the second offset with the given formatting parameters.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetTimeManager()">GetTimeManager</a></span>()
+        
+        <div class="jd-descrdiv">Get the associated time manager.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetTimeOfDay(long)">GetTimeOfDay</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the time offset into the day.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetTotalMicroSeconds()">GetTotalMicroSeconds</a></span>()
+        
+        <div class="jd-descrdiv">Get the total number of microseconds stored.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetTotalSeconds()">GetTotalSeconds</a></span>()
+        
+        <div class="jd-descrdiv">Get the total number of seconds stored.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            long
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GetYear(long)">GetYear</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get the year.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GreaterThan(ca.hss.times.WTime, ca.hss.times.WTime)">GreaterThan</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)
+        
+        <div class="jd-descrdiv">t1 > t2</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#GreaterThanEqualTo(ca.hss.times.WTime, ca.hss.times.WTime)">GreaterThanEqualTo</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)
+        
+        <div class="jd-descrdiv">t1 >= t2</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#IsLeapYear(long)">IsLeapYear</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Is the stored year a leap year.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#LessThan(ca.hss.times.WTime, ca.hss.times.WTime)">LessThan</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)
+        
+        <div class="jd-descrdiv">t1 < t2</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#LessThanEqualTo(ca.hss.times.WTime, ca.hss.times.WTime)">LessThanEqualTo</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)
+        
+        <div class="jd-descrdiv">t1 <= t2</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#NotEqual(ca.hss.times.WTime, ca.hss.times.WTime)">NotEqual</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)
+        
+        <div class="jd-descrdiv">!=</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#ParseDateTime(java.lang.String, long)">ParseDateTime</a></span>(String lpszDate, long flags)
+        
+        <div class="jd-descrdiv">Parse a date from a string.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#PurgeToDay(long)">PurgeToDay</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Purge all time steps below days.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#PurgeToHour(long)">PurgeToHour</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Purge all time steps below hours.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#PurgeToMinute(long)">PurgeToMinute</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Purge all time steps below minutes.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#PurgeToSecond(long)">PurgeToSecond</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Purge all time steps below seconds.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#SetTimeManager(ca.hss.times.WTimeManager)">SetTimeManager</a></span>(<a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)
+        
+        <div class="jd-descrdiv">Set the time manager, not recommended.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#Subtract(ca.hss.times.WTime, ca.hss.times.WTime)">Subtract</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)
+        
+        <div class="jd-descrdiv">-</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            <a href="../../../ca/hss/times/WTime.html">WTime</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#Subtract(ca.hss.times.WTimeSpan)">Subtract</a></span>(<a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a> s)
+        
+        <div class="jd-descrdiv">-=</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../ca/hss/times/WTime.html">WTime</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#Subtract(ca.hss.times.WTime, ca.hss.times.WTimeSpan)">Subtract</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> t, <a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a> s)
+        
+        <div class="jd-descrdiv">-</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#compareTo(ca.hss.times.WTime)">compareTo</a></span>(<a href="../../../ca/hss/times/WTime.html">WTime</a> o)
+        
+        <div class="jd-descrdiv">Compare this WTime to another.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#equals(java.lang.Object)">equals</a></span>(Object other)
+        
+        <div class="jd-descrdiv">Compare this time to another object.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            static
+            
+            <a href="../../../ca/hss/times/WTime.html">WTime</a>
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#fromLocal(int, int, int, int, int, int, ca.hss.times.WTimeManager)">fromLocal</a></span>(int nYear, int nMonth, int nDay, int nHour, int nMin, int nSec, <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)
+        
+        <div class="jd-descrdiv">Construct a WTime from local time (the values are in the same timezone as described in the manager).</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#hashCode()">hashCode</a></span>()
+        
+        <div class="jd-descrdiv">Get a hash code to represent this time for
+ doing things like storing it in a HashMap.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            String
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#toString()">toString</a></span>()
+        
+        <div class="jd-descrdiv">Convert to a string with a set of standard formatting flags.</div>
+  
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            String
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad"><a href="../../../ca/hss/times/WTime.html#toString(long)">toString</a></span>(long flags)
+        
+        <div class="jd-descrdiv">Get a string representation of the time.</div>
+  
+  </td></tr>
+
+
+
+</table>
+
+
+
+
+
+
+
+<!-- ========== METHOD SUMMARY =========== -->
+<table id="inhmethods" class="jd-sumtable"><tr><th>
+  <a href="#" class="toggle-all" onclick="return toggleAllInherited(this, null)">[Expand]</a>
+  <div style="clear:left;">Inherited Methods</div></th></tr>
+
+
+<tr class="api apilevel-" >
+<td colspan="12">
+  <a href="#" onclick="return toggleInherited(this, null)" id="inherited-methods-java.lang.Object" class="jd-expando-trigger closed"
+          ><img id="inherited-methods-java.lang.Object-trigger"
+          src="../../../../assets/images/triangle-closed.png"
+          class="jd-expando-trigger-img" /></a>
+From class
+
+  java.lang.Object
+
+<div id="inherited-methods-java.lang.Object">
+  <div id="inherited-methods-java.lang.Object-list"
+        class="jd-inheritedlinks">
+  </div>
+  <div id="inherited-methods-java.lang.Object-summary" style="display: none;">
+    <table class="jd-sumtable-expando">
+    
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            boolean
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">equals</span>(Object arg0)
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            Class&lt;?&gt;
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">getClass</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">hashCode</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">notify</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">notifyAll</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            
+            
+            
+            String
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">toString</span>()
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">wait</span>(long arg0, int arg1)
+        
+  </td></tr>
+
+
+	 
+    <tr class=" api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">wait</span>(long arg0)
+        
+  </td></tr>
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            
+            
+            final
+            
+            
+            void
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">wait</span>()
+        
+  </td></tr>
+
+
+</table>
+  </div>
+</div>
+</td></tr>
+
+
+
+
+
+<tr class="api apilevel-" >
+<td colspan="12">
+  <a href="#" onclick="return toggleInherited(this, null)" id="inherited-methods-java.lang.Comparable" class="jd-expando-trigger closed"
+          ><img id="inherited-methods-java.lang.Comparable-trigger"
+          src="../../../../assets/images/triangle-closed.png"
+          class="jd-expando-trigger-img" /></a>
+From interface
+
+  java.lang.Comparable
+
+<div id="inherited-methods-java.lang.Comparable">
+  <div id="inherited-methods-java.lang.Comparable-list"
+        class="jd-inheritedlinks">
+  </div>
+  <div id="inherited-methods-java.lang.Comparable-summary" style="display: none;">
+    <table class="jd-sumtable-expando">
+    
+
+
+	 
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-typecol">
+            abstract
+            
+            
+            
+            
+            int
+        </td>
+        <td class="jd-linkcol" width="100%">
+        <span class="sympad">compareTo</span>(T arg0)
+        
+  </td></tr>
+
+
+</table>
+  </div>
+</div>
+</td></tr>
+
+
+</table>
+
+
+</div><!-- jd-descr (summary) -->
+
+<!-- Details -->
+
+
+
+
+
+
+
+
+<!-- XML Attributes -->
+
+
+<!-- Enum Values -->
+
+
+<!-- Constants -->
+
+
+<!-- ========= ENUM CONSTANTS DETAIL ======== -->
+<h2>Constants</h2>
+
+
+
+
+<a id="FORMAT_ABBREV"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_ABBREV
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Abbreviate the month.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                4096
+                (0x0000000000001000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_AS_LOCAL"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_AS_LOCAL
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date as local time. If this is omitted the time
+ will be formatted in UTC.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                16777216
+                (0x0000000001000000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_AS_SOLAR"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_AS_SOLAR
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date as solar time.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                33554432
+                (0x0000000002000000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_CONDITIONAL_TIME"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_CONDITIONAL_TIME
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>If there is a day but no hours, minutes, or seconds,
+ then don't print the hours, minutes, and seconds.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                1073741824
+                (0x0000000040000000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_DATE"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_DATE
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format both the day and the month.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                6291456
+                (0x0000000000600000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_DAY"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_DAY
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format with the day of the month.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                2097152
+                (0x0000000000200000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_DAY_OF_WEEK"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_DAY_OF_WEEK
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date with the day of week.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                256
+                (0x0000000000000100)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_EXCLUDE_SECONDS"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_EXCLUDE_SECONDS
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Exclude the seconds when formatting times.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                536870912
+                (0x0000000020000000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_INCLUDE_USECS"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_INCLUDE_USECS
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Include the microseconds when formatting times.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                524288
+                (0x0000000000080000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_MONTH"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_MONTH
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Include the month when formatting dates.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                4194304
+                (0x0000000000400000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_PARSE_USING_SYSTEM"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_PARSE_USING_SYSTEM
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Not currently implemented.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                -2147483648
+                (0xffffffff80000000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_STRING_DD_MM_YYYY"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_STRING_DD_MM_YYYY
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date as DD MM YYYY.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                1
+                (0x0000000000000001)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_STRING_DDhMMhYYYY"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_STRING_DDhMMhYYYY
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date with delimiters between the values in the order DD MM YYYY.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                4
+                (0x0000000000000004)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_STRING_MM_DD_YYYY"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_STRING_MM_DD_YYYY
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date as MM DD YYYY.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                3
+                (0x0000000000000003)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_STRING_MMhDDhYYYY"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_STRING_MMhDDhYYYY
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date with delimiters between the values in the order MM DD YYYY.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                6
+                (0x0000000000000006)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_STRING_YYYYMMDD"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_STRING_YYYYMMDD
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date as YYYYMMDD.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                7
+                (0x0000000000000007)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_STRING_YYYYMMDDHH"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_STRING_YYYYMMDDHH
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date as YYYYMMDDHH.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                8
+                (0x0000000000000008)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_STRING_YYYYMMDDT"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_STRING_YYYYMMDDT
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date with a T at the end in the order YYYY MM DD.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                16
+                (0x0000000000000010)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_STRING_YYYY_MM_DD"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_STRING_YYYY_MM_DD
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date as YYYY MM DD.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                2
+                (0x0000000000000002)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_STRING_YYYYhMMhDD"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_STRING_YYYYhMMhDD
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date with delimiters between the values in the order YYYY MM DD.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                5
+                (0x0000000000000005)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_STRING_YYYYhMMhDDT"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_STRING_YYYYhMMhDDT
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the date with a T at the end and delimiters between the values
+ in the order YYYY MM DD.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                32
+                (0x0000000000000020)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_TIME"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_TIME
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format with the time.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                1048576
+                (0x0000000000100000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_WITHDST"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_WITHDST
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format the time with the DST offset.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                67108864
+                (0x0000000004000000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="FORMAT_YEAR"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        FORMAT_YEAR
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Format with the year. FORMAT_MONTH and FORMAT_DATE are
+ also required for this to take effect.
+</p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                8388608
+                (0x0000000000800000)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+<a id="serialVersionUID"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        long
+      </span>
+        serialVersionUID
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p></p></div>
+
+    
+        <div class="jd-tagdata">
+        <span class="jd-tagtitle">Constant Value: </span>
+        <span>
+            
+                1
+                (0x0000000000000001)
+            
+        </span>
+        </div>
+    
+    </div>
+</div>
+
+
+
+
+<!-- Fields -->
+
+
+<!-- ========= FIELD DETAIL ======== -->
+<h2>Fields</h2>
+
+
+
+
+<a id="days"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        String[]
+      </span>
+        days
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>The names of the days of the week.
+</p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="days_abbrev"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        String[]
+      </span>
+        days_abbrev
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Abbreviations for the days of the week.
+</p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="months"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        String[]
+      </span>
+        months
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>The names of the months.
+</p></div>
+
+    
+    </div>
+</div>
+
+
+
+<a id="months_abbrev"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+        final 
+        String[]
+      </span>
+        months_abbrev
+    </h4>
+      <div class="api-level">
+        
+
+
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Abbreviations for the months.
+</p></div>
+
+    
+    </div>
+</div>
+
+
+
+
+<!-- Public ctors -->
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<h2>Public Constructors</h2>
+
+
+
+<a id="WTime(ca.hss.times.WTimeManager)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        
+      </span>
+      <span class="sympad">WTime</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Construct a new WTime.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>tm</th>
+          <td>the time manager that describes how the time is to be interpreted
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="WTime(long, ca.hss.times.WTimeManager)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        
+      </span>
+      <span class="sympad">WTime</span>
+      <span class="normal">(long time, <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Construct a WTime with a given UTC offset in seconds.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>time</th>
+          <td>the UTC offset in seconds</td>
+        </tr>
+        <tr>
+          <th>tm</th>
+          <td>the time manager that describes how the time is to be interpreted
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="WTime(long, ca.hss.times.WTimeManager, boolean)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        
+      </span>
+      <span class="sympad">WTime</span>
+      <span class="normal">(long time, <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm, boolean units_are_seconds)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Construct a WTime with either a second or microsecond offset from UTC.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>time</th>
+          <td>the offset from UTC</td>
+        </tr>
+        <tr>
+          <th>tm</th>
+          <td>the time manager that describes how the time is to be interpreted</td>
+        </tr>
+        <tr>
+          <th>units_are_seconds</th>
+          <td>whether the offset is in seconds or microseconds
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="WTime(long, long, long, long, long, long, ca.hss.times.WTimeManager)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        
+      </span>
+      <span class="sympad">WTime</span>
+      <span class="normal">(long nYear, long nMonth, long nDay, long nHour, long nMin, long nSec, <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Construct a WTime with a given set of values all in UTC</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>nYear</th>
+          <td>the year</td>
+        </tr>
+        <tr>
+          <th>nMonth</th>
+          <td>the month</td>
+        </tr>
+        <tr>
+          <th>nDay</th>
+          <td>the day of the month</td>
+        </tr>
+        <tr>
+          <th>nHour</th>
+          <td>the hour of the day</td>
+        </tr>
+        <tr>
+          <th>nMin</th>
+          <td>the minutes</td>
+        </tr>
+        <tr>
+          <th>nSec</th>
+          <td>the seconds</td>
+        </tr>
+        <tr>
+          <th>tm</th>
+          <td>the time manager that describes how the time is to be interpreted
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="WTime(long, long, long, long, long, long, long, ca.hss.times.WTimeManager)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        
+      </span>
+      <span class="sympad">WTime</span>
+      <span class="normal">(long nYear, long nMonth, long nDay, long nHour, long nMin, long nSec, long uSec, <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Construct a WTime with a given set of values all in UTC</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>nYear</th>
+          <td>the year</td>
+        </tr>
+        <tr>
+          <th>nMonth</th>
+          <td>the month</td>
+        </tr>
+        <tr>
+          <th>nDay</th>
+          <td>the day of the month</td>
+        </tr>
+        <tr>
+          <th>nHour</th>
+          <td>the hour of the day</td>
+        </tr>
+        <tr>
+          <th>nMin</th>
+          <td>the minutes</td>
+        </tr>
+        <tr>
+          <th>nSec</th>
+          <td>the seconds</td>
+        </tr>
+        <tr>
+          <th>uSec</th>
+          <td>the microseconds</td>
+        </tr>
+        <tr>
+          <th>tm</th>
+          <td>the time manager that describes how the time is to be interpreted
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="WTime(ca.hss.times.WTime)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        
+      </span>
+      <span class="sympad">WTime</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> timeSrc)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Copy constructor.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>timeSrc</th>
+          <td>The time to copy
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="WTime(ca.hss.times.WTime, long, short)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        
+      </span>
+      <span class="sympad">WTime</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> timeSrc, long flags, short direction)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Copy a time either to or from UTC.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>timeSrc</th>
+          <td>the time to copy</td>
+        </tr>
+        <tr>
+          <th>direction</th>
+          <td>positive means from UTC, negative means to UTC
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+
+
+
+<!-- ========= CONSTRUCTOR DETAIL ======== -->
+<!-- Protected ctors -->
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+<!-- Public methdos -->
+
+<h2>Public Methods</h2>
+
+
+
+<a id="Add(ca.hss.times.WTime, ca.hss.times.WTimeSpan)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        <a href="../../../ca/hss/times/WTime.html">WTime</a>
+      </span>
+      <span class="sympad">Add</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> t, <a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a> s)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>+</p></div>
+
+    </div>
+</div>
+
+
+<a id="Add(ca.hss.times.WTimeSpan)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        <a href="../../../ca/hss/times/WTime.html">WTime</a>
+      </span>
+      <span class="sympad">Add</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a> s)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>+=</p></div>
+
+    </div>
+</div>
+
+
+<a id="Equal(ca.hss.times.WTime, ca.hss.times.WTime)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">Equal</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>==</p></div>
+
+    </div>
+</div>
+
+
+<a id="GetDay(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetDay</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the day of the month.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetDayFractionOfYear(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        double
+      </span>
+      <span class="sympad">GetDayFractionOfYear</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the fraction of days into the year.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetDayOfWeek(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetDayOfWeek</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the day of the week.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetDayOfYear(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetDayOfYear</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the day of the year.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetHour(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetHour</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the hour with the given formatting flags.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetMicroSeconds(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetMicroSeconds</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the microseconds with the given formatting flags.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetMinute(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetMinute</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the minutes with the given formatting flags.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetMonth(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetMonth</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the month.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetSecond(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetSecond</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the seconds with the given formatting flags.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetSecondsIntoYear(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetSecondsIntoYear</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the number of seconds into the year.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetTime(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetTime</span>
+      <span class="normal">(long mode)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the second offset with the given formatting parameters.</p></div>
+
+    </div>
+</div>
+
+
+<a id="GetTimeManager()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a>
+      </span>
+      <span class="sympad">GetTimeManager</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the associated time manager.</p></div>
+
+    </div>
+</div>
+
+
+<a id="GetTimeOfDay(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        <a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a>
+      </span>
+      <span class="sympad">GetTimeOfDay</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the time offset into the day.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GetTotalMicroSeconds()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetTotalMicroSeconds</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the total number of microseconds stored.</p></div>
+
+    </div>
+</div>
+
+
+<a id="GetTotalSeconds()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetTotalSeconds</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the total number of seconds stored.</p></div>
+
+    </div>
+</div>
+
+
+<a id="GetYear(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        long
+      </span>
+      <span class="sympad">GetYear</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get the year.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="GreaterThan(ca.hss.times.WTime, ca.hss.times.WTime)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">GreaterThan</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>t1 > t2</p></div>
+
+    </div>
+</div>
+
+
+<a id="GreaterThanEqualTo(ca.hss.times.WTime, ca.hss.times.WTime)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">GreaterThanEqualTo</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>t1 >= t2</p></div>
+
+    </div>
+</div>
+
+
+<a id="IsLeapYear(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">IsLeapYear</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Is the stored year a leap year.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="LessThan(ca.hss.times.WTime, ca.hss.times.WTime)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">LessThan</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>t1 < t2</p></div>
+
+    </div>
+</div>
+
+
+<a id="LessThanEqualTo(ca.hss.times.WTime, ca.hss.times.WTime)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">LessThanEqualTo</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>t1 <= t2</p></div>
+
+    </div>
+</div>
+
+
+<a id="NotEqual(ca.hss.times.WTime, ca.hss.times.WTime)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">NotEqual</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>!=</p></div>
+
+    </div>
+</div>
+
+
+<a id="ParseDateTime(java.lang.String, long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">ParseDateTime</span>
+      <span class="normal">(String lpszDate, long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Parse a date from a string.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>lpszDate</th>
+          <td>the string to parse</td>
+        </tr>
+        <tr>
+          <th>flags</th>
+          <td>FORMAT_ flags that describe the layout of the string</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="PurgeToDay(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">PurgeToDay</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Purge all time steps below days.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="PurgeToHour(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">PurgeToHour</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Purge all time steps below hours.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="PurgeToMinute(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">PurgeToMinute</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Purge all time steps below minutes.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="PurgeToSecond(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        void
+      </span>
+      <span class="sympad">PurgeToSecond</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Purge all time steps below seconds.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
+</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="SetTimeManager(ca.hss.times.WTimeManager)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a>
+      </span>
+      <span class="sympad">SetTimeManager</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Set the time manager, not recommended.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>tm</th>
+          <td>the new time manager</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="Subtract(ca.hss.times.WTime, ca.hss.times.WTime)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        <a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a>
+      </span>
+      <span class="sympad">Subtract</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> t1, <a href="../../../ca/hss/times/WTime.html">WTime</a> t2)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>-</p></div>
+
+    </div>
+</div>
+
+
+<a id="Subtract(ca.hss.times.WTimeSpan)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        <a href="../../../ca/hss/times/WTime.html">WTime</a>
+      </span>
+      <span class="sympad">Subtract</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a> s)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>-=</p></div>
+
+    </div>
+</div>
+
+
+<a id="Subtract(ca.hss.times.WTime, ca.hss.times.WTimeSpan)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        <a href="../../../ca/hss/times/WTime.html">WTime</a>
+      </span>
+      <span class="sympad">Subtract</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> t, <a href="../../../ca/hss/times/WTimeSpan.html">WTimeSpan</a> s)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>-</p></div>
+
+    </div>
+</div>
+
+
+<a id="compareTo(ca.hss.times.WTime)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        int
+      </span>
+      <span class="sympad">compareTo</span>
+      <span class="normal">(<a href="../../../ca/hss/times/WTime.html">WTime</a> o)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Compare this WTime to another.
+</p></div>
+
+    </div>
+</div>
+
+
+<a id="equals(java.lang.Object)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        boolean
+      </span>
+      <span class="sympad">equals</span>
+      <span class="normal">(Object other)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Compare this time to another object.
+ Unless the other object is also a
+ WTime this is just a test for object
+ equality.
+</p></div>
+
+    </div>
+</div>
+
+
+<a id="fromLocal(int, int, int, int, int, int, ca.hss.times.WTimeManager)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+        static 
+         
+         
+         
+        <a href="../../../ca/hss/times/WTime.html">WTime</a>
+      </span>
+      <span class="sympad">fromLocal</span>
+      <span class="normal">(int nYear, int nMonth, int nDay, int nHour, int nMin, int nSec, <a href="../../../ca/hss/times/WTimeManager.html">WTimeManager</a> tm)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Construct a WTime from local time (the values are in the same timezone as described in the manager).</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>nYear</th>
+          <td>the year</td>
+        </tr>
+        <tr>
+          <th>nMonth</th>
+          <td>the month</td>
+        </tr>
+        <tr>
+          <th>nDay</th>
+          <td>the day of the month</td>
+        </tr>
+        <tr>
+          <th>nHour</th>
+          <td>the hour of the day</td>
+        </tr>
+        <tr>
+          <th>nMin</th>
+          <td>the minutes</td>
+        </tr>
+        <tr>
+          <th>nSec</th>
+          <td>the seconds</td>
+        </tr>
+        <tr>
+          <th>tm</th>
+          <td>the time manager that describes how the time is to be interpreted</td>
+        </tr>
+      </table>
+  </div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Returns</h5>
+      <ul class="nolist"><li>a new WTime instance for the given date and time
+</li></ul>
+  </div>
+
+    </div>
+</div>
+
+
+<a id="hashCode()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        int
+      </span>
+      <span class="sympad">hashCode</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get a hash code to represent this time for
+ doing things like storing it in a HashMap.
+</p></div>
+
+    </div>
+</div>
+
+
+<a id="toString()"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        String
+      </span>
+      <span class="sympad">toString</span>
+      <span class="normal">()</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Convert to a string with a set of standard formatting flags. Those
+ flags are FORMAT_TIME, FORMAT_AS_LOCAL, FORMAT_DATE, FORMAT_STRING_DD_MM_YYYY, and
+ FORMAT_WITHDST.
+</p></div>
+
+    </div>
+</div>
+
+
+<a id="toString(long)"></a>
+
+<div class="jd-details api apilevel-"> 
+    <h4 class="jd-details-title">
+      <span class="normal">
+        public 
+         
+         
+         
+         
+        String
+      </span>
+      <span class="sympad">toString</span>
+      <span class="normal">(long flags)</span>
+    </h4>
+      <div class="api-level">
+        <div>
+
+</div>
+        
+  
+
+      </div>
+    <div class="jd-details-descr">
+      
+  <div class="jd-tagdata jd-tagdescr"><p>Get a string representation of the time.</p></div>
+  <div class="jd-tagdata">
+      <h5 class="jd-tagtitle">Parameters</h5>
+      <table class="jd-tagtable">
+        <tr>
+          <th>flags</th>
+          <td>any of the FORMAT_ flags</td>
+        </tr>
+      </table>
+  </div>
+
+    </div>
+</div>
+
+
+
+
+
+<!-- ========= METHOD DETAIL ======== -->
+
+
+
+<!-- ========= END OF CLASS DATA ========= -->
+<a id="navbar_top"></a>
+
+<div id="footer">
+Generated by <a href="http://code.google.com/p/doclava/">Doclava</a>.
+</div> <!-- end footer -->
+
+</div> <!-- jd-content -->
+
+</div><!-- end doc-content -->
+
+</div> <!-- end body-content --> 
+
+<script type="text/javascript">
+init(); /* initialize doclava-developer-docs.js */
+</script>
+
+</body>
+</html>

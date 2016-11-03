@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <meta name="description" content="Javadoc API documentation for WTime." />
+
+<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+<title>
+
+  Package Index
+
+
+| WTime
+
+</title>
+<link href="./../assets/doclava-developer-docs.css" rel="stylesheet" type="text/css" />
+<link href="./../assets/customizations.css" rel="stylesheet" type="text/css" />
+<script src="./../assets/search_autocomplete.js" type="text/javascript"></script>
+<script src="./../assets/jquery-resizable.min.js" type="text/javascript"></script>
+<script src="./../assets/doclava-developer-docs.js" type="text/javascript"></script>
+<script src="./../assets/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+  setToRoot("./", "./../assets/");
+</script>
+<script src="./../assets/doclava-developer-reference.js" type="text/javascript"></script>
+<script src="./../assets/navtree_data.js" type="text/javascript"></script>
+<script src="./../assets/customizations.js" type="text/javascript"></script>
+<noscript>
+  <style type="text/css">
+    html,body{overflow:auto;}
+    #body-content{position:relative; top:0;}
+    #doc-content{overflow:visible;border-left:3px solid #666;}
+    #side-nav{padding:0;}
+    #side-nav .toggle-list ul {display:block;}
+    #resize-packages-nav{border-bottom:3px solid #666;}
+  </style>
+</noscript>
+</head>
+
+<body class="gc-documentation">
+
+<div id="header">
+    <div id="headerLeft">
+    
+      <span id="masthead-title">WTime</span>
+    
+    </div>
+    <div id="headerRight">
+      
+  <div id="search" >
+      <div id="searchForm">
+          <form accept-charset="utf-8" class="gsc-search-box" 
+                onsubmit="return submit_search()">
+            <table class="gsc-search-box" cellpadding="0" cellspacing="0"><tbody>
+                <tr>
+                  <td class="gsc-input">
+                    <input id="search_autocomplete" class="gsc-input" type="text" size="33" autocomplete="off"
+                      title="search developer docs" name="q"
+                      value="search developer docs"
+                      onFocus="search_focus_changed(this, true)"
+                      onBlur="search_focus_changed(this, false)"
+                      onkeydown="return search_changed(event, true, './')"
+                      onkeyup="return search_changed(event, false, './')" />
+                  <div id="search_filtered_div" class="no-display">
+                      <table id="search_filtered" cellspacing=0>
+                      </table>
+                  </div>
+                  </td>
+                  <td class="gsc-search-button">
+                    <input type="submit" value="Search" title="search" id="search-button" class="gsc-search-button" />
+                  </td>
+                  <td class="gsc-clear-button">
+                    <div title="clear results" class="gsc-clear-button">&nbsp;</div>
+                  </td>
+                </tr></tbody>
+              </table>
+          </form>
+      </div><!-- searchForm -->
+  </div><!-- search -->
+      
+    </div>
+</div><!-- header -->
+
+
+  <div class="g-section g-tpl-240" id="body-content">
+    <div class="g-unit g-first side-nav-resizable" id="side-nav">
+      <div id="swapper">
+        <div id="nav-panels">
+          <div id="resize-packages-nav">
+            <div id="packages-nav">
+              <div id="index-links">
+                <a href="./packages.html" class="selected" >Package Index</a> | 
+                <a href="./classes.html" >Class Index</a>
+              </div>
+              <ul>
+                
+    <li class="api apilevel-">
+  <a href="./ca/hss/times/package-summary.html">ca.hss.times</a></li>
+              </ul><br/>
+            </div> <!-- end packages -->
+          </div> <!-- end resize-packages -->
+          <div id="classes-nav">
+              <script>
+                /*addLoadEvent(maxPackageHeight);*/
+              </script>
+              <p style="padding:10px">Select a package to view its members</p><br/>
+          </div><!-- end classes -->
+        </div><!-- end nav-panels -->
+        <div id="nav-tree" style="display:none">
+          <div id="index-links">
+            <a href="./packages.html" class="selected" >Package Index</a> | 
+            <a href="./classes.html" >Class Index</a>
+          </div>
+        </div><!-- end nav-tree -->
+      </div><!-- end swapper -->
+    </div> <!-- end side-nav -->
+    <script>
+      if (!isMobile) {
+        $("<a href='#' id='nav-swap' onclick='swapNav();return false;' style='font-size:10px;line-height:9px;margin-left:1em;text-decoration:none;'><span id='tree-link'>Use Tree Navigation</span><span id='panel-link' style='display:none'>Use Panel Navigation</span></a>").appendTo("#side-nav");
+        chooseDefaultNav();
+        if ($("#nav-tree").is(':visible')) {
+          init_default_navtree("./");
+        } else {
+          addLoadEvent(function() {
+            scrollIntoView("packages-nav");
+            scrollIntoView("classes-nav");
+          });
+        }
+        $("#swapper").css({borderBottom:"2px solid #aaa"});
+      } else {
+        swapNav(); // tree view should be used on mobile
+      }
+    </script>
+
+
+
+<div class="g-unit" id="doc-content">
+
+<div id="jd-header">
+<h1>Package Index</h1>
+</div>
+
+<div id="jd-content">
+
+<div class="jd-descr">
+<p><a href="https://github.com/HeartlandSoftware/WTime/blob/master/LICENSE">
+<img src="https://img.shields.io/badge/license-Apache 2-blue.svg" align="right">
+</a>
+<h1>WTime</h1>
+<p>WTime stands for "WorldTime".</p>
+<p>This is a C++ and Java time library for representing date/time and timespans with support and conversions to/from local, solar, and GMT/UTC times.  Corrections for daylight savings, etc. (are also included but are used less frequently in software for which this package was developed).</p>
+<p>This utility provides the following features:</p>
+<ul>
+<li>
+<p>Microsecond accuracy.  Not all libraries and representations provide accurate arithmetic.  If floating point representations are used, then standard error propagation can occur over repeated operations.  Thus, a 64-bit integer representation is used.</p>
+</li>
+<li>
+<p>Useful over long period of times.  The Gregorian calendar was introduced in 1582, so this library arbitrarily starts in the year 1600.  Conversions from the prior calendar require overhead and aren't needed for the intent of this library.  With a 64-bit representation, it is useful for centuries into the future.</p>
+</li>
+<li>
+<p>various printing and parsing options for presentation and extraction of date and time fields.  Note there's always room for further improvement here.</p>
+</li>
+<li>
+<p>Functionality to determine when the sun rises, sets, and is at solar noon, given a specific location and date.</p>
+</li>
+<li>
+<p>Basic serialization.</p>
+</li>
+<li>
+<p>Consistency w/r to usage, regardless of the precise time, or timezone, being requested.</p>
+</li>
+<li>
+<p>Conversion routines to/from some (not all) other existing time formats.</p>
+</li>
+</ul>
+<h4>Platform Support</h4>
+<p>The C++ version includes project files for use in Visual Studio 2010 or newer (tested with both MSVC 2010 and Intel Studio 13.0) and autotools files which have been tested with GCC 4.5.3.</p>
+<p>The Java version contains Eclipse project files as well as an Ant build script. It requires at least JRE7. The Java library depends on the <a href="http://github.com">HSS_Java library</a>.</p>
+<h2>Examples</h2>
+<h4>C++</h4>
+<pre><code class="language-c++"><span class="hljs-comment">//Create a time for someone in New York City</span>
+<span class="hljs-function">WTime <span class="hljs-title">time</span><span class="hljs-params">(2016, 2, 11, 6, 0, 0, new TimeManager(WorldLocation(40.7127, -74.0059, <span class="hljs-keyword">true</span>)</span>))</span>;
+</code></pre>
+<pre><code class="language-c++"><span class="hljs-comment">//Construct a time from a string of known format</span>
+time.ParseDateTime(<span class="hljs-string">"2016/02/12 22:30:00"</span>, NEWTIME_FORMAT_STRING_YYYYhMMhDD | NEWTIME_FORMAT_TIME);
+</code></pre>
+<pre><code class="language-c++"><span class="hljs-comment">//Print a time to a string</span>
+std::<span class="hljs-built_in">string</span> str = time.ToString(NEWTIME_FORMAT_AS_LOCAL | NEWTIME_FORMAT_WITHDST | NEWTIME_FORMAT_DATE | NEWTIME_FORMAT_TIME | NEWTIME_FORMAT_YEAR | NEWTIME_FORMAT_ABBREV);
+<span class="hljs-comment">//Output from example 2: Feb 12, 2016 22:30:00</span>
+</code></pre>
+<h4>Java</h4>
+<pre><code class="language-java"><span class="hljs-comment">//Java Calendar to WTime</span>
+Calendar c = Calendar.getInstance();
+WTime time = <span class="hljs-keyword">new</span> WTime(c.get(Calendar.YEAR), c.get(Calendar.MONTH) + <span class="hljs-number">1</span>, c.get(Calendar.DAY_OF_MONTH), c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), c.get(Calendar.SECOND), <span class="hljs-keyword">new</span> WTimeManager(<span class="hljs-keyword">new</span> WorldLocation()));
+</code></pre>
+<pre><code class="language-java"><span class="hljs-comment">//Create a time span of 5 hours and add it to the current time</span>
+WTimeSpan span = <span class="hljs-keyword">new</span> WTimeSpan(<span class="hljs-number">0</span>, <span class="hljs-number">5</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);
+time.Add(span);
+</code></pre>
+<pre><code class="language-java">WTime time = <span class="hljs-keyword">new</span> WTime(<span class="hljs-number">2016</span>, <span class="hljs-number">2</span>, <span class="hljs-number">11</span>, <span class="hljs-number">9</span>, <span class="hljs-number">30</span>, <span class="hljs-number">0</span>, <span class="hljs-keyword">new</span> WTimeManager(<span class="hljs-keyword">new</span> WorldLocation()));
+System.out.println(time.toString(NEWTIME_FORMAT_AS_LOCAL | NEWTIME_FORMAT_WITHDST | NEWTIME_FORMAT_DATE | NEWTIME_FORMAT_TIME | NEWTIME_FORMAT_YEAR | NEWTIME_FORMAT_ABBREV));
+<span class="hljs-comment">//Output: Feb 11, 2016 9:30:00</span>
+</code></pre>
+<h2>Limitations</h2>
+<p>Times are stored as the number of microseconds since January 1, 1600. It is not possible to store times before January 1, 1600.</p>
+<p>No concern for leap seconds.  There is discussion on the utility of these in the real world, so until the two camps come to a conclusion, there's no need for this library to handle them, at this time.</p>
+<p>Although many time zones are accounted for, the list may never be deemed complete, nor is there a way to express a preference for one time zone or another, when more than one exists for a given correction from UTC.</p>
+<p>Arctic and Antarctic circles may or may not have time zones, depending on the source.  This library hasn't been tested for this range.</p>
+<p>The library assumes that the client code will configure it appropriately when used for the timezone and settings of the computer's configuration.  The library was built for projects where a computer may be located in a different timezone than the project data.</p>
+<h2>Support</h2>
+<p>Please use GitHub issues and Pull Requests for support.</p>
+<h2>Copyright and license</h2>
+<p style="font-family: monospace; border: 1px solid #ccc; background-color: #fafafa; padding: 10px; margin: 0 0 1em 1em;">Copyright 2016 Heartland Software Solutions Inc.<br>
+<br>
+Licensed under the Apache License, Version 2.0 (the "License");<br>
+you may not use this file except in compliance with the License.<br>
+You may obtain a copy of the License at<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.apache.org/licenses/LICENSE-2.0">http://www.apache.org/licenses/LICENSE-2.0</a><br>
+<br>
+Unless required by applicable law or agreed to in writing, software<br>
+distributed under the License is distributed on an "AS IS" BASIS,<br>
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.<br>
+See the License for the specific language governing permissions and<br>
+limitations under the License.</p>
+<p style="height:40px"><a href="http://heartlandsoftware.ca">
+<img style="width: 40px; height:40px;" src="http://www.heartlandsoftware.ca/images/email_sig_logo.jpg" align="right">
+</a></p>
+<h2>Package List</h2></p>
+</div>
+
+
+<table class="jd-sumtable">
+
+    <tr class="alt-color api apilevel-" >
+        <td class="jd-linkcol">
+  <a href="./ca/hss/times/package-summary.html">ca.hss.times</a></td>
+        <td class="jd-descrcol" width="100%">A time library to replace the built in Calendar and Date classes.</td>
+    </tr>
+
+
+</table>
+
+<div id="footer">
+Generated by <a href="http://code.google.com/p/doclava/">Doclava</a>.
+</div> <!-- end footer -->
+
+</div><!-- end jd-content -->
+</div> <!-- end doc-content -->
+
+</div> <!-- end body-content --> 
+
+<script type="text/javascript">
+init(); /* initialize doclava-developer-docs.js */
+</script>
+
+</body>
+</html>

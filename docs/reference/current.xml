@@ -1,0 +1,2269 @@
+<api>
+<package name="ca.hss.times"
+>
+<class name="SunriseSunsetCalc"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="calcSun"
+ return="short"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="latLongForm" type="ca.hss.times.RiseSetInput">
+</parameter>
+<parameter name="riseSetForm" type="ca.hss.times.RiseSetOut">
+</parameter>
+</method>
+<method name="isLeapYear"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="year" type="int">
+</parameter>
+</method>
+<field name="NO_SUNRISE"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="1"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="NO_SUNSET"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="2"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="TimeZoneInfo"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="java.lang.Comparable">
+</implements>
+<method name="compareTo"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="o" type="ca.hss.times.TimeZoneInfo">
+</parameter>
+</method>
+<method name="getCode"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getDSTAmount"
+ return="ca.hss.times.WTimeSpan"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getID"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getName"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getTimezoneOffset"
+ return="ca.hss.times.WTimeSpan"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+<class name="WTime"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="java.lang.Comparable">
+</implements>
+<constructor name="WTime"
+ type="ca.hss.times.WTime"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="tm" type="ca.hss.times.WTimeManager">
+</parameter>
+</constructor>
+<constructor name="WTime"
+ type="ca.hss.times.WTime"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="time" type="long">
+</parameter>
+<parameter name="tm" type="ca.hss.times.WTimeManager">
+</parameter>
+</constructor>
+<constructor name="WTime"
+ type="ca.hss.times.WTime"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="time" type="long">
+</parameter>
+<parameter name="tm" type="ca.hss.times.WTimeManager">
+</parameter>
+<parameter name="units_are_seconds" type="boolean">
+</parameter>
+</constructor>
+<constructor name="WTime"
+ type="ca.hss.times.WTime"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="nYear" type="long">
+</parameter>
+<parameter name="nMonth" type="long">
+</parameter>
+<parameter name="nDay" type="long">
+</parameter>
+<parameter name="nHour" type="long">
+</parameter>
+<parameter name="nMin" type="long">
+</parameter>
+<parameter name="nSec" type="long">
+</parameter>
+<parameter name="tm" type="ca.hss.times.WTimeManager">
+</parameter>
+</constructor>
+<constructor name="WTime"
+ type="ca.hss.times.WTime"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="nYear" type="long">
+</parameter>
+<parameter name="nMonth" type="long">
+</parameter>
+<parameter name="nDay" type="long">
+</parameter>
+<parameter name="nHour" type="long">
+</parameter>
+<parameter name="nMin" type="long">
+</parameter>
+<parameter name="nSec" type="long">
+</parameter>
+<parameter name="uSec" type="long">
+</parameter>
+<parameter name="tm" type="ca.hss.times.WTimeManager">
+</parameter>
+</constructor>
+<constructor name="WTime"
+ type="ca.hss.times.WTime"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="timeSrc" type="ca.hss.times.WTime">
+</parameter>
+</constructor>
+<constructor name="WTime"
+ type="ca.hss.times.WTime"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="timeSrc" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="flags" type="long">
+</parameter>
+<parameter name="direction" type="short">
+</parameter>
+</constructor>
+<method name="Add"
+ return="ca.hss.times.WTime"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="s" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="Add"
+ return="ca.hss.times.WTime"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="t" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="s" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="Equal"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="t1" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="t2" type="ca.hss.times.WTime">
+</parameter>
+</method>
+<method name="GetDay"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetDayFractionOfYear"
+ return="double"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetDayOfWeek"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetDayOfYear"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetHour"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetMicroSeconds"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetMinute"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetMonth"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetSecond"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetSecondsIntoYear"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetTime"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="mode" type="long">
+</parameter>
+</method>
+<method name="GetTimeManager"
+ return="ca.hss.times.WTimeManager"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GetTimeOfDay"
+ return="ca.hss.times.WTimeSpan"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GetTotalMicroSeconds"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GetTotalSeconds"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GetYear"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="GreaterThan"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="t1" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="t2" type="ca.hss.times.WTime">
+</parameter>
+</method>
+<method name="GreaterThanEqualTo"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="t1" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="t2" type="ca.hss.times.WTime">
+</parameter>
+</method>
+<method name="IsLeapYear"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="LessThan"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="t1" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="t2" type="ca.hss.times.WTime">
+</parameter>
+</method>
+<method name="LessThanEqualTo"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="t1" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="t2" type="ca.hss.times.WTime">
+</parameter>
+</method>
+<method name="NotEqual"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="t1" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="t2" type="ca.hss.times.WTime">
+</parameter>
+</method>
+<method name="ParseDateTime"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="lpszDate" type="java.lang.String">
+</parameter>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="PurgeToDay"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="PurgeToHour"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="PurgeToMinute"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="PurgeToSecond"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<method name="SetTimeManager"
+ return="ca.hss.times.WTimeManager"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="tm" type="ca.hss.times.WTimeManager">
+</parameter>
+</method>
+<method name="Subtract"
+ return="ca.hss.times.WTime"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="s" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="Subtract"
+ return="ca.hss.times.WTime"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="t" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="s" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="Subtract"
+ return="ca.hss.times.WTimeSpan"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="t1" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="t2" type="ca.hss.times.WTime">
+</parameter>
+</method>
+<method name="compareTo"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="o" type="ca.hss.times.WTime">
+</parameter>
+</method>
+<method name="fromLocal"
+ return="ca.hss.times.WTime"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="nYear" type="int">
+</parameter>
+<parameter name="nMonth" type="int">
+</parameter>
+<parameter name="nDay" type="int">
+</parameter>
+<parameter name="nHour" type="int">
+</parameter>
+<parameter name="nMin" type="int">
+</parameter>
+<parameter name="nSec" type="int">
+</parameter>
+<parameter name="tm" type="ca.hss.times.WTimeManager">
+</parameter>
+</method>
+<method name="toString"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="long">
+</parameter>
+</method>
+<field name="FORMAT_ABBREV"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="4096L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_AS_LOCAL"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="16777216L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_AS_SOLAR"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="33554432L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_CONDITIONAL_TIME"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="1073741824L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_DATE"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="6291456L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_DAY"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="2097152L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_DAY_OF_WEEK"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="256L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_EXCLUDE_SECONDS"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="536870912L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_INCLUDE_USECS"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="524288L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_MONTH"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="4194304L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_PARSE_USING_SYSTEM"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="-2147483648L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_STRING_DD_MM_YYYY"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="1L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_STRING_DDhMMhYYYY"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="4L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_STRING_MM_DD_YYYY"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="3L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_STRING_MMhDDhYYYY"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="6L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_STRING_YYYYMMDD"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="7L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_STRING_YYYYMMDDHH"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="8L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_STRING_YYYYMMDDT"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="16L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_STRING_YYYY_MM_DD"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="2L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_STRING_YYYYhMMhDD"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="5L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_STRING_YYYYhMMhDDT"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="32L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_TIME"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="1048576L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_WITHDST"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="67108864L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="FORMAT_YEAR"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="8388608L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="days"
+ type="java.lang.String[]"
+ transient="false"
+ volatile="false"
+ value="null"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="days_abbrev"
+ type="java.lang.String[]"
+ transient="false"
+ volatile="false"
+ value="null"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="months"
+ type="java.lang.String[]"
+ transient="false"
+ volatile="false"
+ value="null"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="months_abbrev"
+ type="java.lang.String[]"
+ transient="false"
+ volatile="false"
+ value="null"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="serialVersionUID"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="1L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="WTime.WTimeComparator"
+ extends="java.lang.Object"
+ abstract="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="java.util.Comparator">
+</implements>
+<constructor name="WTimeComparator"
+ type="ca.hss.times.WTime.WTimeComparator"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<method name="compare"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="o1" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="o2" type="ca.hss.times.WTime">
+</parameter>
+</method>
+</class>
+<class name="WTimeManager"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="WTimeManager"
+ type="ca.hss.times.WTimeManager"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="worldLocation" type="ca.hss.times.WorldLocation">
+</parameter>
+</constructor>
+<method name="FromJulian"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="julian" type="&lt;any&gt;">
+</parameter>
+<parameter name="year" type="&lt;any&gt;">
+</parameter>
+<parameter name="month" type="&lt;any&gt;">
+</parameter>
+<parameter name="day" type="&lt;any&gt;">
+</parameter>
+</method>
+<method name="GetJulianCount"
+ return="short"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="year" type="short">
+</parameter>
+</method>
+<method name="IterationIndex"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="time" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="TimeForIndex"
+ return="ca.hss.times.WTimeSpan"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="index" type="int">
+</parameter>
+</method>
+<method name="ToJulian"
+ return="short"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="year" type="short">
+</parameter>
+<parameter name="month" type="short">
+</parameter>
+<parameter name="day" type="short">
+</parameter>
+</method>
+<method name="daysInMonth"
+ return="short"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="month" type="short">
+</parameter>
+<parameter name="year" type="short">
+</parameter>
+</method>
+<method name="getWorldLocation"
+ return="ca.hss.times.WorldLocation"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="isLeapYear"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="year" type="short">
+</parameter>
+</method>
+<field name="ITERATION_15MIN"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="3"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="ITERATION_1DAY"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="7"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="ITERATION_1HOUR"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="5"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="ITERATION_1MIN"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="1"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="ITERATION_1SEC"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="0"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="ITERATION_1WEEK"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="8"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="ITERATION_2HOUR"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="6"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="ITERATION_30MIN"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="4"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="ITERATION_5MIN"
+ type="short"
+ transient="false"
+ volatile="false"
+ value="2"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="WTimeSpan"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<implements name="java.lang.Comparable">
+</implements>
+<constructor name="WTimeSpan"
+ type="ca.hss.times.WTimeSpan"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<constructor name="WTimeSpan"
+ type="ca.hss.times.WTimeSpan"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="time" type="long">
+</parameter>
+</constructor>
+<constructor name="WTimeSpan"
+ type="ca.hss.times.WTimeSpan"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="time" type="long">
+</parameter>
+<parameter name="units_are_seconds" type="boolean">
+</parameter>
+</constructor>
+<constructor name="WTimeSpan"
+ type="ca.hss.times.WTimeSpan"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="lDays" type="long">
+</parameter>
+<parameter name="nHours" type="long">
+</parameter>
+<parameter name="nMins" type="long">
+</parameter>
+<parameter name="nSecs" type="long">
+</parameter>
+</constructor>
+<constructor name="WTimeSpan"
+ type="ca.hss.times.WTimeSpan"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="lDays" type="long">
+</parameter>
+<parameter name="nHours" type="long">
+</parameter>
+<parameter name="nMins" type="long">
+</parameter>
+<parameter name="nSecs" type="long">
+</parameter>
+<parameter name="uSecs" type="long">
+</parameter>
+</constructor>
+<constructor name="WTimeSpan"
+ type="ca.hss.times.WTimeSpan"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="timeSrc" type="java.lang.String">
+</parameter>
+<parameter name="cnt" type="&lt;any&gt;">
+</parameter>
+</constructor>
+<constructor name="WTimeSpan"
+ type="ca.hss.times.WTimeSpan"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="timeSrc" type="ca.hss.times.WTimeSpan">
+</parameter>
+</constructor>
+<method name="AsDateTimeSpan"
+ return="java.util.Date"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="Divide"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="value" type="long">
+</parameter>
+</method>
+<method name="Equal"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="s1" type="ca.hss.times.WTimeSpan">
+</parameter>
+<parameter name="s2" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="GetDays"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GetHours"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GetMinutes"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GetSeconds"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GetTotalHours"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GetTotalMinutes"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GetTotalSeconds"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GetYears"
+ return="long"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="GreaterThan"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="s1" type="ca.hss.times.WTimeSpan">
+</parameter>
+<parameter name="s2" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="GreaterThanEqualTo"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="s1" type="ca.hss.times.WTimeSpan">
+</parameter>
+<parameter name="s2" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="LessThan"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="s1" type="ca.hss.times.WTimeSpan">
+</parameter>
+<parameter name="s2" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="LessThanEqualTo"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="s1" type="ca.hss.times.WTimeSpan">
+</parameter>
+<parameter name="s2" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="Multiply"
+ return="ca.hss.times.WTimeSpan"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="span" type="ca.hss.times.WTimeSpan">
+</parameter>
+<parameter name="value" type="long">
+</parameter>
+</method>
+<method name="Multiply"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="value" type="long">
+</parameter>
+</method>
+<method name="NotEqual"
+ return="boolean"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="s1" type="ca.hss.times.WTimeSpan">
+</parameter>
+<parameter name="s2" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="PurgeToDay"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="PurgeToHour"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="PurgeToMinute"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="Subtract"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="span" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="compareTo"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="arg0" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="setTimeSpan"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="timeSpan" type="long">
+</parameter>
+</method>
+<method name="toString"
+ return="java.lang.String"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="flags" type="short">
+</parameter>
+</method>
+<field name="Day"
+ type="ca.hss.times.WTimeSpan"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="Hour"
+ type="ca.hss.times.WTimeSpan"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="MicroSecond"
+ type="ca.hss.times.WTimeSpan"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="Minute"
+ type="ca.hss.times.WTimeSpan"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="Second"
+ type="ca.hss.times.WTimeSpan"
+ transient="false"
+ volatile="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+<field name="serialVersionUID"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="1L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="WorldLocation"
+ extends="java.lang.Object"
+ abstract="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<constructor name="WorldLocation"
+ type="ca.hss.times.WorldLocation"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</constructor>
+<constructor name="WorldLocation"
+ type="ca.hss.times.WorldLocation"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="wl" type="ca.hss.times.WorldLocation">
+</parameter>
+</constructor>
+<method name="CurrentTimeZone"
+ return="ca.hss.times.TimeZoneInfo"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="set" type="short">
+</parameter>
+</method>
+<method name="GuessTimeZone"
+ return="ca.hss.times.TimeZoneInfo"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="set" type="short">
+</parameter>
+</method>
+<method name="defaultTimeZone"
+ return="ca.hss.times.TimeZoneInfo"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getAfricaList"
+ return="ca.hss.times.TimeZoneInfo[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getAsiaList"
+ return="ca.hss.times.TimeZoneInfo[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getCanadaList"
+ return="ca.hss.times.TimeZoneInfo[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getDSTAmount"
+ return="ca.hss.times.WTimeSpan"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getDaylightSavingsTimeZones"
+ return="java.util.ArrayList&lt;java.lang.String&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getEndDST"
+ return="ca.hss.times.WTimeSpan"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getEuropeList"
+ return="ca.hss.times.TimeZoneInfo[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getLatitude"
+ return="double"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getList"
+ return="ca.hss.times.TimeZoneInfo[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getLongitude"
+ return="double"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getNorthAmericaList"
+ return="ca.hss.times.TimeZoneInfo[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getOceaniaList"
+ return="ca.hss.times.TimeZoneInfo[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getSouthAmericaList"
+ return="ca.hss.times.TimeZoneInfo[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStandardTimeZones"
+ return="java.util.ArrayList&lt;java.lang.String&gt;"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getStartDST"
+ return="ca.hss.times.WTimeSpan"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getSunRiseSetNoon"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="daytime" type="ca.hss.times.WTime">
+</parameter>
+<parameter name="Rise" type="&lt;any&gt;">
+</parameter>
+<parameter name="Set" type="&lt;any&gt;">
+</parameter>
+<parameter name="Noon" type="&lt;any&gt;">
+</parameter>
+</method>
+<method name="getTimeZoneFromCode"
+ return="ca.hss.times.TimeZoneInfo"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="code" type="java.lang.String">
+</parameter>
+</method>
+<method name="getTimeZoneFromOffset"
+ return="ca.hss.times.TimeZoneInfo"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="offset" type="int">
+</parameter>
+</method>
+<method name="getTimezoneOffset"
+ return="ca.hss.times.WTimeSpan"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="getTimezones"
+ return="ca.hss.times.TimeZoneInfo[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="group" type="ca.hss.times.WorldLocation.TimeZoneGroup">
+</parameter>
+</method>
+<method name="setDSTAmount"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="amount" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="setEndDST"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="end" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="setLatitude"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="latitude" type="double">
+</parameter>
+</method>
+<method name="setLongitude"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="longitude" type="double">
+</parameter>
+</method>
+<method name="setStartDST"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="start" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<method name="setTimezoneOffset"
+ return="void"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="offset" type="ca.hss.times.WTimeSpan">
+</parameter>
+</method>
+<field name="serialVersionUID"
+ type="long"
+ transient="false"
+ volatile="false"
+ value="4L"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</field>
+</class>
+<class name="WorldLocation.TimeZoneGroup"
+ extends="java.lang.Enum"
+ abstract="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<method name="fromId"
+ return="ca.hss.times.WorldLocation.TimeZoneGroup"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="id" type="int">
+</parameter>
+</method>
+<method name="getId"
+ return="int"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="false"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+<method name="valueOf"
+ return="ca.hss.times.WorldLocation.TimeZoneGroup"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="false"
+ deprecated="not deprecated"
+ visibility="public"
+>
+<parameter name="name" type="java.lang.String">
+</parameter>
+</method>
+<method name="values"
+ return="ca.hss.times.WorldLocation.TimeZoneGroup[]"
+ abstract="false"
+ native="false"
+ synchronized="false"
+ static="true"
+ final="true"
+ deprecated="not deprecated"
+ visibility="public"
+>
+</method>
+</class>
+</package>
+</api>
