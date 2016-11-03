@@ -68,6 +68,10 @@ System.out.println(time.toString(WTIME_FORMAT_AS_LOCAL | WTime.FORMAT_WITHDST | 
 //Output: Feb 11, 2016 9:30:00
 ```
 
+## Documentation
+
+The JavaDocs can be accessed from [GitHub Pages](https://heartlandsoftware.github.io/WTime).
+
 ## Limitations
 
 Times are stored as the number of microseconds since January 1, 1600. It is not possible to store times before January 1, 1600.
