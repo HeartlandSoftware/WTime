@@ -110,8 +110,8 @@ public:
 	///Get a WorldLocation object with the timezone data set correctly for the given latitude/longitude. If the area uses
 	///daylight savings time at any point in the year it will be enabled.
 	///</summary>
-	///<param name="latitude">The locations latitude.</param>
-	///<param name="longitude">The locations longitude.</param>
+	///<param name="latitude">The locations latitude (in radians).</param>
+	///<param name="longitude">The locations longitude (in radians).</param>
 	///<param name="set">Whether we want back a STD or DST timezone</param>
 	///<param name="valid">If supplied, will be set to 1 if a timezone was found for the corresponding location, and 0 otherwise</param>
 	static WorldLocation FromLatLon(const double latitude, const double longitude, INTNM::int16_t set, bool* valid = NULL);

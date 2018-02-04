@@ -31,7 +31,6 @@ import java.util.*;
 
 import ca.hss.annotations.Source;
 
-
 /**
  * A class for storing time information. I can handle timezones
  * with or without DST as defined in WorldLocation.java. It can
@@ -142,6 +141,14 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * in the order YYYY MM DD.
 	 */
 	public static final long FORMAT_STRING_YYYYhMMhDDT	= 0x00000020;
+	/**
+	 * Add the timezone to the end of the time string.
+	 */
+	public static final long FORMAT_STRING_TIMEZONE		= 0x00000200;
+	/**
+	 * Format the time so it is compatible with ISO8601.
+	 */
+	public static final long FORMAT_STRING_ISO8601		= (FORMAT_STRING_TIMEZONE | FORMAT_STRING_YYYYhMMhDDT | FORMAT_DATE | FORMAT_TIME | FORMAT_AS_LOCAL | FORMAT_WITHDST);
 
 	/**
 	 * Abbreviations for the months.
@@ -197,22 +204,22 @@ public class WTime implements Serializable, Comparable<WTime> {
 		long time;
 		if (m_tm != null) {
 			if((flags & FORMAT_AS_LOCAL) != 0)
-				time = m_time + m_tm.getWorldLocation().m_timezone.GetTotalMicroSeconds();
+				time = m_time + m_tm.getWorldLocation().m_TimeZone.GetTotalMicroSeconds();
 			else if ((flags & FORMAT_AS_SOLAR) != 0)
 				time = m_time + m_tm.getWorldLocation().m_solar_timezone(this).GetTotalMicroSeconds();
 			else	time = m_time;
 
-			if (((flags & FORMAT_WITHDST)) != 0 && (WTimeSpan.NotEqual(m_tm.getWorldLocation().m_startDST, m_tm.getWorldLocation().m_endDST))) {
+			if (((flags & FORMAT_WITHDST)) != 0 && (WTimeSpan.NotEqual(m_tm.getWorldLocation().m_StartDST, m_tm.getWorldLocation().m_EndDST))) {
 				WTime t = new WTime(time, null, false);
 				long secs = t.GetSecondsIntoYear((short)0);
-				if (m_tm.getWorldLocation().m_endDST.compareTo(m_tm.getWorldLocation().m_startDST) == 1) {
-					if (((long)m_tm.getWorldLocation().m_startDST.GetTotalSeconds() <= secs) &&
-					    (secs < (long)m_tm.getWorldLocation().m_endDST.GetTotalSeconds()))
-						time += m_tm.getWorldLocation().m_amtDST.GetTotalMicroSeconds();
+				if (m_tm.getWorldLocation().m_EndDST.compareTo(m_tm.getWorldLocation().m_StartDST) == 1) {
+					if (((long)m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() <= secs) &&
+					    (secs < (long)m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
+						time += m_tm.getWorldLocation().m_AmtDST.GetTotalMicroSeconds();
 				} else {
-					if (((long)m_tm.getWorldLocation().m_startDST.GetTotalSeconds() < secs) ||
-					    (secs <= (long)m_tm.getWorldLocation().m_endDST.GetTotalSeconds()))
-						time += m_tm.getWorldLocation().m_amtDST.GetTotalMicroSeconds();
+					if (((long)m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() < secs) ||
+					    (secs <= (long)m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
+						time += m_tm.getWorldLocation().m_AmtDST.GetTotalMicroSeconds();
 				}
 			}
 		} else	time = m_time;
@@ -319,9 +326,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return a new WTime instance for the given date and time
 	 */
 	public static WTime fromLocal(int nYear, int nMonth, int nDay, int nHour, int nMin, int nSec, WTimeManager tm) {
-		nHour -= tm.getWorldLocation().m_timezone.GetHours();
-		if (!WTimeSpan.Equal(tm.getWorldLocation().m_startDST, tm.getWorldLocation().m_endDST))
-			nHour -= tm.getWorldLocation().m_amtDST.GetHours();
+		nHour -= tm.getWorldLocation().m_TimeZone.GetHours();
+		if (!WTimeSpan.Equal(tm.getWorldLocation().m_StartDST, tm.getWorldLocation().m_EndDST))
+			nHour -= tm.getWorldLocation().m_AmtDST.GetHours();
 		if (nHour < 0) {
 			nHour += 24;
 			nDay -= 1;
@@ -702,6 +709,39 @@ public class WTime implements Serializable, Comparable<WTime> {
 			}
 			str += tmp;
 		}
+		
+		if ((flags & FORMAT_STRING_TIMEZONE) != 0) {
+			long offset = m_tm.getWorldLocation().m_TimeZone.GetTotalMinutes();
+			long intoYear = GetSecondsIntoYear(0);
+			if (WTimeSpan.NotEqual(m_tm.getWorldLocation().m_EndDST, m_tm.getWorldLocation().m_StartDST)) {
+				if (WTimeSpan.LessThan(m_tm.getWorldLocation().m_StartDST, m_tm.getWorldLocation().m_EndDST)) {
+					if ((m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() <= intoYear) &&
+						(intoYear < m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
+						offset += m_tm.getWorldLocation().m_AmtDST.GetTotalMinutes();
+				}
+				else if ((m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() < intoYear) ||
+						 (intoYear <= m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
+					offset += m_tm.getWorldLocation().m_AmtDST.GetTotalMinutes();
+			}
+			
+			if (offset == 0)
+				str += "Z";
+			else {
+				if (offset < 0) {
+					str += "-";
+					offset = -offset;
+				}
+				else
+					str += "+";
+				int hourOffset = 0;
+				while (offset >= 60) {
+					hourOffset++;
+					offset -= 60;
+				}
+				String tmp = String.format("%02d:%02d", hourOffset, offset);
+				str += tmp;
+			}
+		}
 		return str;
 	}
 
@@ -713,6 +753,22 @@ public class WTime implements Serializable, Comparable<WTime> {
 	@Override
 	public String toString() {
 		return toString(FORMAT_TIME | FORMAT_AS_LOCAL | FORMAT_DATE | FORMAT_STRING_DD_MM_YYYY | FORMAT_WITHDST);
+	}
+	
+	/**
+	 * Convert a WTime value to a Calendar.
+	 * @param flags The FORMAT flags to use in the conversion.
+	 * @return A new Calendar instance set to the same date and time as the WTime object.
+	 */
+	public Calendar toCalendar(long flags) {
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.YEAR, (int)GetYear(flags));
+		cal.set(Calendar.MONTH, (int)GetMonth(flags));
+		cal.set(Calendar.DAY_OF_MONTH, (int)GetDay(flags));
+		cal.set(Calendar.HOUR_OF_DAY, (int)GetHour(flags));
+		cal.set(Calendar.MINUTE, (int)GetMinute(flags));
+		cal.set(Calendar.SECOND, (int)GetSecond(flags));
+		return cal;
 	}
 
 	/**
@@ -733,6 +789,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 		long year = 0, month = 0, day = 0, hour = 0, min = 0, sec = 0;
 		long v1 = 0, v2 = 0, v3 = 0;
 		short time_scan = 0;
+		long secondOffset = 0;
 
 		boolean delimit_found = false;
 		while (delimit.charAt(time_scan) != '\0') {
@@ -787,7 +844,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 			}
 			min = sec = 0;
 		} else {
-			OutVariable<StringTokenizer> context = new OutVariable<StringTokenizer>();
+			OutVariable<StringTokenizer> context = new OutVariable<>();
 			String tok;
 
 			tok = StringExtensions.strtok_s(dateBuf, delimit, context);
@@ -864,7 +921,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 					return false;
 				v3 = (Long)v.value;
 			}
-
+			
 			if ((flags & 0x00ff) == 0) {
 				if (guess_month == 1) {
 					if (v3 >= 32)
@@ -875,6 +932,13 @@ public class WTime implements Serializable, Comparable<WTime> {
 						flags |= FORMAT_STRING_DD_MM_YYYY;
 					else if (v1 >= 32)
 						flags |= FORMAT_STRING_YYYY_MM_DD;
+				}
+				else {
+					if (v1 >= 32)
+						flags |= FORMAT_STRING_YYYY_MM_DD;
+					else if (v3 >= 32 && v2 > 12) {
+						flags |= FORMAT_STRING_MM_DD_YYYY;
+					}
 				}
 			}
 
@@ -913,6 +977,19 @@ public class WTime implements Serializable, Comparable<WTime> {
 
 			if ((flags & FORMAT_TIME) == FORMAT_TIME) {
 				tok = StringExtensions.strtok_s(null, "", context);
+				if (tok.startsWith("T"))
+					tok = tok.substring(1);
+				String timezone = null;
+				boolean negative = false;
+				boolean timezoneExists = tok.indexOf('+') >= 0 || tok.indexOf('-') >= 0;
+				if (timezoneExists) {
+					negative = tok.indexOf('-') >= 0;
+					String[] split = tok.split("[-\\+Z]");
+					if (split.length == 2) {
+						tok = split[0];
+						timezone = split[1];
+					}
+				}
 				OutVariable<Short> s = new OutVariable<Short>();
 				WTimeSpan ts = new WTimeSpan(tok, s);
 				time_scan = s.value;
@@ -924,6 +1001,16 @@ public class WTime implements Serializable, Comparable<WTime> {
 					min = ts.GetMinutes();
 					sec = ts.GetSeconds();
 				}
+				
+				if (timezone != null) {
+					ts = new WTimeSpan(timezone, s);
+					time_scan = s.value;
+					if (time_scan != 0) {
+						secondOffset = ts.GetTotalSeconds();
+						if (negative)
+							secondOffset = -secondOffset;
+					}
+				}
 			}
 			else {
 				hour = min = sec = 0;
@@ -932,6 +1019,25 @@ public class WTime implements Serializable, Comparable<WTime> {
 
 		if ((year >= 1600) && (year < 2900)) {
 			WTime t = new WTime(year, month, day, hour, min, sec, m_tm);
+			
+			if (secondOffset != 0) {
+				long offset = m_tm.getWorldLocation().m_TimeZone.GetTotalSeconds();
+				long intoYear = GetSecondsIntoYear(0);
+				if (WTimeSpan.NotEqual(m_tm.getWorldLocation().m_EndDST, m_tm.getWorldLocation().m_StartDST)) {
+					if (WTimeSpan.LessThan(m_tm.getWorldLocation().m_StartDST, m_tm.getWorldLocation().m_EndDST)) {
+						if ((m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() <= intoYear) &&
+							(intoYear < m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
+							offset += m_tm.getWorldLocation().m_AmtDST.GetTotalMinutes();
+					}
+					else if ((m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() < intoYear) ||
+							 (intoYear <= m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
+						offset += m_tm.getWorldLocation().m_AmtDST.GetTotalMinutes();
+				}
+				offset -= secondOffset;
+				if (offset != 0)
+					t.Add(new WTimeSpan(offset));
+			}
+			
 			m_time = t.m_time;
 			long atm = adjusted_tm(flags);
 			m_time = m_time - (atm - m_time);

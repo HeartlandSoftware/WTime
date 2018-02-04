@@ -27,44 +27,44 @@ import ca.hss.text.TranslationCallback;
  * An immutable class that stores information about timezones. 
  */
 public class TimeZoneInfo implements Comparable<TimeZoneInfo> {
-	private WTimeSpan m_timezone;
-	private WTimeSpan m_dst;
-	private String m_code;
-	private String m_name;
-	private String m_id;
+	private WTimeSpan m_TimeZone;
+	private WTimeSpan m_Dst;
+	private String m_Code;
+	private String m_Name;
+	private String m_Id;
 	
 	/**
 	 * Get the timezone offset from UTC.
 	 * @return the timezone offset
 	 */
-	public WTimeSpan getTimezoneOffset() { return m_timezone; }
+	public WTimeSpan getTimezoneOffset() { return m_TimeZone; }
 	/**
 	 * Get the amount of offset from UTC caused by DST.
 	 * @return the DST offset
 	 */
-	public WTimeSpan getDSTAmount() { return m_dst; }
+	public WTimeSpan getDSTAmount() { return m_Dst; }
 	/**
 	 * Get the timzones string code.
 	 * @return the timezone code
 	 */
-	public String getCode() { return m_code; }
+	public String getCode() { return m_Code; }
 	/**
 	 * Get the name of the timezone.
 	 * @return the timezones name
 	 */
-	public String getName() { return m_name; }
+	public String getName() { return m_Name; }
 	/**
 	 * Get the unique ID of the timezone. Useful for translation.
 	 * @return the timezones unique id
 	 */
-	public String getID() { return m_id; }
+	public String getID() { return m_Id; }
 
 	TimeZoneInfo(WTimeSpan _timezone, WTimeSpan _dst, String _code, String _name, String _id) {
-		m_timezone = _timezone;
-		m_dst = _dst;
-		m_code = _code;
-		m_name = _name;
-		m_id = _id;
+		m_TimeZone = _timezone;
+		m_Dst = _dst;
+		m_Code = _code;
+		m_Name = _name;
+		m_Id = _id;
 	}
 
 	/**
@@ -75,15 +75,15 @@ public class TimeZoneInfo implements Comparable<TimeZoneInfo> {
 	@Override
 	public String toString() {
 		WTimeSpan WTimeSpan;
-		WTimeSpan = m_timezone;
-		String timeZoneCode = m_code;
-		String timeZoneName = m_name;
-		if (TranslationCallback.instance != null && m_id.length() > 0)
-			timeZoneName = TranslationCallback.instance.translate(m_id);
+		WTimeSpan = m_TimeZone;
+		String timeZoneCode = m_Code;
+		String timeZoneName = m_Name;
+		if (TranslationCallback.instance != null && m_Id.length() > 0)
+			timeZoneName = TranslationCallback.instance.translate(m_Id);
 
 		DecimalFormat myFormatter = new DecimalFormat("00");
 		double minutes = (double) (Math.abs(WTimeSpan.GetMinutes()));
-		String timeZoneTimeDiff = String.format("%d:%s", WTimeSpan.GetHours() + m_dst.GetHours(), myFormatter.format(minutes));
+		String timeZoneTimeDiff = String.format("%d:%s", WTimeSpan.GetHours() + m_Dst.GetHours(), myFormatter.format(minutes));
 		return (String.format("%s: %s (%s)", timeZoneCode, timeZoneName, timeZoneTimeDiff));
 	}
 
@@ -95,13 +95,21 @@ public class TimeZoneInfo implements Comparable<TimeZoneInfo> {
 		if (o == null)
 			return -1;
 
-		int compareTimeZone = this.m_timezone.AsDateTimeSpan().compareTo(o.m_timezone.AsDateTimeSpan());
-		int comareDST = this.m_dst.AsDateTimeSpan().compareTo(o.m_dst.AsDateTimeSpan());
+		int compareTimeZone = this.m_TimeZone.AsDateTimeSpan().compareTo(o.m_TimeZone.AsDateTimeSpan());
+		int comareDST = this.m_Dst.AsDateTimeSpan().compareTo(o.m_Dst.AsDateTimeSpan());
 
 		if (compareTimeZone == 0) {
 			return comareDST;
 		} else {
 			return compareTimeZone;
 		}
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other instanceof TimeZoneInfo) {
+			return m_Code.equals(((TimeZoneInfo)other).m_Code);
+		}
+		return false;
 	}
 }

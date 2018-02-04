@@ -36,73 +36,73 @@ import static ca.hss.math.general.*;
 public class WorldLocation implements Serializable {
 	public static final long serialVersionUID = 4;
 
-	double		m_latitude;			// stored as radians!!!
-	double		m_longitude;
-	WTimeSpan	m_timezone;			// time zone
-	WTimeSpan	m_startDST;			// when daylight savings turns on - from start of year
-	WTimeSpan	m_endDST;			// when daylight savings turns off - from start of year
+	double		m_Latitude;			// stored as radians!!!
+	double		m_Longitude;
+	WTimeSpan	m_TimeZone;			// time zone
+	WTimeSpan	m_StartDST;			// when daylight savings turns on - from start of year
+	WTimeSpan	m_EndDST;			// when daylight savings turns off - from start of year
 											// if you want to disable DST, then just set these to the same value
-	WTimeSpan	m_amtDST;			// amount to adjust for DST
+	WTimeSpan	m_AmtDST;			// amount to adjust for DST
 	
 	/**
 	 * Get the locations latitude in radians.
 	 * @return
 	 */
-	public double getLatitude() { return m_latitude; }
+	public double getLatitude() { return m_Latitude; }
 	/**
 	 * Set the locations latitude in radians.
 	 * @param latitude
 	 */
-	public void setLatitude(double latitude) { m_latitude = latitude; }
+	public void setLatitude(double latitude) { m_Latitude = latitude; }
 	/**
 	 * Get the locations longitude in radians.
 	 * @return
 	 */
-	public double getLongitude() { return m_longitude; }
+	public double getLongitude() { return m_Longitude; }
 	/**
 	 * Set the locations longitude in radians.
 	 */
-	public void setLongitude(double longitude) { m_longitude = longitude; }
+	public void setLongitude(double longitude) { m_Longitude = longitude; }
 	/**
 	 * Get the locations timezone offset.
 	 * @return
 	 */
-	public WTimeSpan getTimezoneOffset() { return m_timezone; }
+	public WTimeSpan getTimezoneOffset() { return m_TimeZone; }
 	/**
 	 * Set the locations timezone offset.
 	 * @param offset
 	 */
-	public void setTimezoneOffset(WTimeSpan offset) { m_timezone = offset; }
+	public void setTimezoneOffset(WTimeSpan offset) { m_TimeZone = offset; }
 	/**
 	 * Get the locations starting DST offset from January 1st 0:00.
 	 * @return
 	 */
-	public WTimeSpan getStartDST() { return m_startDST; }
+	public WTimeSpan getStartDST() { return m_StartDST; }
 	/**
 	 * Set the locations starting DST offset from January 1st 0:00.
 	 * @param start
 	 */
-	public void setStartDST(WTimeSpan start) { m_startDST = start; }
+	public void setStartDST(WTimeSpan start) { m_StartDST = start; }
 	/**
 	 * Get the locations ending DST offset from January 1st 0:00.
 	 * @return
 	 */
-	public WTimeSpan getEndDST() { return m_endDST; }
+	public WTimeSpan getEndDST() { return m_EndDST; }
 	/**
 	 * Set the locations ending DST offset from January 1st 0:00.
 	 * @param end
 	 */
-	public void setEndDST(WTimeSpan end) { m_endDST = end; }
+	public void setEndDST(WTimeSpan end) { m_EndDST = end; }
 	/**
 	 * Get the amount of offset from DST.
 	 * @return
 	 */
-	public WTimeSpan getDSTAmount() { return m_amtDST; }
+	public WTimeSpan getDSTAmount() { return m_AmtDST; }
 	/**
 	 * Set the amount of offset from DST.
 	 * @param amount
 	 */
-	public void setDSTAmount(WTimeSpan amount) { m_amtDST = amount; }
+	public void setDSTAmount(WTimeSpan amount) { m_AmtDST = amount; }
 
 	protected static final TimeZoneInfo[] m_dst_timezones = {
 		new TimeZoneInfo(new WTimeSpan(0, +9, 30, 0), new WTimeSpan(0, 1, 0, 0), "ACDT", "Australian Central Daylight Time", "ui.label.zone.acdt"),//australia//0
@@ -633,8 +633,7 @@ public class WorldLocation implements Serializable {
 				m_dst_timezones[36],
 				m_dst_timezones[42],
 				m_std_timezones[44],
-				m_dst_timezones[19],
-				m_std_timezones[56]
+				m_dst_timezones[19]
 		};
 		return list;
 	}
@@ -960,8 +959,8 @@ public class WorldLocation implements Serializable {
 			month = (int)solar_time.GetMonth(WTime.FORMAT_AS_LOCAL);
 
 		RiseSetInput sInput = new RiseSetInput();
-		sInput.Latitude = RADIAN_TO_DEGREE((float)m_latitude);
-		sInput.Longitude = RADIAN_TO_DEGREE((float)m_longitude) * -1;
+		sInput.Latitude = RADIAN_TO_DEGREE((float)m_Latitude);
+		sInput.Longitude = RADIAN_TO_DEGREE((float)m_Longitude) * -1;
 		sInput.timezone = 0;
 		sInput.DaytimeSaving = false;
 		sInput.year = year;
@@ -992,8 +991,8 @@ public class WorldLocation implements Serializable {
 		int month = (int)daytime.GetMonth(WTime.FORMAT_AS_LOCAL);
 
 		RiseSetInput sInput = new RiseSetInput();
-		sInput.Latitude = RADIAN_TO_DEGREE(m_latitude);
-		sInput.Longitude = -1 * RADIAN_TO_DEGREE(m_longitude);
+		sInput.Latitude = RADIAN_TO_DEGREE(m_Latitude);
+		sInput.Longitude = -1 * RADIAN_TO_DEGREE(m_Longitude);
 		sInput.timezone = 0;
 		sInput.DaytimeSaving = false;
 		sInput.year = year;//solar_time.GetYear();
@@ -1016,12 +1015,12 @@ public class WorldLocation implements Serializable {
 	 * Default constructor.
 	 */
 	public WorldLocation() {
-		m_latitude = 1000.0;
-		m_longitude = 1000.0;
-		m_timezone = new WTimeSpan(0);
-		m_startDST = new WTimeSpan(0);
-		m_endDST = new WTimeSpan(0);
-		m_amtDST = new WTimeSpan(0, 1, 0, 0);
+		m_Latitude = 1000.0;
+		m_Longitude = 1000.0;
+		m_TimeZone = new WTimeSpan(0);
+		m_StartDST = new WTimeSpan(0);
+		m_EndDST = new WTimeSpan(0);
+		m_AmtDST = new WTimeSpan(0, 1, 0, 0);
 	}
 
 	/**
@@ -1029,12 +1028,12 @@ public class WorldLocation implements Serializable {
 	 * @param wl the world location to copy
 	 */
 	public WorldLocation(WorldLocation wl) {
-		m_latitude = wl.m_latitude;
-		m_longitude = wl.m_longitude;
-		m_timezone = wl.m_timezone;
-		m_startDST = wl.m_startDST;
-		m_endDST = wl.m_endDST;
-		m_amtDST = wl.m_amtDST;
+		m_Latitude = wl.m_Latitude;
+		m_Longitude = wl.m_Longitude;
+		m_TimeZone = wl.m_TimeZone;
+		m_StartDST = wl.m_StartDST;
+		m_EndDST = wl.m_EndDST;
+		m_AmtDST = wl.m_AmtDST;
 	}
 
 	/**
@@ -1056,7 +1055,7 @@ public class WorldLocation implements Serializable {
 				return m_dst_timezones[0];
 		}
 
-		double longitude = m_longitude;
+		double longitude = m_Longitude;
 		while (longitude < (-Math.PI))
 			longitude += Math.PI*2;
 		while (longitude > Math.PI)
@@ -1094,13 +1093,13 @@ public class WorldLocation implements Serializable {
 	public TimeZoneInfo CurrentTimeZone(short set) {
 		TimeZoneInfo[] tz;
 		if (set == -1)	tz = m_mil_timezones;
-		else if (m_startDST == m_endDST)	tz = m_std_timezones;
+		else if (m_StartDST == m_EndDST)	tz = m_std_timezones;
 		else					tz = m_dst_timezones;
 
 		int i=0;
 		do
 		{
-			if (WTimeSpan.Equal(tz[i].getTimezoneOffset(), m_timezone))
+			if (WTimeSpan.Equal(tz[i].getTimezoneOffset(), m_TimeZone))
 				break;
 		}
 		while (tz[++i].getCode() != null);
@@ -1120,18 +1119,18 @@ public class WorldLocation implements Serializable {
 	}
 
 	boolean InsideCanada() {
-		return InsideCanada(m_latitude, m_longitude);
+		return InsideCanada(m_Latitude, m_Longitude);
 	}
 
 	boolean InsideNewZealand() {
-		if ((m_longitude > DEGREE_TO_RADIAN((float)172.5)) && (m_longitude < DEGREE_TO_RADIAN((float)178.6))) {
-			if ((m_latitude > DEGREE_TO_RADIAN((float)-41.75)) && (m_latitude < DEGREE_TO_RADIAN((float)-34.3))) {	// general extents of New Zealand's north island
+		if ((m_Longitude > DEGREE_TO_RADIAN((float)172.5)) && (m_Longitude < DEGREE_TO_RADIAN((float)178.6))) {
+			if ((m_Latitude > DEGREE_TO_RADIAN((float)-41.75)) && (m_Latitude < DEGREE_TO_RADIAN((float)-34.3))) {	// general extents of New Zealand's north island
 				return true;
 			}
 		}
 
-		if ((m_longitude > DEGREE_TO_RADIAN((float)166.3)) && (m_longitude < DEGREE_TO_RADIAN((float)174.5))) {
-			if ((m_latitude > DEGREE_TO_RADIAN((float)-47.35)) && (m_latitude < DEGREE_TO_RADIAN((float)40.4))) {	// general extents of New Zealand's south island
+		if ((m_Longitude > DEGREE_TO_RADIAN((float)166.3)) && (m_Longitude < DEGREE_TO_RADIAN((float)174.5))) {
+			if ((m_Latitude > DEGREE_TO_RADIAN((float)-47.35)) && (m_Latitude < DEGREE_TO_RADIAN((float)40.4))) {	// general extents of New Zealand's south island
 				return true;
 			}
 		}
@@ -1139,8 +1138,8 @@ public class WorldLocation implements Serializable {
 	}
 
 	boolean InsideTasmania() {
-		if ((m_longitude > DEGREE_TO_RADIAN(143.5)) && (m_longitude < DEGREE_TO_RADIAN(149.0))) {
-			if ((m_latitude > DEGREE_TO_RADIAN(-44.0)) && (m_latitude < DEGREE_TO_RADIAN(-39.5))) {
+		if ((m_Longitude > DEGREE_TO_RADIAN(143.5)) && (m_Longitude < DEGREE_TO_RADIAN(149.0))) {
+			if ((m_Latitude > DEGREE_TO_RADIAN(-44.0)) && (m_Latitude < DEGREE_TO_RADIAN(-39.5))) {
 				return true;
 			}
 		}
@@ -1148,8 +1147,8 @@ public class WorldLocation implements Serializable {
 	}
 
 	boolean InsideAustraliaMainland() {
-		if ((m_longitude > DEGREE_TO_RADIAN(113.15)) && (m_longitude < DEGREE_TO_RADIAN(153.6333333))) {
-			if ((m_latitude > DEGREE_TO_RADIAN(-39.133333)) && (m_latitude < DEGREE_TO_RADIAN(-10.683333333))) {
+		if ((m_Longitude > DEGREE_TO_RADIAN(113.15)) && (m_Longitude < DEGREE_TO_RADIAN(153.6333333))) {
+			if ((m_Latitude > DEGREE_TO_RADIAN(-39.133333)) && (m_Latitude < DEGREE_TO_RADIAN(-10.683333333))) {
 				return true;
 			}
 		}

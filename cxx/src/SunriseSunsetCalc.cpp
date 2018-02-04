@@ -816,7 +816,7 @@ void CSunriseSunsetCalc::timeStringShortAMPM(double minutes, double JD, INTNM::i
 		hour ++;
 	}
 
-	double daychange = false;
+	bool daychange = false;
 	if (hour > 23) 
 	{
 		hour -= 24;
@@ -1054,7 +1054,7 @@ INTNM::int16_t CSunriseSunsetCalc::calcSun(RISESET_IN_STRUCT &latLongForm, RISES
 
 		double daySavings=latLongForm.DaytimeSaving?60:0;
 		INTNM::int32_t zone = latLongForm.timezone;
-		if(zone > 12 || zone < -12.5)
+		if(zone > 12 || zone < -12)
 		{
 			zone = 0;
 			latLongForm.timezone = zone;

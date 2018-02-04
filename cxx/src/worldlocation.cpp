@@ -132,7 +132,7 @@ bool WorldLocation::InsideCanada() const {
 
 
 bool WorldLocation::InsideCanada(const double latitude, const double longitude) {
-	if (latitude < DEGREE_TO_RADIAN(42.0))		return false;
+	if (latitude < DEGREE_TO_RADIAN(41.0))		return false;
 	if (latitude > DEGREE_TO_RADIAN(83.0))		return false;
 	if (longitude < DEGREE_TO_RADIAN(-141.0))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-52.0))	return false;
@@ -284,21 +284,27 @@ WorldLocation::WorldLocation(double latitude, double longitude, bool guessTimezo
 
 
 WorldLocation &WorldLocation::operator=(const WorldLocation &wl) {
-	m_latitude = wl.m_latitude;
-	m_longitude = wl.m_longitude;
-	m_timezone = wl.m_timezone;
-	m_startDST = wl.m_startDST;
-	m_endDST = wl.m_endDST;
-	m_amtDST = wl.m_amtDST;
+	if (&wl != this) {
+		m_latitude = wl.m_latitude;
+		m_longitude = wl.m_longitude;
+		m_timezone = wl.m_timezone;
+		m_startDST = wl.m_startDST;
+		m_endDST = wl.m_endDST;
+		m_amtDST = wl.m_amtDST;
+
 #ifdef HSS_USE_CACHING
-	m_sunCache.Clear();
-	m_solarCache.Clear();
+		m_sunCache.Clear();
+		m_solarCache.Clear();
 #endif
+
+	}
 	return *this;
 }
 
 
 bool WorldLocation::operator==(const WorldLocation &wl) const {
+	if (&wl == this)
+		return true;
 	if ((m_latitude == wl.m_latitude) &&
 	    (m_longitude == wl.m_longitude) &&
 	    (m_timezone == wl.m_timezone) &&

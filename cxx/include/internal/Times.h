@@ -40,6 +40,50 @@ namespace HSS_Time {
 	class WTime;
 };
 
+#define WTIME_FORMAT_TIME				0x00100000	// stick on the time
+#define WTIME_FORMAT_DAY				0x00200000	// stick on the day
+#define WTIME_FORMAT_YEAR				0x00800000	// stick on the year, but (for WTime) you also need WTIME_FORMAT_MONTH or WTIME_FORMAT_DATE with it
+#define WTIME_FORMAT_EXCLUDE_SECONDS	0x20000000	// forget about sticking the seconds onto the end of the string
+#define WTIME_FORMAT_INCLUDE_USECS		0x00080000	// stick on the usecs
+#define WTIME_FORMAT_CONDITIONAL_TIME	0x40000000	// if we have days but no hours, minutes, seconds, don't print the hours, minutes, secs
+
+		// ***** indexes into things that we would stick onto drop-lists
+#define ITERATION_1SEC					0
+#define ITERATION_1MIN					1
+#define ITERATION_5MIN					2
+#define ITERATION_15MIN					3
+#define ITERATION_30MIN					4
+#define ITERATION_1HOUR					5
+#define ITERATION_2HOUR					6
+#define ITERATION_1DAY					7
+#define ITERATION_1WEEK					8
+
+		// use these #defines, or'd together, to
+		// decide what AsString() produces
+#define WTIME_FORMAT_MONTH				0x00400000	// stick on the month
+#define WTIME_FORMAT_DATE				(WTIME_FORMAT_DAY | WTIME_FORMAT_MONTH)
+#define WTIME_FORMAT_AS_LOCAL			0x01000000	// print it as local time
+#define WTIME_FORMAT_AS_SOLAR			0x02000000	// print it as solar time
+#define WTIME_FORMAT_DAY_OF_WEEK		0x00000100	// prepend with day of week
+#define WTIME_FORMAT_ABBREV				0x00001000	// abbreviate the month, day of week
+#define WTIME_FORMAT_WITHDST			0x04000000
+#define WTIME_FORMAT_PARSE_USING_SYSTEM	0x80000000	// if this is used, then we use the system parser which will use the locale settings, otherwise
+		// we use our own internal parser
+		//		#define WTIME_FORMAT_EXCLUDE_SECONDS	0x0100			// forget about sticking the seconds onto the end of the string
+
+#define WTIME_FORMAT_STRING_DD_MM_YYYY	0x00000001	// this is also the default for parsing
+#define WTIME_FORMAT_STRING_YYYY_MM_DD	0x00000002
+#define WTIME_FORMAT_STRING_MM_DD_YYYY	0x00000003
+#define WTIME_FORMAT_STRING_DDhMMhYYYY	0x00000004	// same as above, but instead of '/', we are using '-' (h for hyphenated)
+#define WTIME_FORMAT_STRING_YYYYhMMhDD	0x00000005
+#define WTIME_FORMAT_STRING_MMhDDhYYYY	0x00000006
+#define WTIME_FORMAT_STRING_YYYYMMDD	0x00000007
+#define WTIME_FORMAT_STRING_YYYYMMDDHH	0x00000008
+#define WTIME_FORMAT_STRING_YYYYMMDDT	0x00000010
+#define WTIME_FORMAT_STRING_YYYYhMMhDDT	0x00000020
+#define	WTIME_FORMAT_STRING_TIMEZONE	0x00000200
+#define WTIME_FORMAT_STRING_ISO8601		(WTIME_FORMAT_STRING_TIMEZONE | WTIME_FORMAT_STRING_YYYYhMMhDDT | WTIME_FORMAT_DATE | WTIME_FORMAT_TIME | WTIME_FORMAT_AS_LOCAL | WTIME_FORMAT_WITHDST)
+
 
 
 namespace HSS_Time {
@@ -65,12 +109,6 @@ class WTimeSpan {
 
 	WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt = NULL);			// set the time from a char *, assumes hr:mn:sc, where hr can
 										// be signed.  We don't expect a day prepending this format!
-		#define WTIME_FORMAT_TIME			0x00100000	// stick on the time
-		#define WTIME_FORMAT_DAY			0x00200000	// stick on the day
-		#define WTIME_FORMAT_YEAR			0x00800000	// stick on the year, but (for WTime) you also need WTIME_FORMAT_MONTH or WTIME_FORMAT_DATE with it
-		#define WTIME_FORMAT_EXCLUDE_SECONDS		0x20000000	// forget about sticking the seconds onto the end of the string
-		#define WTIME_FORMAT_INCLUDE_USECS		0x00080000	// stick on the usecs
-		#define WTIME_FORMAT_CONDITIONAL_TIME		0x40000000	// if we have days but no hours, minutes, seconds, don't print the hours, minutes, secs
 
 	std::string ToString(INTNM::uint32_t flags) const;
 
@@ -103,14 +141,14 @@ class WTimeSpan {
 	void __FASTCALL PurgeToDay();
 
 	// time math
-	const WTimeSpan& operator=(const WTimeSpan& timeSrc);
-	WTimeSpan operator-(const WTimeSpan timeSpan) const;
-	WTimeSpan operator+(const WTimeSpan timeSpan) const;
-	const WTimeSpan& operator-=(const WTimeSpan timeSpan);
-	const WTimeSpan& operator+=(const WTimeSpan timeSpan);
+	const WTimeSpan& operator=(const WTimeSpan &timeSrc);
+	WTimeSpan operator-(const WTimeSpan &timeSpan) const;
+	WTimeSpan operator+(const WTimeSpan &timeSpan) const;
+	const WTimeSpan& operator-=(const WTimeSpan &timeSpan);
+	const WTimeSpan& operator+=(const WTimeSpan &timeSpan);
 	WTimeSpan operator*(INTNM::int32_t factor) const;
 	WTimeSpan operator/(INTNM::int32_t factor) const;
-	double operator/(const WTimeSpan timeSpan) const;
+	double operator/(const WTimeSpan &timeSpan) const;
 	WTimeSpan operator*(double factor) const;
 	WTimeSpan operator/(double factor) const;
 	const WTimeSpan operator*=(INTNM::int32_t factor);
@@ -118,12 +156,12 @@ class WTimeSpan {
 	const WTimeSpan operator*=(double f);
 	const WTimeSpan operator/=(double f);
 
-	bool operator==(const WTimeSpan timeSpan) const;
-	bool operator!=(const WTimeSpan timeSpan) const;
-	bool operator<(const WTimeSpan timeSpan) const;
-	bool operator>(const WTimeSpan timeSpan) const;
-	bool operator<=(const WTimeSpan timeSpan) const;
-	bool operator>=(const WTimeSpan timeSpan) const;
+	bool operator==(const WTimeSpan &timeSpan) const;
+	bool operator!=(const WTimeSpan &timeSpan) const;
+	bool operator<(const WTimeSpan &timeSpan) const;
+	bool operator>(const WTimeSpan &timeSpan) const;
+	bool operator<=(const WTimeSpan &timeSpan) const;
+	bool operator>=(const WTimeSpan &timeSpan) const;
 	
 #ifdef TIMES_WINDOWS
 	friend CArchive& AFXAPI operator<<(CArchive& ar, WTimeSpan timeSpan);
@@ -142,17 +180,6 @@ class WTimeManager {
 					// where timezone, lat, and long are kept
     public:
 	explicit WTimeManager(const WorldLocation &worldLocation);
-
-			// ***** indexes into things that we would stick onto drop-lists
-		#define ITERATION_1SEC		0
-		#define ITERATION_1MIN		1
-		#define ITERATION_5MIN		2
-		#define ITERATION_15MIN		3
-		#define ITERATION_30MIN		4
-		#define ITERATION_1HOUR		5
-		#define ITERATION_2HOUR		6
-		#define ITERATION_1DAY		7
-		#define ITERATION_1WEEK		8
 
 	static WTimeSpan __FASTCALL TimeForIndex(INTNM::int32_t index);
 	static INTNM::int32_t __FASTCALL IterationIndex(const WTimeSpan &time);  
@@ -219,30 +246,6 @@ public:
 	INTNM::uint64_t GetTotalMicroSeconds() const;
 	const WTimeManager *GetTimeManager() const;
 	const WTimeManager *SetTimeManager(const WTimeManager *tm);		// VERY dangerous
-
-					// use these #defines, or'd together, to
-					// decide what AsString() produces
-		#define WTIME_FORMAT_MONTH			0x00400000	// stick on the month
-		#define WTIME_FORMAT_DATE			(WTIME_FORMAT_DAY | WTIME_FORMAT_MONTH)
-		#define WTIME_FORMAT_AS_LOCAL			0x01000000	// print it as local time
-		#define WTIME_FORMAT_AS_SOLAR			0x02000000	// print it as solar time
-		#define WTIME_FORMAT_DAY_OF_WEEK		0x00000100	// prepend with day of week
-		#define WTIME_FORMAT_ABBREV			0x00001000	// abbreviate the month, day of week
-		#define WTIME_FORMAT_WITHDST			0x04000000
-		#define WTIME_FORMAT_PARSE_USING_SYSTEM	0x80000000	// if this is used, then we use the system parser which will use the locale settings, otherwise
-										// we use our own internal parser
-//		#define WTIME_FORMAT_EXCLUDE_SECONDS	0x0100			// forget about sticking the seconds onto the end of the string
-
-		#define WTIME_FORMAT_STRING_DD_MM_YYYY	0x00000001	// this is also the default for parsing
-		#define WTIME_FORMAT_STRING_YYYY_MM_DD	0x00000002
-		#define WTIME_FORMAT_STRING_MM_DD_YYYY	0x00000003
-		#define WTIME_FORMAT_STRING_DDhMMhYYYY	0x00000004	// same as above, but instead of '/', we are using '-' (h for hyphenated)
-		#define WTIME_FORMAT_STRING_YYYYhMMhDD	0x00000005
-		#define WTIME_FORMAT_STRING_MMhDDhYYYY	0x00000006
-		#define WTIME_FORMAT_STRING_YYYYMMDD		0x00000007
-		#define WTIME_FORMAT_STRING_YYYYMMDDHH	0x00000008
-		#define WTIME_FORMAT_STRING_YYYYMMDDT		0x00000010
-		#define WTIME_FORMAT_STRING_YYYYhMMhDDT	0x00000020
 	
 	INTNM::int32_t __FASTCALL GetYear(INTNM::uint32_t flags) const;
 	INTNM::int32_t __FASTCALL GetMonth(INTNM::uint32_t flags) const;       // month of year (1 = Jan)
@@ -267,11 +270,11 @@ public:
  
 // Operations
 	// time math
-	const WTime& operator=(const WTime& timeSrc);
-	WTime operator-(const WTimeSpan timeSpan) const;
-	WTime operator+(const WTimeSpan timeSpan) const;
-	const WTime& operator-=(const WTimeSpan timeSpan);
-	const WTime& operator+=(const WTimeSpan timeSpan);
+	const WTime& operator=(const WTime &timeSrc);
+	WTime operator-(const WTimeSpan &timeSpan) const;
+	WTime operator+(const WTimeSpan &timeSpan) const;
+	const WTime& operator-=(const WTimeSpan &timeSpan);
+	const WTime& operator+=(const WTimeSpan &timeSpan);
 	const WTime& operator--();					// decrement by a year
 	const WTime& operator++();					// increment by a year
 	const WTime& operator-=(INTNM::int32_t years);
@@ -286,13 +289,13 @@ public:
 
 	std::string ToString(INTNM::uint32_t flags) const;
 #ifdef TIMES_WINDOWS
-	bool ParseDateTime(const CString lpszDate, INTNM::uint32_t flags/* for timezone, DST */);
+	bool ParseDateTime(const CString &lpszDate, INTNM::uint32_t flags/* for timezone, DST */);
 #endif
-	bool ParseDateTime(const std::string lpszDate, INTNM::uint32_t flags/* for timezone, DST */);
+	bool ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags/* for timezone, DST */);
 									// match_str
 #ifdef TIMES_WINDOWS
-	friend CArchive& AFXAPI operator<<(CArchive& ar, WTime time);
-	friend CArchive& AFXAPI operator>>(CArchive& ar, WTime& rtime);
+	friend CArchive& AFXAPI operator<<(CArchive& ar, const WTime &time);
+	friend CArchive& AFXAPI operator>>(CArchive& ar, WTime &rtime);
 #endif
 	static INTNM::uint64_t updateSerializedULONGLONG(INTNM::uint64_t toUpdate);
 	

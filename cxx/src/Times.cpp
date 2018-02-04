@@ -178,14 +178,14 @@ void WTimeSpan::PurgeToMinute()					{ m_timeSpan = m_timeSpan - (m_timeSpan % (6
 void WTimeSpan::PurgeToHour()						{ m_timeSpan = m_timeSpan - (m_timeSpan % (60LL * 60LL * 1000000LL)); }
 void WTimeSpan::PurgeToDay()						{ m_timeSpan = m_timeSpan - (m_timeSpan % (60LL * 60LL * 24LL * 1000000LL)); }
 
-const WTimeSpan& WTimeSpan::operator=(const WTimeSpan& timeSrc)	{ m_timeSpan = timeSrc.m_timeSpan; return *this; }
-WTimeSpan WTimeSpan::operator-(const WTimeSpan timeSpan) const	{ return WTimeSpan(m_timeSpan - timeSpan.m_timeSpan, false); }
-WTimeSpan WTimeSpan::operator+(const WTimeSpan timeSpan) const	{ return WTimeSpan(m_timeSpan + timeSpan.m_timeSpan, false); }
-const WTimeSpan& WTimeSpan::operator-=(const WTimeSpan timeSpan)	{ m_timeSpan -= timeSpan.m_timeSpan; return *this; }
-const WTimeSpan& WTimeSpan::operator+=(const WTimeSpan timeSpan)	{ m_timeSpan += timeSpan.m_timeSpan; return *this; }
+const WTimeSpan& WTimeSpan::operator=(const WTimeSpan &timeSrc) { if (&timeSrc != this) { m_timeSpan = timeSrc.m_timeSpan; } return *this; }
+WTimeSpan WTimeSpan::operator-(const WTimeSpan &timeSpan) const	{ return WTimeSpan(m_timeSpan - timeSpan.m_timeSpan, false); }
+WTimeSpan WTimeSpan::operator+(const WTimeSpan &timeSpan) const	{ return WTimeSpan(m_timeSpan + timeSpan.m_timeSpan, false); }
+const WTimeSpan& WTimeSpan::operator-=(const WTimeSpan &timeSpan)	{ m_timeSpan -= timeSpan.m_timeSpan; return *this; }
+const WTimeSpan& WTimeSpan::operator+=(const WTimeSpan &timeSpan)	{ m_timeSpan += timeSpan.m_timeSpan; return *this; }
 WTimeSpan WTimeSpan::operator*(INTNM::int32_t factor) const			{ return WTimeSpan(m_timeSpan * factor, false); }
 WTimeSpan WTimeSpan::operator/(INTNM::int32_t factor) const			{ return WTimeSpan(m_timeSpan / factor, false); }
-double WTimeSpan::operator/(const WTimeSpan timeSpan) const		{ return (double)(((long double)m_timeSpan) / ((long double)timeSpan.m_timeSpan)); }
+double WTimeSpan::operator/(const WTimeSpan &timeSpan) const		{ return (double)(((long double)m_timeSpan) / ((long double)timeSpan.m_timeSpan)); }
 WTimeSpan WTimeSpan::operator*(double factor) const			{ return WTimeSpan((INTNM::int64_t)((long double)m_timeSpan * factor), false); }
 WTimeSpan WTimeSpan::operator/(double factor) const			{ return WTimeSpan((INTNM::int64_t)((long double)m_timeSpan / factor), false); }
 const WTimeSpan WTimeSpan::operator*=(INTNM::int32_t factor)			{ m_timeSpan *= factor; return *this; }
@@ -193,12 +193,12 @@ const WTimeSpan WTimeSpan::operator/=(INTNM::int32_t factor)			{ m_timeSpan /= f
 const WTimeSpan WTimeSpan::operator*=(double f)			{ long double ts = (long double)m_timeSpan; ts *= f; m_timeSpan = (INTNM::int64_t)ts; return *this; }
 const WTimeSpan WTimeSpan::operator/=(double f)			{ long double ts = (long double)m_timeSpan; ts /= f; m_timeSpan = (INTNM::int64_t)ts; return *this; }
 
-bool WTimeSpan::operator==(const WTimeSpan timeSpan) const		{ return (m_timeSpan == timeSpan.m_timeSpan); }
-bool WTimeSpan::operator!=(const WTimeSpan timeSpan) const		{ return (m_timeSpan != timeSpan.m_timeSpan); }
-bool WTimeSpan::operator<(const WTimeSpan timeSpan) const		{ return (m_timeSpan < timeSpan.m_timeSpan); }
-bool WTimeSpan::operator>(const WTimeSpan timeSpan) const		{ return (m_timeSpan > timeSpan.m_timeSpan); }
-bool WTimeSpan::operator<=(const WTimeSpan timeSpan) const		{ return (m_timeSpan <= timeSpan.m_timeSpan); }
-bool WTimeSpan::operator>=(const WTimeSpan timeSpan) const		{ return (m_timeSpan >= timeSpan.m_timeSpan); }
+bool WTimeSpan::operator==(const WTimeSpan &timeSpan) const		{ return (m_timeSpan == timeSpan.m_timeSpan); }
+bool WTimeSpan::operator!=(const WTimeSpan &timeSpan) const		{ return (m_timeSpan != timeSpan.m_timeSpan); }
+bool WTimeSpan::operator<(const WTimeSpan &timeSpan) const		{ return (m_timeSpan < timeSpan.m_timeSpan); }
+bool WTimeSpan::operator>(const WTimeSpan &timeSpan) const		{ return (m_timeSpan > timeSpan.m_timeSpan); }
+bool WTimeSpan::operator<=(const WTimeSpan &timeSpan) const		{ return (m_timeSpan <= timeSpan.m_timeSpan); }
+bool WTimeSpan::operator>=(const WTimeSpan &timeSpan) const		{ return (m_timeSpan >= timeSpan.m_timeSpan); }
 
 
 bool WTimeSpan::ParseTime(const TCHAR *lpszTime) {
@@ -738,16 +738,18 @@ const WTime& WTime::operator-=(INTNM::int32_t years) {
 
 
 const WTime& WTime::operator=(const WTime& timeSrc) { 
-	m_time = timeSrc.m_time; 
-	m_tm = timeSrc.m_tm; 
+	if (&timeSrc != this) {
+		m_time = timeSrc.m_time;
+		m_tm = timeSrc.m_tm;
+	}
 	return *this;
 }
 
 
-WTime WTime::operator-(const WTimeSpan timeSpan) const	{ return WTime(m_time - timeSpan.GetTotalMicroSeconds(), m_tm, false); };
-WTime WTime::operator+(const WTimeSpan timeSpan) const	{ return WTime(m_time + timeSpan.GetTotalMicroSeconds(), m_tm, false); };
-const WTime& WTime::operator-=(const WTimeSpan timeSpan)	{ m_time -= timeSpan.GetTotalMicroSeconds(); return *this; };
-const WTime& WTime::operator+=(const WTimeSpan timeSpan)	{ m_time += timeSpan.GetTotalMicroSeconds(); return *this; };
+WTime WTime::operator-(const WTimeSpan &timeSpan) const	{ return WTime(m_time - timeSpan.GetTotalMicroSeconds(), m_tm, false); };
+WTime WTime::operator+(const WTimeSpan &timeSpan) const	{ return WTime(m_time + timeSpan.GetTotalMicroSeconds(), m_tm, false); };
+const WTime& WTime::operator-=(const WTimeSpan &timeSpan)	{ m_time -= timeSpan.GetTotalMicroSeconds(); return *this; };
+const WTime& WTime::operator+=(const WTimeSpan &timeSpan)	{ m_time += timeSpan.GetTotalMicroSeconds(); return *this; };
 
 WTimeSpan WTime::operator-(const WTime& time) const	{ return WTimeSpan(m_time - time.m_time, false); };
 bool WTime::operator==(const WTime &time) const		{ return (m_time == time.m_time); };
@@ -862,6 +864,44 @@ std::string WTime::ToString(INTNM::uint32_t flags) const {
 		}
 		str += buff;
 	}
+
+	if ((flags & WTIME_FORMAT_STRING_TIMEZONE))
+	{
+		int64_t offset = m_tm->m_worldLocation.m_timezone.GetTotalMinutes();
+		uint64_t intoYear = GetSecondsIntoYear(0);
+		if (m_tm->m_worldLocation.m_startDST < m_tm->m_worldLocation.m_endDST)
+		{
+			if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() <= intoYear) &&
+				(intoYear < (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
+				offset += m_tm->m_worldLocation.m_amtDST.GetTotalMinutes();
+		}
+		else
+		{
+			if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() < intoYear) ||
+				(intoYear <= (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
+				offset += m_tm->m_worldLocation.m_amtDST.GetTotalMinutes();
+		}
+		if (offset == 0)
+			str += "Z";
+		else
+		{
+			if (offset < 0)
+			{
+				str += "-";
+				offset = -offset;
+			}
+			else
+				str += "+";
+			int hourOffset = 0;
+			while (offset >= 60)
+			{
+				hourOffset++;
+				offset -= 60;
+			}
+			tm_snprintf(buff, 128, "%02d:%02d", hourOffset, offset);
+			str += buff;
+		}
+	}
 	return str;
 }
 
@@ -880,7 +920,7 @@ bool WTime::systemParseDateTime(const TCHAR *lpszDate, INTNM::uint32_t flags) {
 	return success;
 }
 
-bool WTime::ParseDateTime(const CString lpszDate, INTNM::uint32_t flags)
+bool WTime::ParseDateTime(const CString &lpszDate, INTNM::uint32_t flags)
 {
 	CT2CA inter(lpszDate);
 	return ParseDateTime(std::string(inter), flags);
@@ -900,7 +940,7 @@ bool str2int(INTNM::int32_t &i, char const *s, INTNM::int32_t base = 0)
 }
 
 
-bool WTime::ParseDateTime(const std::string lpszDate, INTNM::uint32_t flags) {
+bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags) {
 #ifdef TIMES_WINDOWS
 	if (flags & WTIME_FORMAT_PARSE_USING_SYSTEM)
 		return systemParseDateTime(lpszDate.c_str(), flags);
@@ -911,6 +951,7 @@ bool WTime::ParseDateTime(const std::string lpszDate, INTNM::uint32_t flags) {
 	INTNM::int32_t year, month, day, hour, min, sec;
 	INTNM::int32_t v1, v2, v3;
 	INTNM::int16_t time_scan = 0;
+	INTNM::int64_t secondOffset = 0;
 
 	bool delimit_found = false;
 	while (delimit[time_scan]) {
@@ -1013,6 +1054,11 @@ bool WTime::ParseDateTime(const std::string lpszDate, INTNM::uint32_t flags) {
 					flags |= WTIME_FORMAT_STRING_DD_MM_YYYY;
 				else if (v1 >= 32)
 					flags |= WTIME_FORMAT_STRING_YYYY_MM_DD;
+			} else {
+				if (v1 >= 32)
+					flags |= WTIME_FORMAT_STRING_YYYY_MM_DD;
+				else if (v3 >= 32 && v2 > 12)
+					flags |= WTIME_FORMAT_STRING_MM_DD_YYYY;
 			}
 		}
 
@@ -1041,7 +1087,16 @@ bool WTime::ParseDateTime(const std::string lpszDate, INTNM::uint32_t flags) {
 		else if ((year < 100) && (year > 60))	year += 1900;
 
 		if (flags & WTIME_FORMAT_TIME) {
+			bool negative = false;
+			char* save = next;
 			tok = __strtok(NULL, _T(""), &next);
+			bool timezoneExists = strchr(tok, '+') != nullptr || strchr(tok, '-') != nullptr;
+			if (timezoneExists)
+			{
+				negative = strchr(tok, '-') != nullptr;
+				tok = __strtok(NULL, _T("-+Z"), &save);
+				next = save;
+			}
 			WTimeSpan ts(std::string(tok), &time_scan);
 			if (!time_scan)	
 				hour = min = sec = 0;
@@ -1050,11 +1105,46 @@ bool WTime::ParseDateTime(const std::string lpszDate, INTNM::uint32_t flags) {
 				min = ts.GetMinutes();
 				sec = ts.GetSeconds();
 			}
+
+			if (timezoneExists)
+			{
+				tok = __strtok(NULL, _T(""), &next);
+				if (tok)
+				{
+					WTimeSpan ts(std::string(tok), &time_scan);
+					if (time_scan)
+					{
+						secondOffset = ts.GetTotalSeconds();
+						if (negative)
+							secondOffset = -secondOffset;
+					}
+				}
+			}
 		} else	hour = min = sec = 0;
 	}
 
 	if ((year >= 1600) && (year < 2900)) {
 		WTime t(year, month, day, hour, min, sec, m_tm);
+		if (secondOffset)
+		{
+			int64_t offset = m_tm->m_worldLocation.m_timezone.GetTotalSeconds();
+			uint64_t intoYear = GetSecondsIntoYear(0);
+			if (m_tm->m_worldLocation.m_startDST < m_tm->m_worldLocation.m_endDST)
+			{
+				if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() <= intoYear) &&
+					(intoYear < (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
+					offset += m_tm->m_worldLocation.m_amtDST.GetTotalSeconds();
+			}
+			else
+			{
+				if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() < intoYear) ||
+					(intoYear <= (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
+					offset += m_tm->m_worldLocation.m_amtDST.GetTotalSeconds();
+			}
+			offset -= secondOffset;
+			if (offset)
+				t += WTimeSpan(offset);
+		}
 
 		*this = t;	// get it as local time, then convert it to GMT for
 				// storage
@@ -1082,13 +1172,13 @@ CArchive& AFXAPI HSS_Time::operator>>(CArchive& ar, WTimeSpan& rtimeSpan) {
 }
 
 
-CArchive& AFXAPI HSS_Time::operator<<(CArchive& ar, WTime time)	{
+CArchive& AFXAPI HSS_Time::operator<<(CArchive& ar, const WTime &time)	{
 	INTNM::uint64_t milli_id = 0x7ffeeddccbbaa009;
 	return ar << milli_id << time.m_time;
 }
 
 
-CArchive& AFXAPI HSS_Time::operator>>(CArchive& ar, WTime& rtime) {
+CArchive& AFXAPI HSS_Time::operator>>(CArchive& ar, WTime &rtime) {
 	CArchive &r(ar >> rtime.m_time);
 	if (rtime.m_time == 0x7ffeeddccbbaa009)
 		return ar >> rtime.m_time;
