@@ -14,7 +14,7 @@
 		<subant target="dist">
 			<fileset dir="../../HSS_Java/" includes="build.xml" />
 		</subant>
-		<javac includeantruntime="false" debug="false" srcdir="${src}" destdir="${build}" target="1.7"
+		<javac includeantruntime="false" debug="false" srcdir="${src}" destdir="${build}" includes="**/*.java" excludes="**/*Test.java" target="1.8"
 			classpath="../../HSS_Java/HSS_Java.jar" />
 	</target>
 	
