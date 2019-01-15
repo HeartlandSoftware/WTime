@@ -381,97 +381,182 @@ bool WTimeSpan::ParseTime(const std::string &time) {
 
 std::string WTimeSpan::ToString(INTNM::uint32_t flags) const {
 	std::string str;
-	char buff[128];
-	INTNM::int32_t	year = (INTNM::int32_t)GetYears(),
-		day = (flags & WTIME_FORMAT_YEAR) ? ((INTNM::int32_t)(GetDays() - ((long double)year * 365.25 - 0.75))) : ((INTNM::int32_t)GetDays()),
-		hour = (flags & WTIME_FORMAT_DAY) ? GetHours() : (INTNM::int32_t)GetTotalHours(),
-		minute = GetMinutes(),
-		second = GetSeconds(),
-		usecs = GetMicroSeconds();
-	bool	special_case = false;
+	if ((flags & WTIME_FORMAT_STRING_TIMEZONE))
+	{
+		if (m_timeSpan == 0)
+			str = "PT0M";
+		else
+		{
+			INTNM::int32_t	year = (INTNM::int32_t)GetYears(),
+				day = (INTNM::int32_t)(GetDays() - ((long double)year * 365.25 /*- 0.75*/)),
+				hour = GetHours(),
+				minute = GetMinutes(),
+				second = GetSeconds(),
+				usecs = GetMicroSeconds();
 
-	if (m_timeSpan < 0) {
-		if (flags & WTIME_FORMAT_EXCLUDE_SECONDS) {
-			if (second <= -30)			// perform any rounding
-				minute--;
-			if (minute == -60) {
-				hour--;
+			if (m_timeSpan < 0)
+				str = "-";
+			else
+				str = "";
+			str += "P";
+			if (year < 0)
+				year = -year;
+			if (day < 0)
+				day = -day;
+			if (hour < 0)
+				hour = -hour;
+			if (minute < 0)
+				minute = -minute;
+			if (second < 0)
+				second = -second;
+			if (usecs < 0)
+				usecs = -usecs;
+
+			if (year > 0)
+			{
+				str += std::to_string(year);
+				str += "Y";
+			}
+			if (day > 0)
+			{
+				str += std::to_string(day);
+				str += "D";
+			}
+			if (hour > 0 || minute > 0 || second > 0 || usecs > 0)
+			{
+				str += "T";
+				if (hour > 0)
+				{
+					str += std::to_string(hour);
+					str += "H";
+				}
+				if (minute > 0)
+				{
+					str += std::to_string(minute);
+					str += "M";
+				}
+				if (second > 0 || usecs > 0)
+				{
+					str += std::to_string(second);
+					if (usecs > 0)
+					{
+						str += ".";
+						std::string temp = "";
+						int zeroIdx = 5;
+						for (int i = zeroIdx; i >= 0; i--)
+						{
+							INTNM::int32_t digit = usecs % 10;
+							temp = ((char)(digit + '0')) + temp;
+							if (zeroIdx == i && digit == 0)
+								zeroIdx--;
+							usecs /= 10;
+						}
+						if (zeroIdx != (temp.length() - 1))
+						{
+							temp = temp.substr(0, zeroIdx + 1);
+						}
+						str += temp;
+						str += "S";
+					}
+				}
+			}
+		}
+	}
+	else
+	{
+		char buff[128];
+		INTNM::int32_t	year = (INTNM::int32_t)GetYears(),
+			day = (flags & WTIME_FORMAT_YEAR) ? ((INTNM::int32_t)(GetDays() - ((long double)year * 365.25))) : ((INTNM::int32_t)GetDays()),
+			hour = (flags & WTIME_FORMAT_DAY) ? GetHours() : (INTNM::int32_t)GetTotalHours(),
+			minute = GetMinutes(),
+			second = GetSeconds(),
+			usecs = GetMicroSeconds();
+		bool	special_case = false;
+
+		if (m_timeSpan < 0) {
+			if (flags & WTIME_FORMAT_EXCLUDE_SECONDS) {
+				if (second <= -30)			// perform any rounding
+					minute--;
+				if (minute == -60) {
+					hour--;
+					minute = 0;
+				}
+				if (hour == -24) {
+					day--;
+					hour = 0;
+				}
+			}
+			if (day != 0)
+				hour = 0 - hour;		// if there there are days, then we don't need the sign on the hour
+			if (hour == 0)
+				special_case = true;		// if no days and no hours, but it's negative, then we have a special print case
+			minute = 0 - minute;			// take care of the sign which isn't needed for the minute
+			second = 0 - second;			// ...or the seconds
+			usecs = 0 - usecs;
+		} else if (flags & WTIME_FORMAT_EXCLUDE_SECONDS) {
+			if (second >= 30)			// perform any rounding
+				minute++;
+			if (minute == 60) {
+				hour++;
 				minute = 0;
 			}
-			if (hour == -24) {
-				day--;
+			if (hour == 24) {
+				day++;
 				hour = 0;
 			}
 		}
-		if (day != 0)
-			hour = 0 - hour;		// if there there are days, then we don't need the sign on the hour
-		if (hour == 0)
-			special_case = true;		// if no days and no hours, but it's negative, then we have a special print case
-		minute = 0 - minute;			// take care of the sign which isn't needed for the minute
-		second = 0 - second;			// ...or the seconds
-		usecs = 0 - usecs;
-	} else if (flags & WTIME_FORMAT_EXCLUDE_SECONDS) {
-		if (second >= 30)			// perform any rounding
-			minute++;
-		if (minute == 60) {
-			hour++;
-			minute = 0;
-		}
-		if (hour == 24) {
-			day++;
-			hour = 0;
-		}
-	}
-	if ((!year) || (!(flags & WTIME_FORMAT_YEAR))) {
-		if ((!day) || (!(flags & WTIME_FORMAT_DAY))) {
-			if (flags & WTIME_FORMAT_EXCLUDE_SECONDS) {
-				if (special_case)					{ tm_snprintf(buff, 128, "-0:%2d", minute); str = buff; }
-				else							{ tm_snprintf(buff, 128, "%02d:%02d", hour, minute); str = buff; }
-			} else if (special_case) {
-				if (flags & WTIME_FORMAT_INCLUDE_USECS)		{ tm_snprintf(buff, 128, "-0:%02d:%02d.%06d", minute, second, usecs); str = buff; }
-				else							{ tm_snprintf(buff, 128, "-0:%02d:%02d", minute, second); str = buff; }
-			} else {
-				if (flags & WTIME_FORMAT_INCLUDE_USECS)		{ tm_snprintf(buff, 128, "%02d:%02d:%02d.%06d", hour, minute, second, usecs); str = buff; }
-				else							{ tm_snprintf(buff, 128, "%02d:%02d:%02d", hour, minute, second); str = buff; }
-			}
-		} else {
-			if ((!hour) && (!minute) && (!second) && (flags & WTIME_FORMAT_CONDITIONAL_TIME)) {
-								// only day data and we're told to do that, so don't print hours, min's, sec's
-				if (day == 1)						str = "1 day";
-				else							{ tm_snprintf(buff, 128, "%d days", day); str = buff; }
-			} else if (day == 1) {
-				if (flags & WTIME_FORMAT_EXCLUDE_SECONDS)		{ tm_snprintf(buff, 128, "1 day %02d:%02d", hour, minute); str = buff; }
-				else {
-					if (flags & WTIME_FORMAT_INCLUDE_USECS)	{ tm_snprintf(buff, 128, "1 day %02d:%02d:%02d.%06d", hour, minute, second, usecs); str = buff; }
-					else						{ tm_snprintf(buff, 128, "1 day %02d:%02d:%02d", hour, minute, second); str = buff; }
+		if ((!year) || (!(flags & WTIME_FORMAT_YEAR))) {
+			if ((!day) || (!(flags & WTIME_FORMAT_DAY))) {
+				if (flags & WTIME_FORMAT_EXCLUDE_SECONDS) {
+					if (special_case) { tm_snprintf(buff, 128, "-0:%2d", minute); str = buff; }
+					else { tm_snprintf(buff, 128, "%02d:%02d", hour, minute); str = buff; }
+				} else if (special_case) {
+					if (flags & WTIME_FORMAT_INCLUDE_USECS) { tm_snprintf(buff, 128, "-0:%02d:%02d.%06d", minute, second, usecs); str = buff; }
+					else { tm_snprintf(buff, 128, "-0:%02d:%02d", minute, second); str = buff; }
+				} else {
+					if (flags & WTIME_FORMAT_INCLUDE_USECS) { tm_snprintf(buff, 128, "%02d:%02d:%02d.%06d", hour, minute, second, usecs); str = buff; }
+					else { tm_snprintf(buff, 128, "%02d:%02d:%02d", hour, minute, second); str = buff; }
 				}
 			} else {
-				if (flags & WTIME_FORMAT_EXCLUDE_SECONDS)		{ tm_snprintf(buff, 128, "%d days %02d:%02d", day, hour, minute); str = buff; }
-				else {
-					if (flags & WTIME_FORMAT_INCLUDE_USECS)	{ tm_snprintf(buff, 128, "%d days %02d:%02d:%02d.%06d", day, hour, minute, second, usecs); str = buff; }
-					else						{ tm_snprintf(buff, 128, "%d days %02d:%02d:%02d", day, hour, minute, second); str = buff; }
+				if ((!hour) && (!minute) && (!second) && (flags & WTIME_FORMAT_CONDITIONAL_TIME)) {
+					// only day data and we're told to do that, so don't print hours, min's, sec's
+					if (day == 1)						str = "1 day";
+					else { tm_snprintf(buff, 128, "%d days", day); str = buff; }
+				} else if (day == 1) {
+					if (flags & WTIME_FORMAT_EXCLUDE_SECONDS) { tm_snprintf(buff, 128, "1 day %02d:%02d", hour, minute); str = buff; }
+					else {
+						if (flags & WTIME_FORMAT_INCLUDE_USECS) { tm_snprintf(buff, 128, "1 day %02d:%02d:%02d.%06d", hour, minute, second, usecs); str = buff; }
+						else { tm_snprintf(buff, 128, "1 day %02d:%02d:%02d", hour, minute, second); str = buff; }
+					}
+				} else {
+					if (flags & WTIME_FORMAT_EXCLUDE_SECONDS) { tm_snprintf(buff, 128, "%d days %02d:%02d", day, hour, minute); str = buff; }
+					else {
+						if (flags & WTIME_FORMAT_INCLUDE_USECS) { tm_snprintf(buff, 128, "%d days %02d:%02d:%02d.%06d", day, hour, minute, second, usecs); str = buff; }
+						else { tm_snprintf(buff, 128, "%d days %02d:%02d:%02d", day, hour, minute, second); str = buff; }
+					}
 				}
 			}
-		}
-	} else {
-		if ((!day) && (!hour) && (!minute) && (!second) && (flags & WTIME_FORMAT_CONDITIONAL_TIME)) {
-							// only day data and we're told to do that, so don't print hours, min's, sec's
-			if (year == 1)							str = "1 year";
-			else								{ tm_snprintf(buff, 128, "%d years", year); str = buff; }
-		} else if (year == 1) {
-			if (flags & WTIME_FORMAT_EXCLUDE_SECONDS)			{ tm_snprintf(buff, 128, "1 year %d days %02d:%02d", day, hour, minute); str = buff; }
-			else {
-				if (flags & WTIME_FORMAT_INCLUDE_USECS)		{ tm_snprintf(buff, 128, "1 year %d days %02d:%02d:%02d.%06d", day, hour, minute, second, usecs); str = buff; }
-				else							{ tm_snprintf(buff, 128, "1 year %d days %02d:%02d:%02d", day, hour, minute, second); str = buff; }
-			}
 		} else {
-			if (flags & WTIME_FORMAT_EXCLUDE_SECONDS)			{ tm_snprintf(buff, 128, "%d years %d days %02d:%02d", year, day, hour, minute); str = buff; }
-			else {
-				if (flags & WTIME_FORMAT_INCLUDE_USECS)		{ tm_snprintf(buff, 128, "%d years %d days %02d:%02d:%02d.%06d", year, day, hour, minute, second, usecs); str = buff; }
-				else							{ tm_snprintf(buff, 128, "%d years %d days %02d:%02d:%02d", year, day, hour, minute, second); str = buff; }
+			if ((!day) && (!hour) && (!minute) && (!second) && (flags & WTIME_FORMAT_CONDITIONAL_TIME)) {
+				// only day data and we're told to do that, so don't print hours, min's, sec's
+				if (year == 1)							str = "1 year";
+				else { tm_snprintf(buff, 128, "%d years", year); str = buff; }
+			} else if (year == 1) {
+				if (flags & WTIME_FORMAT_EXCLUDE_SECONDS) { tm_snprintf(buff, 128, "1 year %d days %02d:%02d", day, hour, minute); str = buff; }
+				else {
+					if (flags & WTIME_FORMAT_INCLUDE_USECS) { tm_snprintf(buff, 128, "1 year %d days %02d:%02d:%02d.%06d", day, hour, minute, second, usecs); str = buff; }
+					else { tm_snprintf(buff, 128, "1 year %d days %02d:%02d:%02d", day, hour, minute, second); str = buff; }
+				}
+			} else {
+				if (flags & WTIME_FORMAT_EXCLUDE_SECONDS) { tm_snprintf(buff, 128, "%d years %d days %02d:%02d", year, day, hour, minute); str = buff; }
+				else {
+					if (flags & WTIME_FORMAT_INCLUDE_USECS) { tm_snprintf(buff, 128, "%d years %d days %02d:%02d:%02d.%06d", year, day, hour, minute, second, usecs); str = buff; }
+					else { tm_snprintf(buff, 128, "%d years %d days %02d:%02d:%02d", year, day, hour, minute, second); str = buff; }
+				}
 			}
 		}
 	}
+
 	return str;
 }
 
