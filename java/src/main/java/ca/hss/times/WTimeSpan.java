@@ -91,7 +91,18 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @param nSecs the number of seconds in the time span
 	 */
 	public WTimeSpan(long lDays, long nHours, long nMins, long nSecs) {
-		m_timeSpan = (nSecs + 60 * (nMins + 60 * (nHours + 24 * lDays))) * 1000000L;
+		m_timeSpan = ((long)(nSecs + 60 * (nMins + 60 * (nHours + 24 * lDays)))) * 1000000L;
+	}
+
+	/**
+	 * Construct a time span.
+	 * @param lDays the number of days in the time span
+	 * @param nHours the number of hours in the time span
+	 * @param nMins the number of minutes in the time span
+	 * @param nSecs the number of seconds in the time span
+	 */
+	public WTimeSpan(long lDays, long nHours, long nMins, double nSecs) {
+		m_timeSpan = ((long)(60 * (nMins + 60 * (nHours + 24 * lDays)))) * 1000000L + (long)(nSecs * 1000000.0);
 	}
 
 	/**
@@ -103,52 +114,190 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @param uSecs the number of microseconds in the time span
 	 */
 	public WTimeSpan(long lDays, long nHours, long nMins, long nSecs, long uSecs) {
-	    m_timeSpan = (long)uSecs + ((long)(nSecs + 60 * (nMins + 60 * (nHours + 24 * lDays)))) * 1000000L;
+	    m_timeSpan = (long)uSecs + ((long)(nSecs + 60 * (nMins + 60 * (nHours + 24 * lDays)))) * 1000000L; 
+	}
+	
+	/**
+	 * Construct a time span from a string in the format d days HH:MM:ss.
+	 * @param timeSrc The string to parse.
+	 */
+	public WTimeSpan(String timeSrc) {
+		this(timeSrc, null);
 	}
 
 	/**
-	 * Construct a time span from a string in the format HH:MM:ss.
+	 * Construct a time span from a string in the format HH:MM:ss or ISO8601.
 	 * @param timeSrc
 	 * @param cnt
 	 */
 	public WTimeSpan(String timeSrc, OutVariable<Short> cnt) {
-		int hour, minute, read;
+		int day = 0, hour = 0, minute = 0, read = 0, idx;
 		hour = minute = 0;
 		double second = 0;
-
-		for (int i = 0; i < timeSrc.length(); i++) {
-			char c = timeSrc.charAt(i);
-			if (!Character.isDigit(c) && (c != ':') && (c != ' ') && (c != '-')) {
-				if (cnt != null)
-					cnt.value = 0;
-				return;
+		boolean found = false;
+		
+		timeSrc = timeSrc.trim();
+		
+		//parse ISO8601 duration
+		if (timeSrc.startsWith("P") || timeSrc.startsWith("-P")) {
+			boolean negative = timeSrc.startsWith("-");
+			
+			idx = negative ? 2 : 1;
+			String value = "";
+			boolean afterT = false;
+			boolean isFraction = false;
+			while (idx < timeSrc.length()) {
+				char c = timeSrc.charAt(idx);
+				if (c == 'T' || c == 't')
+					afterT = true;
+				if (c == '.' || c == ',') {
+					isFraction = true;
+					value += ".";
+				}
+				else if (Character.isDigit(c))
+					value += c;
+				else {
+					double val = -1;
+					int ival = -1;
+					try {
+						if (isFraction)
+							val = Double.parseDouble(value);
+						else
+							ival = Integer.parseInt(value);
+					}
+					catch (NumberFormatException e) { }
+					
+					if (val > 0 || ival > 0) {
+						c = Character.toUpperCase(c);
+						switch (c) {
+						case 'Y':
+							//approximate years to days
+							if (isFraction)
+								second = val * 31_536_000;
+							else
+								day = ival * 365;
+							break;
+						case 'M':
+							if (afterT) {
+								if (isFraction)
+									second = val * 60;
+								else
+									minute = ival;
+							}
+							else {
+								//approximate months to days
+								if (isFraction)
+									second = val * 2_592_000;
+								else
+									day = ival * 30;
+							}
+							break;
+						case 'D':
+							if (isFraction)
+								second = val * 86_400;
+							else
+								day = ival;
+							break;
+						case 'W':
+							if (isFraction)
+								second = val * 7 * 86_400;
+							else
+								day = ival * 7;
+							break;
+						case 'H':
+							if (isFraction)
+								second = val * 3600;
+							else
+								hour = ival;
+							break;
+						case 'S':
+							if (isFraction)
+								second = val;
+							else
+								second = ival;
+							break;
+						}
+					}
+					value = "";
+					//only the smallest value is allowed to be a fraction
+					if (isFraction)
+						break;
+				}
+				idx++;
+			}
+			if (negative) {
+				if (day > 0)
+					day = -day;
+				else if (hour > 0)
+					hour = -hour;
+				else if (minute > 0)
+					minute = -minute;
+				else
+					second = -second;
 			}
 		}
-
-		List<OutVariable<Object>> lst = new ArrayList<OutVariable<Object>>();
-		lst.add(new OutVariable<Object>());
-		lst.add(new OutVariable<Object>());
-		lst.add(new OutVariable<Object>());
-		read = StringExtensions._stscanf_s(timeSrc, "%d:%d:%lf", lst);
-		if (read > 0)
-			hour = (Integer)lst.get(0).value;
-		if (read > 1)
-			minute = (Integer)lst.get(1).value;
-		if (read > 2)
-			second = (Double)lst.get(2).value;
-		if (cnt != null)
-			cnt.value = (short)read;
-		switch (read) {
-		case -1: if (cnt != null) cnt.value = 0;
-		case 0: return;
-		case 1: minute = 0;
-		case 2: second = 0.0;
+		else {
+			if ((idx = timeSrc.indexOf("day")) > 0) {
+				found = true;
+				idx += 3;
+				if (timeSrc.charAt(idx) == 's')
+					idx++;
+			}
+			else
+				idx = 0;
+	
+			for (int i = idx; i < timeSrc.length(); i++) {
+				char c = timeSrc.charAt(i);
+				if (!Character.isDigit(c) && (c != ':') && (c != ' ') && (c != '-') && (c != '.')) {
+					if (cnt != null)
+						cnt.value = 0;
+					return;
+				}
+			}
+	
+			List<OutVariable<Object>> lst = new ArrayList<OutVariable<Object>>();
+			lst.add(new OutVariable<Object>());
+			lst.add(new OutVariable<Object>());
+			lst.add(new OutVariable<Object>());
+			lst.add(new OutVariable<Object>());
+			if (found) {
+				read = StringExtensions._stscanf_s(timeSrc, "%d days %d:%d:%lf", lst);
+				if (read < 1)
+					read = StringExtensions._stscanf_s(timeSrc, "%d day %d:%d:%lf", lst);
+			}
+			if (read <= 1) {
+				read = StringExtensions._stscanf_s(timeSrc, "%d:%d:%lf", lst);
+				found = false;
+			}
+			if (cnt != null)
+				cnt.value = (short)read;
+			if (found) {
+				if (read > 0)
+					day = (Integer)lst.get(0).value;
+				if (read > 1)
+					hour = (Integer)lst.get(1).value;
+				if (read > 2)
+					minute = (Integer)lst.get(2).value;
+				if (read > 3)
+					second = (Double)lst.get(3).value;
+			}
+			else {
+				if (read > 0)
+					hour = (Integer)lst.get(0).value;
+				if (read > 1)
+					minute = (Integer)lst.get(1).value;
+				if (read > 2)
+					second = (Double)lst.get(2).value;
+			}
 		}
-		if (hour < 0) {
+		
+		if (day < 0)
+			hour = 0 - hour;
+		if (hour < 0)
 			minute = 0 - minute;
+		if (minute < 0)
 			second = 0 - second;
-		}
-		m_timeSpan = ((long)(60 * (minute + 60 * hour))) * 1000000L + (long)(second * 1000000.0);
+		m_timeSpan = (long)((second + 60 * (minute + 60 * (hour + 24 * day))) * 1000000L);
 	}
 
 	/**

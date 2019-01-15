@@ -113,37 +113,188 @@ WTimeSpan::WTimeSpan(const CString &timeSrc, INTNM::int16_t *cnt)
 #endif
 
 WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
-	INTNM::int32_t hour, minute, read;
+	INTNM::int32_t day = 0, hour, minute, read = 0, idx = 0;
 	double second;
-	
-	for (std::string::size_type i=0; i < timeSrc.size(); i++) {
-		char c = timeSrc[i];
-		if ((!isdigit(c)) && (c != ':') && (c != ' ') && (c != '-')) {
-			if (cnt)
-				*cnt=0;
-			return;
+	bool found = false;
+
+	std::string trimmedSrc = boost::trim_copy(timeSrc);
+
+	if (boost::starts_with(trimmedSrc, "P") || boost::starts_with(trimmedSrc, "-P"))
+	{
+		bool negative = boost::starts_with(trimmedSrc, "-");
+
+		idx = negative ? 2 : 1;
+		std::string value = "";
+		bool afterT = false;
+		bool isFraction = false;
+		while (idx < trimmedSrc.length())
+		{
+			char c = trimmedSrc[idx];
+			if (c == 'T' || c == 't')
+				afterT = true;
+			else if (c == '.' || c == ',')
+			{
+				isFraction = true;
+				value += ".";
+			}
+			else if (c >= '0' && c <= '9')
+				value += c;
+			else
+			{
+				double val = -1;
+				int ival = -1;
+				if (isFraction)
+					val = std::stod(value);
+				else
+					ival = std::stoi(value);
+
+				if (val > 0 || ival > 0)
+				{
+					switch (c)
+					{
+					case 'Y':
+					case 'y':
+						//approximate years to days
+						if (isFraction)
+							second = val * 31'536'000;
+						else
+							day = ival * 365;
+						break;
+					case 'M':
+					case 'm':
+						if (afterT)
+						{
+							if (isFraction)
+								second = val * 60;
+							else
+								minute = ival;
+						}
+						else
+						{
+							//approximate months to days
+							if (isFraction)
+								second = val * 2'592'000;
+							else
+								day = ival * 30;
+						}
+						break;
+					case 'D':
+					case 'd':
+						if (isFraction)
+							second = val * 86'400;
+						else
+							day = ival;
+						break;
+					case 'W':
+					case 'w':
+						if (isFraction)
+							second = val * 7 * 86'400;
+						else
+							day = ival * 7;
+						break;
+					case 'H':
+					case 'h':
+						if (isFraction)
+							second = val * 3600;
+						else
+							hour = ival;
+						break;
+					case 'S':
+					case 's':
+						if (isFraction)
+							second = val;
+						else
+							second = ival;
+						break;
+					}
+				}
+				value = "";
+				//only the smallest value is allowed to be a fraction
+				if (isFraction)
+					break;
+			}
+			idx++;
+		}
+		if (negative)
+		{
+			if (day > 0)
+				day = -day;
+			else if (hour > 0)
+				hour = -hour;
+			else if (minute > 0)
+				minute = -minute;
+			else
+				second = -second;
+		}
+	}
+	else
+	{
+		if (idx = trimmedSrc.find("day")) {
+			if (idx == std::string::npos)
+				idx = 0;
+			else
+				found = true;
+			if (found) {
+				idx += 3;
+				if (trimmedSrc[idx] == 's')
+					idx++;
+			}
+		}
+		for (std::string::size_type i = idx; i < trimmedSrc.size(); i++) {
+			char c = trimmedSrc[i];
+			if ((!isdigit(c)) && (c != ':') && (!isspace(c)) && (c != '-') && (c != '.')) {
+				if (cnt)
+					*cnt = 0;
+				return;
+			}
+		}
+
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
+		if (found) {
+			read = sscanf_s(trimmedSrc.c_str(), "%d days %d:%d:%lf", &day, &hour, &minute, &second);
+			if (read <= 1)
+				read = sscanf_s(trimmedSrc.c_str(), "%d day %d:%d:%lf", &day, &hour, &minute, &second);
+		}
+		if (read <= 1)
+			read = sscanf_s(trimmedSrc.c_str(), "%d:%d:%lf", &hour, &minute, &second);
+#else
+		if (found) {
+			read = sscanf(trimmedSrc.c_str(), "%d days %d:%d:%lf", &day, &hour, &minute, &second);
+			if (read <= 1)
+				read = sscanf(trimmedSrc.c_str(), "%d day %d:%d:%lf", &day, &hour, &minute, &second);
+		}
+		if (read <= 1)
+			read = sscanf(trimmedSrc.c_str(), "%d:%d:%lf", &hour, &minute, &second);
+#endif
+		if (cnt)
+			*cnt = (short)read;
+		if (found) {
+			switch (read) {
+			case -1: if (cnt) *cnt = 0;	// added case to deal with glitch on scenario edit dialog
+			case 0:
+			case 1: hour = 0;
+			case 2:	minute = 0;
+			case 3:	second = 0.0;
+			}
+		}
+		else {
+			switch (read) {
+			case -1: if (cnt) *cnt = 0;	// added case to deal with glitch on scenario edit dialog
+			case 0:	return;			// bad timeSrc string
+			case 1:	minute = 0;
+			case 2:	second = 0.0;
+			}
 		}
 	}
 
-
-#ifdef TIMES_WINDOWS
-	read = sscanf_s(timeSrc.c_str(), "%d:%d:%lf", &hour, &minute, &second);
-#else
-	read = sscanf(timeSrc.c_str(), "%d:%d:%lf", &hour, &minute, &second);
-#endif
-	if (cnt)
-		*cnt = (short)read;
-	switch (read) {
-		case -1: if (cnt) *cnt=0;	// added case to deal with glitch on scenario edit dialog
-		case 0:	return;			// bad timeSrc string
-		case 1:	minute = 0;
-		case 2:	second = 0.0;
-	};
-	if (hour < 0) {
+	if (day < 0)
+		hour = 0 - hour;
+	if (hour < 0)
 		minute = 0 - minute;
+	if (minute < 0)
 		second = 0 - second;
-	}
-	WTimeSpan cts(0, hour, minute, second);
+	
+	WTimeSpan cts(day, hour, minute, second);
 	*this = cts;
 }
 
