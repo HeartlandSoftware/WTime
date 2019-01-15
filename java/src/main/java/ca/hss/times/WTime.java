@@ -189,7 +189,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	}
 
 	private long adjusted_tm(long flags) {
-		if (m_time == 0)
+		if (m_time == 0 || m_time == -1L)
 			return m_time;
 		if (flags == 0)
 			return m_time;
@@ -250,7 +250,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param units_are_seconds whether the offset is in seconds or microseconds
 	 */
 	public WTime(long time, WTimeManager tm, boolean units_are_seconds) {
-		if (units_are_seconds)
+		if (units_are_seconds && time != -1L)
 			m_time = time * 1000000L;
 		else
 			m_time = time;
@@ -363,6 +363,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public long getTime(long mode) {
+		if(m_time == -1L)
+			return -1L;
+		
 		return adjusted_tm(mode) / 1000000L;
 	}
 
@@ -371,6 +374,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public long getTotalSeconds() {
+		if(m_time == -1L)
+			return -1L;
+		
 		return m_time / 1000000L;
 	}
 
@@ -379,6 +385,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public long getTotalMicroSeconds() {
+		if(m_time == -1L)
+			return -1L;
+		
 		return m_time;
 	}
 
@@ -406,6 +415,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public long getHour(long flags) {
+		if(m_time == -1L)
+			return -1L;
+		
 		return (long)((adjusted_tm(flags) / (60L * 60L * 1000000L)) % 24);
 	}
 
@@ -415,6 +427,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public long getMinute(long flags) {
+		if(m_time == -1L)
+			return -1L;
+		
 		return (long)((adjusted_tm(flags) / (60L * 1000000L)) % 60);
 	}
 
@@ -424,6 +439,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public long getSecond(long flags) {
+		if(m_time == -1L)
+			return -1L;
+		
 		return (long)((adjusted_tm(flags) / 1000000L) % 60);
 	}
 
@@ -433,6 +451,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public long getMicroSeconds(long flags) {
+		if(m_time == -1L)
+			return -1L;
+		
 		return (long)((adjusted_tm(flags) % 1000000L));
 	}
 
@@ -442,6 +463,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public WTimeSpan getTimeOfDay(long flags) {
+		if(m_time == -1L)
+			return new WTimeSpan(-1L, false);
+		
 		long time = adjusted_tm(flags) % (60L * 60L * 24L * 1000000L);
 		return new WTimeSpan(time, false);
 	}
@@ -452,6 +476,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public long getDayOfWeek(long flags) {
+		if(m_time == -1L)
+			return -1L;
+		
 		long days = adjusted_tm(flags) / (24L * 60L * 60L * 1000000L) + 0;
 		long ret = (long)(days % 7);
 		return ret == 0 ? 7 : ret;
@@ -463,6 +490,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public long getDayOfYear(long flags) {
+		if(m_time == -1L)
+			return -1L;
+		
 		long atm = adjusted_tm(flags) / 24 / 60 / 60 / 1000000;
 		WTime year = new WTime(getYear(flags), 1, 1, 0, 0, 0, m_tm);
 		long year_atm = year.adjusted_tm(0) / 24 / 60 / 60 / 1000000;
@@ -475,6 +505,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public long getSecondsIntoYear(long flags) {
+		if(m_time == -1L)
+			return -1L;
+		
 		long atm = adjusted_tm(flags) / 1000000;
 		WTime year = new WTime(getYear(flags), 1, 1, 0, 0, 0, m_tm);
 		return (atm - year.getTotalSeconds());
@@ -486,6 +519,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public double getDayFractionOfYear(long flags) {
+		if(m_time == -1L)
+			return -1L;
+		
 		long atm = adjusted_tm(flags) / 1000000;
 		WTime year = new WTime(getYear(flags), 1, 1, 0, 0, 0, m_tm);
 		long total_secs = atm - year.getTotalSeconds();
@@ -498,6 +534,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return
 	 */
 	public boolean isLeapYear(long flags) {
+		if(m_time == -1L)
+			return false;
+		
 		return WTimeManager.isLeapYear((short)getYear(flags));
 	}
 
@@ -506,7 +545,8 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 */
 	public void purgeToSecond(long flags) {
-		m_time = m_time - (adjusted_tm(flags) % (1000000L));
+		if(m_time != -1L)
+			m_time = m_time - (adjusted_tm(flags) % (1000000L));
 	}
 
 	/**
@@ -514,7 +554,8 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 */
 	public void purgeToMinute(long flags) {
-		m_time = m_time - (adjusted_tm(flags) % (60L * 1000000L));
+		if(m_time != -1L)
+			m_time = m_time - (adjusted_tm(flags) % (60L * 1000000L));
 	}
 
 	/**
@@ -522,7 +563,8 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 */
 	public void purgeToHour(long flags) {
-		m_time = m_time - (adjusted_tm(flags) % (60L * 60L * 1000000L));
+		if(m_time != -1L)
+			m_time = m_time - (adjusted_tm(flags) % (60L * 60L * 1000000L));
 	}
 
 	/**
@@ -530,8 +572,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 */
 	public void purgeToDay(long flags) {
-		m_time = m_time - (adjusted_tm(flags) % (60L * 60L * 24L * 1000000L));
-	}
+		if(m_time != -1L)
+			m_time = m_time - (adjusted_tm(flags) % (60L * 60L * 24L * 1000000L));
+	}	
 
 	/**
 	 * Get the year.

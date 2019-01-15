@@ -731,7 +731,7 @@ WTime::WTime(const WTime& timeSrc, INTNM::uint32_t flags, INTNM::int16_t directi
 
 
 WTime::WTime(INTNM::uint64_t time, const WTimeManager *tm, bool units_are_seconds) { 
-	if (units_are_seconds) 
+	if ((units_are_seconds) && (time != (INTNM::uint64_t)(-1)))
 		m_time = time * 1000000LL; 
 	else 
 		m_time = time; 
@@ -781,7 +781,8 @@ void WTime::construct_time_t(INTNM::int32_t nYear, INTNM::int32_t nMonth, INTNM:
 
 
 INTNM::uint64_t WTime::adjusted_tm(INTNM::uint32_t flags) const {
-	if ((!m_time) || (m_time == (INTNM::uint64_t)-1)) 
+	assert(m_time != (INTNM::uint64_t)(-1000000));
+	if ((!m_time) || (m_time == (INTNM::uint64_t)-1))
 		return m_time;
 	if (!flags) 
 		return m_time; 
@@ -808,6 +809,8 @@ COleDateTime WTime::AsCOleDateTime(INTNM::uint32_t flags) const {
 
 
 INTNM::uint64_t WTime::adjusted_tm_math(INTNM::uint32_t mode) const {
+	assert(m_time != (INTNM::uint64_t)(-1000000));
+
 	if (mode & WTIME_FORMAT_AS_SOLAR)
 		if (mode & (WTIME_FORMAT_WITHDST | WTIME_FORMAT_AS_LOCAL))
 			throw std::runtime_error("Operation not supported");
@@ -838,14 +841,19 @@ INTNM::uint64_t WTime::adjusted_tm_math(INTNM::uint32_t mode) const {
 
 
 
-INTNM::uint64_t WTime::GetTime(INTNM::int16_t mode) const				{ return adjusted_tm(mode) / 1000000LL; };
-INTNM::uint64_t WTime::GetTotalSeconds() const				{ return m_time / 1000000LL; };
-INTNM::uint64_t WTime::GetTotalMicroSeconds() const				{ return m_time; };
-const WTimeManager *WTime::GetTimeManager() const			{ return m_tm; };
+INTNM::uint64_t WTime::GetTime(INTNM::uint32_t mode) const			{ if (m_time != (INTNM::uint64_t)(-1)) return adjusted_tm(mode) / 1000000LL; return m_time;  };
+INTNM::uint64_t WTime::GetTotalSeconds() const						{ if (m_time != (INTNM::uint64_t)(-1)) return m_time / 1000000LL; return m_time; };
+INTNM::uint64_t WTime::GetTotalMilliSeconds() const					{ if (m_time != (INTNM::uint64_t)(-1)) return m_time / 1000LL; return m_time; }
+INTNM::uint64_t WTime::GetTotalMicroSeconds() const					{ return m_time; };
+const WTimeManager *WTime::GetTimeManager() const					{ return m_tm; };
 const WTimeManager *WTime::SetTimeManager(const WTimeManager *tm)	{ m_tm = tm; return m_tm; };
+bool WTime::IsValid() const											{ return (m_time != (INTNM::uint64_t)-1); }
 
 
 INTNM::int32_t WTime::GetYear(INTNM::uint32_t mode) const {
+	if (m_time == (INTNM::uint64_t)(-1))
+		return -1;
+
 	INTNM::uint64_t z = adjusted_tm(mode) / 24 / 60 / 60 / 1000000;
 	z += 2305448;
 
@@ -861,6 +869,9 @@ INTNM::int32_t WTime::GetYear(INTNM::uint32_t mode) const {
 
 
 INTNM::int32_t WTime::GetMonth(INTNM::uint32_t mode) const {
+	if (m_time == (INTNM::uint64_t)(-1))
+		return -1;
+
 	INTNM::uint64_t z = adjusted_tm(mode) / 24 / 60 / 60 / 1000000;
 	z += 2305448;
 	INTNM::int32_t a = z + 32044;
@@ -875,6 +886,9 @@ INTNM::int32_t WTime::GetMonth(INTNM::uint32_t mode) const {
 
 
 INTNM::int32_t WTime::GetDay(INTNM::uint32_t mode) const {
+	if (m_time == (INTNM::uint64_t)(-1))
+		return -1;
+
 	INTNM::uint64_t z = adjusted_tm(mode) / 24 / 60 / 60 / 1000000;
 	z += 2305448;
 
@@ -889,26 +903,36 @@ INTNM::int32_t WTime::GetDay(INTNM::uint32_t mode) const {
 }
 
 
-INTNM::int32_t WTime::GetHour(INTNM::uint32_t flags) const				{ return (INTNM::int32_t)((adjusted_tm(flags) / (60LL * 60LL * 1000000LL)) % 24); };
-INTNM::int32_t WTime::GetMinute(INTNM::uint32_t flags) const			{ return (INTNM::int32_t)((adjusted_tm(flags) / (60LL * 1000000LL)) % 60); };
-INTNM::int32_t WTime::GetSecond(INTNM::uint32_t flags) const			{ return (INTNM::int32_t)((adjusted_tm(flags) / 1000000LL) % 60); };
-INTNM::int32_t WTime::GetMicroSeconds(INTNM::uint32_t flags) const			{ return (INTNM::int32_t)((adjusted_tm(flags) % 1000000LL)); };
-WTimeSpan WTime::GetTimeOfDay(INTNM::uint32_t flags) const		{ INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL); return WTimeSpan(time, false); };
-INTNM::int32_t WTime::GetDayOfWeek(INTNM::uint32_t flags) const			{ INTNM::int64_t days = adjusted_tm(flags) / (24LL * 60LL * 60LL * 1000000LL) + 0; INTNM::int32_t ret = (INTNM::int32_t)(days % 7); return ret == 0 ? 7L : ret; };
+INTNM::int32_t WTime::GetHour(INTNM::uint32_t flags) const				{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) / (60LL * 60LL * 1000000LL)) % 24); };
+INTNM::int32_t WTime::GetMinute(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) / (60LL * 1000000LL)) % 60); };
+INTNM::int32_t WTime::GetSecond(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) / 1000000LL) % 60); };
+INTNM::int32_t WTime::GetMilliSeconds(INTNM::uint32_t flags) const		{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) / 1000LL) % 1000); };
+INTNM::int32_t WTime::GetMicroSeconds(INTNM::uint32_t flags) const		{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) % 1000000LL)); };
+WTimeSpan WTime::GetTimeOfDay(INTNM::uint32_t flags) const				{ if (m_time == (INTNM::uint64_t)(-1)) return WTimeSpan(-1, false); INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL); return WTimeSpan(time, false); };
+INTNM::int32_t WTime::GetDayOfWeek(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1; INTNM::int64_t days = adjusted_tm(flags) / (24LL * 60LL * 60LL * 1000000LL) + 0; INTNM::int32_t ret = (INTNM::int32_t)(days % 7); return ret == 0 ? 7L : ret; };
 
 
 INTNM::uint64_t WTime::GetSecondsIntoYear(INTNM::uint32_t mode) const {
+	if (m_time == (INTNM::uint64_t)(-1))
+		return -1;
+
 	INTNM::uint64_t atm = adjusted_tm(mode) / 1000000;
 	WTime year(GetYear(mode), 1, 1, 0, 0, 0.0, m_tm);
 	return (atm - year.GetTotalSeconds());
 }
 
 bool WTime::IsLeapYear(INTNM::uint32_t flags) const { 
+	if (m_time == (INTNM::uint64_t)(-1))
+		return false;
+
 	return WTimeManager::isLeapYear((INTNM::int16_t)GetYear(flags));
 }
 
 
 INTNM::int32_t WTime::GetDayOfYear(INTNM::uint32_t mode) const {
+	if (m_time == (INTNM::uint64_t)(-1))
+		return -1;
+
 	INTNM::uint64_t atm = adjusted_tm(mode) / 24 / 60 / 60 / 1000000;
 	WTime year(GetYear(mode), 1, 1, 0, 0, 0.0, m_tm);
 	INTNM::uint64_t year_atm = year.adjusted_tm(0) / 24 / 60 / 60 / 1000000;
@@ -917,6 +941,9 @@ INTNM::int32_t WTime::GetDayOfYear(INTNM::uint32_t mode) const {
 
 
 double WTime::GetDayFractionOfYear(INTNM::uint32_t mode) const {
+	if (m_time == (INTNM::uint64_t)(-1))
+		return -1.0;
+
 	INTNM::uint64_t atm = adjusted_tm(mode) / 1000000;
 	WTime year(GetYear(mode), 1, 1, 0, 0, 0.0, m_tm);
 	INTNM::uint64_t total_secs = atm - year.GetTotalSeconds();
@@ -924,55 +951,64 @@ double WTime::GetDayFractionOfYear(INTNM::uint32_t mode) const {
 }
 
 
-void WTime::PurgeToSecond(INTNM::uint32_t flags)			{ m_time = m_time - (adjusted_tm(flags) % (1000000LL)); };
-void WTime::PurgeToMinute(INTNM::uint32_t flags)			{ m_time = m_time - (adjusted_tm(flags) % (60LL * 1000000LL)); };
-void WTime::PurgeToHour(INTNM::uint32_t flags)				{ m_time = m_time - (adjusted_tm(flags) % (60LL * 60LL * 1000000LL)); };
-void WTime::PurgeToDay(INTNM::uint32_t flags)				{ m_time = m_time - (adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL)); };
+void WTime::PurgeToSecond(INTNM::uint32_t flags)			{ if (m_time != (INTNM::uint64_t)(-1)) m_time = m_time - (adjusted_tm(flags) % (1000000LL)); };
+void WTime::PurgeToMinute(INTNM::uint32_t flags)			{ if (m_time != (INTNM::uint64_t)(-1)) m_time = m_time - (adjusted_tm(flags) % (60LL * 1000000LL)); };
+void WTime::PurgeToHour(INTNM::uint32_t flags)				{ if (m_time != (INTNM::uint64_t)(-1)) m_time = m_time - (adjusted_tm(flags) % (60LL * 60LL * 1000000LL)); };
+void WTime::PurgeToDay(INTNM::uint32_t flags)				{ if (m_time != (INTNM::uint64_t)(-1)) m_time = m_time - (adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL)); };
+
 
 
 const WTime& WTime::operator++() {
-	WTimeSpan incr;
-	if (IsLeapYear(0))	incr = WTimeSpan(366, 0, 0, 0);
-	else			incr = WTimeSpan(365, 0, 0, 0);
-	return *this += incr;
+	if (m_time != (INTNM::uint64_t)(-1)) {
+		WTimeSpan incr;
+		if (IsLeapYear(0))	incr = WTimeSpan(366, 0, 0, 0);
+		else			incr = WTimeSpan(365, 0, 0, 0);
+		return *this += incr;
+	}
+	return *this;
 }
 
 
 const WTime& WTime::operator--() {
-	INTNM::int32_t year = (INTNM::int32_t)(GetYear(0) - 1);
-	WTimeSpan decr;
-	if (WTimeManager::isLeapYear((INTNM::int16_t)year))	decr = WTimeSpan(366, 0, 0, 0);
-	else						decr = WTimeSpan(365, 0, 0, 0);
-	return *this -= decr;
+	if (m_time != (INTNM::uint64_t)(-1)) {
+		INTNM::int32_t year = (INTNM::int32_t)(GetYear(0) - 1);
+		WTimeSpan decr;
+		if (WTimeManager::isLeapYear((INTNM::int16_t)year))	decr = WTimeSpan(366, 0, 0, 0);
+		else						decr = WTimeSpan(365, 0, 0, 0);
+		return *this -= decr;
+	}
+	return *this;
 }
 
 
 const WTime& WTime::operator+=(INTNM::int32_t years) {
-	WTimeSpan yr(365, 0, 0, 0);
-	WTimeSpan lyr(366, 0, 0, 0);
-	INTNM::int32_t year = (INTNM::int32_t)GetYear(0);
-	INTNM::int32_t i;
-	for (i = 0; i < years; i++, year++) {
-		if (WTimeManager::isLeapYear((INTNM::int16_t)year))
-			*this += lyr;
-		else	*this += yr;
+	if (m_time != (INTNM::uint64_t)(-1)) {
+		WTimeSpan yr(365, 0, 0, 0);
+		WTimeSpan lyr(366, 0, 0, 0);
+		INTNM::int32_t year = (INTNM::int32_t)GetYear(0);
+		INTNM::int32_t i;
+		for (i = 0; i < years; i++, year++) {
+			if (WTimeManager::isLeapYear((INTNM::int16_t)year))
+				*this += lyr;
+			else	*this += yr;
+		}
 	}
-
 	return *this;
 }
 
 
 const WTime& WTime::operator-=(INTNM::int32_t years) {
-	WTimeSpan yr(365, 0, 0, (INTNM::int32_t)0);
-	WTimeSpan lyr(366, 0, 0, (INTNM::int32_t)0);
-	INTNM::int32_t year = (INTNM::int32_t)GetYear(0);
-	INTNM::int32_t i;
-	for (i = 0, year--; i < years; i++, year--) {
-		if (WTimeManager::isLeapYear((INTNM::int16_t)year))
-			*this -= lyr;
-		else	*this -= yr;
+	if (m_time != (INTNM::uint64_t)(-1)) {
+		WTimeSpan yr(365, 0, 0, (INTNM::int32_t)0);
+		WTimeSpan lyr(366, 0, 0, (INTNM::int32_t)0);
+		INTNM::int32_t year = (INTNM::int32_t)GetYear(0);
+		INTNM::int32_t i;
+		for (i = 0, year--; i < years; i++, year--) {
+			if (WTimeManager::isLeapYear((INTNM::int16_t)year))
+				*this -= lyr;
+			else	*this -= yr;
+		}
 	}
-
 	return *this;
 }
 
@@ -1013,7 +1049,8 @@ std::string WTime::ToString(INTNM::uint32_t flags) const {
 	INTNM::int32_t year, month, day, hour, minute, second, usecs, day_of_week;
 	bool need_leading_space;
 
-	if ((!m_time) || (m_time == (INTNM::uint64_t)-1)) {
+	assert(m_time != (INTNM::uint64_t)(-1000000));
+	if (/*(!m_time) ||*/ (m_time == (INTNM::uint64_t)-1)) {
 		str = "[Time Not Set]";
 		return str;
 	}
