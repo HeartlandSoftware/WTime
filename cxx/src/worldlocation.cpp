@@ -423,7 +423,7 @@ WTimeSpan WorldLocation::m_solar_timezone(const WTime &solar_time) const {
 }
 
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 CArchive& HSS_Time::operator>>(CArchive& is, WorldLocation &wl) {
 	union {
 		short svalue[4];
@@ -437,7 +437,7 @@ CArchive& HSS_Time::operator>>(CArchive& is, WorldLocation &wl) {
 		if (loader.svalue[1] < 3) {
 			INTNM::int32_t timezone;
 			is >> timezone;
-			wl.m_timezone = timezone;
+			wl.m_timezone = WTimeSpan(timezone);
 		} else	is >> wl.m_timezone;
 		if (loader.svalue[1] < 4) {
 			INTNM::int16_t spheroid;
@@ -445,9 +445,9 @@ CArchive& HSS_Time::operator>>(CArchive& is, WorldLocation &wl) {
 		}
 		if (loader.svalue[1] == 2) {
 			INTNM::int32_t ts;
-			is >> ts; wl.m_startDST = ts;
-			is >> ts; wl.m_endDST = ts;
-			is >> ts; wl.m_amtDST = ts;
+			is >> ts; wl.m_startDST = WTimeSpan(ts);
+			is >> ts; wl.m_endDST = WTimeSpan(ts);
+			is >> ts; wl.m_amtDST = WTimeSpan(ts);
 		} else if (loader.svalue[1] >= 3)
 			is >> wl.m_startDST >> wl.m_endDST >> wl.m_amtDST;
 	} else {
