@@ -1,0 +1,58 @@
+/**
+ * wtime.proto
+ *
+ * Copyright 2016-2019 Heartland Software Solutions Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the license at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the LIcense is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+syntax = "proto3";
+
+option java_package = "ca.hss.times.proto";
+option java_outer_classname = "WTimePackage";
+option csharp_namespace = "HSS.Times";
+option java_multiple_files = true;
+
+import "google/protobuf/wrappers.proto";
+
+package HSS.Times;
+
+
+/**
+ * Date/time information.
+ */
+message WTime {
+    /**
+     * The date string formatted as ISO8601.  This is in local time with provisions
+	 * to specify options off UTC, as given by ISO8601.
+     */
+    string time = 1;
+    /**
+     * Daylight savings time information. Can be a predfined string value
+     * to indicate whether DST should be applied or not ('LDT', 'D', 'LST', or 'S')
+     * or it can be an explicit DST offset value (ex. +1, -1, 0:30, -0.5).
+     */
+    google.protobuf.StringValue daylight = 2;
+    /**
+     * An explicit timezone. Can be different than what is using in time.
+     * Can be a timezone name (ex. Mountain Standard Time), and abbreviation
+     * (ex. MST) or an explicit time offset (ex. -7). If an explicit time
+     * offset is used it should not include the DST offset (ex. MDT would
+     * be represented with a timezone of -7 and a daylight of 1).
+     */
+    google.protobuf.StringValue timezone = 3;
+}
+
+message WTimeSpan {
+    string time = 1;
+}

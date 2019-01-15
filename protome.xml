@@ -1,0 +1,100 @@
+<project name="fuel-proto" default="nonexist">
+    <tstamp>
+        <format property="ten.seconds.ago" offset="-10" unit="second" pattern="MM/dd/yyyy hh:mm aa" />
+    </tstamp>
+
+    <property environment="env" />
+
+    <target name="clean-all" if="build.xmlUpdate">
+        <echo>Cleaning all.</echo>
+        <delete>
+            <fileset dir="cxx/include/" includes="**/*.pb.h" />
+        </delete>
+        <delete>
+            <fileset dir="cxx/src/generated/" includes="**/*.pb.cc" />
+        </delete>
+        <delete>
+            <fileset dir="java/src/main/java/ca/hss/times/proto/" includes="**/*.java" />
+        </delete>
+    </target>
+
+    <target name="proto" if="build.required">
+        <exec executable="${env.PROTOBUF}/bin/protoc.exe" dir="proto/">
+            <arg value="--cpp_out=dllexport_decl=TIMES_API:..\cxx\src\generated\" />
+            <arg value="--java_out=..\java\src\main\java\" />
+            <arg value='${filename}.proto' />
+        </exec>
+        <echo>Compiling ${filename}.proto.</echo>
+        <move todir="cxx\include\">
+            <fileset dir="cxx\src\generated\">
+                <include name="${filename}.pb.h" />
+            </fileset>
+        </move>
+        <replaceregexp>
+            <regexp pattern="#include &lt;string&gt;" />
+            <substitution expression="#include &quot;internal/times_internal.h&quot;${line.separator}${line.separator}#include &lt;string&gt;" />
+            <fileset dir="cxx\include\" includes="${filename}.pb.h" />
+        </replaceregexp>
+    </target>
+
+    <target name="no-proto" unless="build.required">
+        <echo>${filename}.proto is already up to date.</echo>
+    </target>
+
+    <target name="proto-time">
+        <uptodate property="build.notRequired" targetfile="cxx/include/${filename}.pb.h" srcfile="proto/${filename}.proto" />
+
+        <condition property="build.required">
+            <or>
+                <not>
+                    <isset property="build.notRequired" />
+                </not>
+                <isset property="build.force" />
+            </or>
+        </condition>
+
+        <antcall target="proto" />
+        <antcall target="no-proto" />
+    </target>
+
+    <target name="proto-test" if="filename">
+        <antcall target="proto-time" />
+    </target>
+
+    <target name="proto-fail" unless="filename">
+        <echo>A proto filename must be specified.</echo>
+    </target>
+
+    <target name="xml-test" unless="build.force">
+        <uptodate property="build.xmlUpdate" targetfile="protome.xml">
+            <srcfiles dir="cxx/include/" includes="**/*.pb.h" />
+        </uptodate>
+
+        <condition property="build.force">
+            <isset property="build.xmlUpdate" />
+        </condition>
+
+        <antcall target="clean-all" />
+    </target>
+
+    <target name="compile" depends="xml-test,proto-test,proto-fail">
+    </target>
+
+    <taskdef resource="net/sf/antcontrib/antlib.xml"/>
+    <target name="all">
+        <delete>
+            <fileset dir="cxx/include" includes="**/*.pb.h" />
+            <fileset dir="cxx/src/generated" includes="**/*.pb.cc" />
+        </delete>
+        <for param="tempfile">
+            <path>
+                <fileset dir="proto" includes="**/*.proto" />
+            </path>
+            <sequential>
+                <var name="filename" unset="true" />
+                <basename property="filename" file="@{tempfile}" suffix=".proto" />
+                <antcall target="compile" />
+            </sequential>
+        </for>
+    </target>
+</project>

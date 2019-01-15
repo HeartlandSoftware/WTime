@@ -21,3 +21,7 @@
 #include "internal/worldlocation.h"
 #include "internal/Times.h"
 #include "internal/SunriseSunsetCalc.h"
+
+#if !defined(_MANAGED) && defined(GOOGLE_PROTOBUF_VERSION)
+#include "internal/WTimeProto.h"
+#endif
