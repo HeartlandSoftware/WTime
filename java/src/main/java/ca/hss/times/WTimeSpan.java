@@ -545,13 +545,11 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 		long h = getHours();
 		long m = getMinutes();
 		long s = getSeconds();
-		String retval = String.valueOf(h);
+		String retval = String.format("%02d", h);
 		if (m > 0 || s > 0) {
-			retval += ":";
-			retval += String.valueOf(m);
+			retval = toString(WTime.FORMAT_EXCLUDE_SECONDS);
 			if (s > 0) {
-				retval += ":";
-				retval += String.valueOf(s);
+				retval = toString(WTime.FORMAT_CONDITIONAL_TIME);
 			}
 		}
 		return retval;
