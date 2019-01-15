@@ -22,47 +22,26 @@
     <Keyword>MFCProj</Keyword>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <UseOfAtl>false</UseOfAtl>
-    <CharacterSet>NotSet</CharacterSet>
-    <CLRSupport>false</CLRSupport>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>v110</PlatformToolset>
-    <UseIntelIPP>false</UseIntelIPP>
-    <UseIntelMKL>Parallel</UseIntelMKL>
-    <BasePlatformToolset>v110</BasePlatformToolset>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
-    <UseOfMfc>Dynamic</UseOfMfc>
-    <UseOfAtl>false</UseOfAtl>
-    <CharacterSet>NotSet</CharacterSet>
-    <CLRSupport>false</CLRSupport>
-    <PlatformToolset>Intel C++ Compiler XE 13.0</PlatformToolset>
-    <UseIntelIPP>false</UseIntelIPP>
-    <UseIntelMKL>Parallel</UseIntelMKL>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>NotSet</CharacterSet>
     <CLRSupport>false</CLRSupport>
-    <WholeProgramOptimization>true</WholeProgramOptimization>
-    <PlatformToolset>Intel C++ Compiler 16.0</PlatformToolset>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>Intel C++ Compiler 19.0</PlatformToolset>
+    <BasePlatformToolset>v141</BasePlatformToolset>
     <UseIntelIPP>false</UseIntelIPP>
     <UseIntelMKL>No</UseIntelMKL>
     <UseILP64Interfaces>false</UseILP64Interfaces>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseOfMfc>Dynamic</UseOfMfc>
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>NotSet</CharacterSet>
     <CLRSupport>false</CLRSupport>
-    <PlatformToolset>Intel C++ Compiler 16.0</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler 19.0</PlatformToolset>
     <UseIntelIPP>false</UseIntelIPP>
     <UseIntelMKL>No</UseIntelMKL>
   </PropertyGroup>
@@ -80,16 +59,22 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\</IntDir>
-    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</OutDir>
-    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <TargetName>HSS_Times</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <TargetName>HSS_Times</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -98,12 +83,11 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <EnableFiberSafeOptimizations>false</EnableFiberSafeOptimizations>
-      <AdditionalIncludeDirectories>$(BOOST);$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_WIN32_WINNT=0x0600;_WIN32_IE=0x0700;WINVER=0x0600;_ATL_MIXED;_BIND_TO_CURRENT_MFC_VERSION;_BIND_TO_CURRENT_CRT_VERSION;_BIND_TO_CURRENT_VCLIBS_VERSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(BOOST);$(PROTOBUF)\include;$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\ErrorCalc;$(ProjectDir)..\..\CoreLib\Lowlevel;$(ProjectDir)..\..\CoreLib\Math;$(ProjectDir)..\..\CoreLib\Geography;$(ProjectDIr)..\..\CoreMFC\Multithread;$(ProjectDir)..\..\HSS_Versions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;_WIN32_WINNT=0x0601;_WIN32_IE=0x0A00;WINVER=0x0601;_ATL_MIXED;_BIND_TO_CURRENT_MFC_VERSION;_BIND_TO_CURRENT_CRT_VERSION;_BIND_TO_CURRENT_VCLIBS_VERSION;_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS;PROTOBUF_USE_DLLS;TIMES_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
-      <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <OpenMPSupport>true</OpenMPSupport>
       <PrecompiledHeaderOutputFile>
       </PrecompiledHeaderOutputFile>
@@ -120,6 +104,10 @@
       <UseMSVC>true</UseMSVC>
       <AdditionalOptions>-Qoption,cpp,--extended_float_type  /Qdiag-disable:1885 %(AdditionalOptions)</AdditionalOptions>
       <FloatingPointModel>Precise</FloatingPointModel>
+      <LanguageStandard>
+      </LanguageStandard>
+      <CCppSupport>Cpp17Support</CCppSupport>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -130,6 +118,14 @@
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetMachine>MachineX64</TargetMachine>
     </Lib>
+    <PreBuildEvent>
+      <Command>cd $(ProjectDir)..\
+call ant -file protome.xml -Dfilename=wtime compile</Command>
+    </PreBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>$(PROTOBUF)\debug\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobufd.lib</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Midl>
@@ -141,8 +137,8 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
-      <AdditionalIncludeDirectories>$(BOOST);$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_WIN32_WINNT=0x0600;_WIN32_IE=0x0700;WINVER=0x0600;_SECURE_SCL=0;_ATL_MIXED;_BIND_TO_CURRENT_MFC_VERSION;_BIND_TO_CURRENT_CRT_VERSION;_BIND_TO_CURRENT_VCLIBS_VERSION;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(BOOST);$(PROTOBUF)\include;$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\ErrorCalc;$(ProjectDir)..\..\CoreLib\Lowlevel;$(ProjectDir)..\..\CoreLib\Math;$(ProjectDir)..\..\CoreLib\Geography;$(ProjectDIr)..\..\CoreMFC\Multithread;$(ProjectDir)..\..\HSS_Versions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_WIN32_WINNT=0x0601;_WIN32_IE=0x0A00;WINVER=0x0601;_SECURE_SCL=0;_ATL_MIXED;_BIND_TO_CURRENT_MFC_VERSION;_BIND_TO_CURRENT_CRT_VERSION;_BIND_TO_CURRENT_VCLIBS_VERSION;PROTOBUF_USE_DLLS;TIMES_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
@@ -166,6 +162,9 @@
       <UseMSVC>true</UseMSVC>
       <AdditionalOptions>-Qoption,cpp,--extended_float_type /Qdiag-disable:1885 %(AdditionalOptions)</AdditionalOptions>
       <FloatingPointModel>Precise</FloatingPointModel>
+      <LanguageStandard>
+      </LanguageStandard>
+      <CCppSupport>Cpp17Support</CCppSupport>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -175,7 +174,16 @@
       <OutputFile>$(OutDir)$(ProjectName).lib</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <TargetMachine>MachineX64</TargetMachine>
+      <LinkTimeCodeGeneration>true</LinkTimeCodeGeneration>
     </Lib>
+    <PreBuildEvent>
+      <Command>cd $(ProjectDir)..\
+call ant -file protome.xml -Dfilename=wtime compile</Command>
+    </PreBuildEvent>
+    <Link>
+      <AdditionalLibraryDirectories>$(PROTOBUF)\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libprotobuf.lib</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src/SunriseSunsetCalc.cpp">
@@ -183,32 +191,14 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Full</Optimization>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Default</BasicRuntimeChecks>
-      <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</BrowseInformation>
       <UseMSVC Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</UseMSVC>
-      <UseMSVC Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</UseMSVC>
-      <OptimizeForWindowsApplication Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</OptimizeForWindowsApplication>
-      <UseIntelOptimizedHeaders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</UseIntelOptimizedHeaders>
-      <OpenMP Condition="'$(Configuration)|$(Platform)'=='Release|x64'">GenerateParallelCode</OpenMP>
     </ClCompile>
     <ClCompile Include="src/Times.cpp">
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Disabled</Optimization>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Full</Optimization>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Default</BasicRuntimeChecks>
-      <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</BrowseInformation>
       <UseMSVC Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</UseMSVC>
-      <UseMSVC Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</UseMSVC>
-      <OptimizeForWindowsApplication Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</OptimizeForWindowsApplication>
-      <UseIntelOptimizedHeaders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</UseIntelOptimizedHeaders>
-      <OpenMP Condition="'$(Configuration)|$(Platform)'=='Release|x64'">GenerateParallelCode</OpenMP>
     </ClCompile>
     <ClCompile Include="src/TimezoneMapper.cpp" />
     <ClCompile Include="src/worldlocation.cpp">
@@ -217,25 +207,39 @@
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</BrowseInformation>
-      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Full</Optimization>
-      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Default</BasicRuntimeChecks>
-      <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</BrowseInformation>
       <UseMSVC Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</UseMSVC>
-      <UseMSVC Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</UseMSVC>
-      <OptimizeForWindowsApplication Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</OptimizeForWindowsApplication>
-      <UseIntelOptimizedHeaders Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</UseIntelOptimizedHeaders>
-      <OpenMP Condition="'$(Configuration)|$(Platform)'=='Release|x64'">GenerateParallelCode</OpenMP>
     </ClCompile>
+    <ClCompile Include="src/Canada_Detail.cpp">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(BOOST);$(PROTOBUF)\include;$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\ErrorCalc;$(ProjectDir)..\..\CoreLib\Lowlevel;$(ProjectDir)..\..\CoreLib\Math;$(ProjectDir)..\..\CoreLib\Geography;$(ProjectDIr)..\..\CoreMFC\Multithread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug No MFC|x64'">$(BOOST);$(PROTOBUF)\include;$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\ErrorCalc;$(ProjectDir)..\..\CoreLib\Lowlevel;$(ProjectDir)..\..\CoreLib\Math;$(ProjectDir)..\..\CoreLib\Geography;$(ProjectDIr)..\..\CoreMFC\Multithread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugFBPTester|x64'">$(BOOST);$(PROTOBUF)\include;$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\ErrorCalc;$(ProjectDir)..\..\CoreLib\Lowlevel;$(ProjectDir)..\..\CoreLib\Math;$(ProjectDir)..\..\CoreLib\Geography;$(ProjectDIr)..\..\CoreMFC\Multithread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug Analyse|x64'">$(BOOST);$(PROTOBUF)\include;$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\ErrorCalc;$(ProjectDir)..\..\CoreLib\Lowlevel;$(ProjectDir)..\..\CoreLib\Math;$(ProjectDir)..\..\CoreLib\Geography;$(ProjectDIr)..\..\CoreMFC\Multithread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(BOOST);$(PROTOBUF)\include;$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\ErrorCalc;$(ProjectDir)..\..\CoreLib\Lowlevel;$(ProjectDir)..\..\CoreLib\Math;$(ProjectDir)..\..\CoreLib\Geography;$(ProjectDIr)..\..\CoreMFC\Multithread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release for HSS_Math|x64'">$(BOOST);$(PROTOBUF)\include;$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\ErrorCalc;$(ProjectDir)..\..\CoreLib\Lowlevel;$(ProjectDir)..\..\CoreLib\Math;$(ProjectDir)..\..\CoreLib\Geography;$(ProjectDIr)..\..\CoreMFC\Multithread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="src/generated/wtime.pb.cc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(BOOST);$(PROTOBUF)\include;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\Geography;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug Analyse|x64'">$(BOOST);$(PROTOBUF)\include;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\Geography;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='DebugFBPTester|x64'">$(BOOST);$(PROTOBUF)\include;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\Geography;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(BOOST);$(PROTOBUF)\include;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\Geography;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release for HSS_Math|x64'">$(BOOST);$(PROTOBUF)\include;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\Geography;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug No MFC|x64'">$(BOOST);$(PROTOBUF)\include;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\Geography;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <ClCompile Include="src/WTimeProto.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="config.h" />
+    <ClInclude Include="include/config.h" />
     <ClInclude Include="include/internal/SunriseSunsetCalc.h" />
     <ClInclude Include="include/internal/Times.h" />
     <ClInclude Include="include/internal/times_internal.h" />
     <ClInclude Include="include/internal/worldlocation.h" />
     <ClInclude Include="include/WTime.h" />
+    <ClInclude Include="include/wtime.pb.h" />
+    <ClInclude Include="include\internal\WTimeProto.h" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ResourceCompile Include="src\Times.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
