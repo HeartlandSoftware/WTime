@@ -501,16 +501,16 @@ INTNM::int16_t WorldLocation::m_sun_rise_set(const WTime &daytime, WTime *Rise, 
 	INTNM::int16_t success = calculator.calcSun(sInput,&sOut);
 
 	WTime riseTime(0ULL, Rise->GetTimeManager()),
-		setTime(0ULL, Rise->GetTimeManager()),
+		setTime(0ULL, Set->GetTimeManager()),
 		noonTime(0ULL, Noon->GetTimeManager());
 	if (!(success & NO_SUNRISE))
 		riseTime = WTime(sOut.YearRise,sOut.MonthRise,sOut.DayRise,sOut.HourRise,sOut.MinRise,(INTNM::int32_t)sOut.SecRise,Rise->GetTimeManager());
 	*Rise = riseTime;
 	if (!(success & NO_SUNSET))
 		setTime = WTime(sOut.YearSet,sOut.MonthSet,sOut.DaySet,sOut.HourSet,sOut.MinSet,(INTNM::int32_t)sOut.SecSet,Set->GetTimeManager());
-		*Set = setTime;
+	*Set = setTime;
 	noonTime = WTime(sInput.year,sInput.month,sInput.day, sOut.SolarNoonHour, sOut.SolarNoonMin, (INTNM::int32_t)sOut.SolarNoonSec,Noon->GetTimeManager());
-		*Noon = noonTime;
+	*Noon = noonTime;
 		
 #ifdef HSS_USE_CACHING
 	sk.m_sun_cache_tm = daytime.GetTime(0);
