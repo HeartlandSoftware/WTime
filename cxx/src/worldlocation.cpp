@@ -20,6 +20,11 @@
 #include "worldlocation.h"
 #include "SunriseSunsetCalc.h"
 
+#include <cmath>
+#include <boost/algorithm/string/predicate.hpp>
+
+extern bool insideCanadaDetail(class Canada **canada, const double latitude, const double longitude);
+extern void insideCanadaCleanup(class Canada *canada);
 
 using namespace HSS_Time;
 using namespace HSS_Time_Private;
@@ -127,7 +132,7 @@ const ::TimeZoneInfo WorldLocation::m_mil_timezones[] = {
 
 
 bool WorldLocation::InsideCanada() const {
-	return InsideCanada(m_latitude, m_longitude);
+	return ((WorldLocation *)this)->InsideCanada(m_latitude, m_longitude);
 }
 
 
@@ -136,7 +141,36 @@ bool WorldLocation::InsideCanada(const double latitude, const double longitude) 
 	if (latitude > DEGREE_TO_RADIAN(83.0))		return false;
 	if (longitude < DEGREE_TO_RADIAN(-141.0))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-52.0))	return false;
+
+#if defined(_MSC_VER) || defined(_USE_CANADA)
+	return insideCanadaDetail(&canada, RADIAN_TO_DEGREE(latitude), RADIAN_TO_DEGREE(longitude));
+#else
+	if (longitude < DEGREE_TO_RADIAN(-122.8)) {
+		if (latitude < DEGREE_TO_RADIAN(48.3))	return false;
+	}
+	else if (longitude < DEGREE_TO_RADIAN(-95.153)) {
+		if (latitude < DEGREE_TO_RADIAN(49.0))	return false;
+	}
+	else if (longitude < DEGREE_TO_RADIAN(-88.0)) {
+		if (latitude < DEGREE_TO_RADIAN(48.0))	return false;
+	}
+	else if (longitude < DEGREE_TO_RADIAN(-83.5)) {
+		if (latitude < DEGREE_TO_RADIAN(45.5))	return false;
+	}
+	else if (longitude < DEGREE_TO_RADIAN(-78.7)) {
+		if (latitude < DEGREE_TO_RADIAN(41.66))	return false;
+	}
+	else if (longitude < DEGREE_TO_RADIAN(-74.75)) {
+		if (latitude < DEGREE_TO_RADIAN(43.65))	return false;
+	}
+	else if (longitude < DEGREE_TO_RADIAN(-67.31)) {
+		if (latitude < DEGREE_TO_RADIAN(45))	return false;
+	}
+	else {
+		if (latitude < DEGREE_TO_RADIAN(43.25))	return false;
+	}
 	return true;
+#endif
 }
 
 
@@ -268,6 +302,8 @@ WorldLocation::WorldLocation()
 	m_startDST = WTimeSpan(0);
 	m_endDST = WTimeSpan(0);
 	m_amtDST = WTimeSpan(0, 1, 0, 0);
+
+	canada = nullptr;
 }
 
 
@@ -277,6 +313,8 @@ WorldLocation::WorldLocation(const WorldLocation &wl)
 #endif
 {
 	*this = wl;
+
+	canada = nullptr;
 }
 
 
@@ -298,6 +336,15 @@ WorldLocation::WorldLocation(double latitude, double longitude, bool guessTimezo
 			m_amtDST = info->m_dst;
 		}
 	}
+
+	canada = nullptr;
+}
+
+
+WorldLocation::~WorldLocation() {
+#if defined(_MSC_VER) || defined(_USE_CANADA)
+	insideCanadaCleanup(canada);
+#endif
 }
 
 
