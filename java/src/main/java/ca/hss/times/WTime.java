@@ -1062,7 +1062,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 */
 	@Override
 	public boolean equals(Object other) {
-		if (other.getClass() == WTime.class) {
+		if (other == null)
+			return false;
+		if (other instanceof WTime) {
 			WTime othertime = (WTime)other;
 			return equal(this, othertime);
 		}

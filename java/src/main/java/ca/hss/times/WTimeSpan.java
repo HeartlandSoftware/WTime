@@ -326,7 +326,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @return
 	 */
 	public long getHours() {
-		return (long)(GetTotalHours() - GetDays() * 24);
+		return (long)(getTotalHours() - getDays() * 24);
 	}
 
 	/**
@@ -342,7 +342,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @return
 	 */
 	public long getMinutes() {
-		return (long)(GetTotalMinutes() - GetTotalHours() * 60);
+		return (long)(getTotalMinutes() - getTotalHours() * 60);
 	}
 
 	/**
@@ -432,6 +432,15 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 			return 0;
 		else
 			return 1;
+	}
+	
+	@Override
+	public boolean equals(Object other) {
+		if (other == null)
+			return false;
+		if (other instanceof WTimeSpan)
+			return m_timeSpan == ((WTimeSpan)other).m_timeSpan;
+		return false;
 	}
 
 	/**
@@ -530,6 +539,16 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 */
 	public void multiply(long value) {
 		m_timeSpan *= value;
+	}
+	
+	/**
+	 * Subtract two timespans without modifying either timespan. 
+	 * @param left The timespan that is on the left side of the subtraction symbol.
+	 * @param right The timespan that is on the right side of the subtraction symbol.
+	 * @return A new timespan that is the difference of the two timespans.
+	 */
+	public static WTimeSpan subtract(WTimeSpan left, WTimeSpan right) {
+		return new WTimeSpan(left.m_timeSpan - right.m_timeSpan, false);
 	}
 
 	/**
