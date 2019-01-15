@@ -111,7 +111,7 @@ WTimeSpan::WTimeSpan(const WTimeSpan &timeSrc) {
 	m_timeSpan = timeSrc.m_timeSpan; 
 }
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 WTimeSpan::WTimeSpan(const CString &timeSrc, INTNM::int16_t *cnt)
 {
 	WTimeSpan w(std::string((LPCTSTR)timeSrc), cnt);
@@ -306,7 +306,7 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 }
 
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 WTimeSpan::WTimeSpan(const COleDateTimeSpan &timeSrc) {
 	WTimeSpan cts((INTNM::int32_t)timeSrc.GetTotalDays(), timeSrc.GetHours(), timeSrc.GetMinutes(), timeSrc.GetSeconds());
 	*this = cts;
@@ -314,7 +314,7 @@ WTimeSpan::WTimeSpan(const COleDateTimeSpan &timeSrc) {
 #endif
 
 
-void WTimeSpan::SetTotalSeconds(INTNM::int64_t secs)			{ m_timeSpan = secs * 1000000LL; }
+void WTimeSpan::SetTotalSeconds(INTNM::int64_t secs)				{ m_timeSpan = secs * 1000000LL; }
 
 
 INTNM::int64_t WTimeSpan::GetYears() const							{ return (INTNM::int64_t)((long double)m_timeSpan / 1000000.0 / 24.0 / 60.0 / 60.0 / 365.25); }
@@ -335,41 +335,52 @@ double WTimeSpan::GetDaysFraction() const							{ return ((double)m_timeSpan) / 
 double WTimeSpan::GetFractionOfDay() const							{ return ((double)(m_timeSpan % (24LL * 60LL * 60LL * 1000000LL))) / (24.0 * 60.0 * 60.0 * 1000000.0); }
 INTNM::int32_t WTimeSpan::GetSecondsOfDay() const					{ return m_timeSpan % (24LL * 60LL * 60LL * 1000000LL); }
 
-void WTimeSpan::PurgeToSecond()					{ m_timeSpan = m_timeSpan - (m_timeSpan % (1000000LL)); }
-void WTimeSpan::PurgeToMinute()					{ m_timeSpan = m_timeSpan - (m_timeSpan % (60LL * 1000000LL)); }
-void WTimeSpan::PurgeToHour()						{ m_timeSpan = m_timeSpan - (m_timeSpan % (60LL * 60LL * 1000000LL)); }
-void WTimeSpan::PurgeToDay()						{ m_timeSpan = m_timeSpan - (m_timeSpan % (60LL * 60LL * 24LL * 1000000LL)); }
+void WTimeSpan::PurgeToSecond()										{ m_timeSpan = m_timeSpan - (m_timeSpan % (1000000LL)); }
+void WTimeSpan::PurgeToMinute()										{ m_timeSpan = m_timeSpan - (m_timeSpan % (60LL * 1000000LL)); }
+void WTimeSpan::PurgeToHour()										{ m_timeSpan = m_timeSpan - (m_timeSpan % (60LL * 60LL * 1000000LL)); }
+void WTimeSpan::PurgeToDay()										{ m_timeSpan = m_timeSpan - (m_timeSpan % (60LL * 60LL * 24LL * 1000000LL)); }
 
-const WTimeSpan& WTimeSpan::operator=(const WTimeSpan &timeSrc) { if (&timeSrc != this) { m_timeSpan = timeSrc.m_timeSpan; } return *this; }
-WTimeSpan WTimeSpan::operator-(const WTimeSpan &timeSpan) const	{ return WTimeSpan(m_timeSpan - timeSpan.m_timeSpan, false); }
-WTimeSpan WTimeSpan::operator+(const WTimeSpan &timeSpan) const	{ return WTimeSpan(m_timeSpan + timeSpan.m_timeSpan, false); }
+const WTimeSpan& WTimeSpan::operator=(const WTimeSpan &timeSrc)		{ if (&timeSrc != this) { m_timeSpan = timeSrc.m_timeSpan; } return *this; }
+WTimeSpan WTimeSpan::operator-(const WTimeSpan &timeSpan) const		{ return WTimeSpan(m_timeSpan - timeSpan.m_timeSpan, false); }
+WTimeSpan WTimeSpan::operator+(const WTimeSpan &timeSpan) const		{ return WTimeSpan(m_timeSpan + timeSpan.m_timeSpan, false); }
 const WTimeSpan& WTimeSpan::operator-=(const WTimeSpan &timeSpan)	{ m_timeSpan -= timeSpan.m_timeSpan; return *this; }
 const WTimeSpan& WTimeSpan::operator+=(const WTimeSpan &timeSpan)	{ m_timeSpan += timeSpan.m_timeSpan; return *this; }
 WTimeSpan WTimeSpan::operator*(INTNM::int32_t factor) const			{ return WTimeSpan(m_timeSpan * factor, false); }
 WTimeSpan WTimeSpan::operator/(INTNM::int32_t factor) const			{ return WTimeSpan(m_timeSpan / factor, false); }
 double WTimeSpan::operator/(const WTimeSpan &timeSpan) const		{ return (double)(((long double)m_timeSpan) / ((long double)timeSpan.m_timeSpan)); }
-WTimeSpan WTimeSpan::operator*(double factor) const			{ return WTimeSpan((INTNM::int64_t)((long double)m_timeSpan * factor), false); }
-WTimeSpan WTimeSpan::operator/(double factor) const			{ return WTimeSpan((INTNM::int64_t)((long double)m_timeSpan / factor), false); }
-const WTimeSpan WTimeSpan::operator*=(INTNM::int32_t factor)			{ m_timeSpan *= factor; return *this; }
-const WTimeSpan WTimeSpan::operator/=(INTNM::int32_t factor)			{ m_timeSpan /= factor; return *this; }
-const WTimeSpan WTimeSpan::operator*=(double f)			{ long double ts = (long double)m_timeSpan; ts *= f; m_timeSpan = (INTNM::int64_t)ts; return *this; }
-const WTimeSpan WTimeSpan::operator/=(double f)			{ long double ts = (long double)m_timeSpan; ts /= f; m_timeSpan = (INTNM::int64_t)ts; return *this; }
+WTimeSpan WTimeSpan::operator*(double factor) const					{ return WTimeSpan((INTNM::int64_t)((long double)m_timeSpan * factor), false); }
+WTimeSpan WTimeSpan::operator/(double factor) const					{ return WTimeSpan((INTNM::int64_t)((long double)m_timeSpan / factor), false); }
+const WTimeSpan WTimeSpan::operator*=(INTNM::int32_t factor)		{ m_timeSpan *= factor; return *this; }
+const WTimeSpan WTimeSpan::operator/=(INTNM::int32_t factor)		{ m_timeSpan /= factor; return *this; }
+const WTimeSpan WTimeSpan::operator*=(double f)						{ long double ts = (long double)m_timeSpan; ts *= f; m_timeSpan = (INTNM::int64_t)ts; return *this; }
+const WTimeSpan WTimeSpan::operator/=(double f)						{ long double ts = (long double)m_timeSpan; ts /= f; m_timeSpan = (INTNM::int64_t)ts; return *this; }
 
-bool WTimeSpan::operator==(const WTimeSpan &timeSpan) const		{ return (m_timeSpan == timeSpan.m_timeSpan); }
-bool WTimeSpan::operator!=(const WTimeSpan &timeSpan) const		{ return (m_timeSpan != timeSpan.m_timeSpan); }
-bool WTimeSpan::operator<(const WTimeSpan &timeSpan) const		{ return (m_timeSpan < timeSpan.m_timeSpan); }
-bool WTimeSpan::operator>(const WTimeSpan &timeSpan) const		{ return (m_timeSpan > timeSpan.m_timeSpan); }
-bool WTimeSpan::operator<=(const WTimeSpan &timeSpan) const		{ return (m_timeSpan <= timeSpan.m_timeSpan); }
-bool WTimeSpan::operator>=(const WTimeSpan &timeSpan) const		{ return (m_timeSpan >= timeSpan.m_timeSpan); }
+bool WTimeSpan::operator==(const WTimeSpan &timeSpan) const			{ return (m_timeSpan == timeSpan.m_timeSpan); }
+bool WTimeSpan::operator!=(const WTimeSpan &timeSpan) const			{ return (m_timeSpan != timeSpan.m_timeSpan); }
+bool WTimeSpan::operator<(const WTimeSpan &timeSpan) const			{ return (m_timeSpan < timeSpan.m_timeSpan); }
+bool WTimeSpan::operator>(const WTimeSpan &timeSpan) const			{ return (m_timeSpan > timeSpan.m_timeSpan); }
+bool WTimeSpan::operator<=(const WTimeSpan &timeSpan) const			{ return (m_timeSpan <= timeSpan.m_timeSpan); }
+bool WTimeSpan::operator>=(const WTimeSpan &timeSpan) const			{ return (m_timeSpan >= timeSpan.m_timeSpan); }
 
 
 bool WTimeSpan::ParseTime(const TCHAR *lpszTime) {
+#ifdef _UNICODE
+    std::vector<char> buffer;
+    size_t size = wcstombs(NULL, lpszTime, 0);
+    if (size > 0)
+    {
+        buffer.resize(size);
+        wcstombs(static_cast<char*>(&buffer[0]), lpszTime, buffer.size());
+    }
+    std::string time(&buffer[0]);
+#else
 	std::string time(lpszTime);
+#endif
 	return ParseTime(time);
 }
 
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 bool WTimeSpan::ParseTime(const CString &time)
 {
 	return ParseTime(std::string((LPCTSTR)time));
@@ -568,7 +579,7 @@ std::string WTimeSpan::ToString(INTNM::uint32_t flags) const {
 }
 
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 COleDateTimeSpan WTimeSpan::AsCOleDateTimeSpan() const {
 	COleDateTimeSpan ts((INTNM::int32_t)GetDays(), GetHours(), GetMinutes(), GetSeconds());
 	return ts;
@@ -711,7 +722,7 @@ void WTimeManager::FromJulian(INTNM::int16_t julian, INTNM::int16_t *year, INTNM
 }
 
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 WTime::WTime(const COleDateTime& timeSrc, const WTimeManager *tm, INTNM::uint32_t flags) {
 	construct_time_t(timeSrc.GetYear(), timeSrc.GetMonth(), timeSrc.GetDay(), timeSrc.GetHour(), timeSrc.GetMinute(), timeSrc.GetSecond() );
 	m_tm = tm;
@@ -734,6 +745,18 @@ WTime WTime::Now(const WTimeManager *tm, INTNM::uint32_t flags)
 
 
 WTime::WTime(const WTimeManager *tm) { 
+	m_tm = tm;
+}
+
+
+WTime::WTime(const WTime& timeSrc) {
+	m_time = timeSrc.m_time;
+	m_tm = timeSrc.m_tm;
+}
+
+
+WTime::WTime(const WTime& timeSrc, const WTimeManager *tm) {
+	m_time = timeSrc.m_time;
 	m_tm = tm;
 }
 
@@ -809,7 +832,7 @@ INTNM::uint64_t WTime::adjusted_tm(INTNM::uint32_t flags) const {
 }
 
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 COleDateTime WTime::AsCOleDateTime(INTNM::uint32_t flags) const {
 	INTNM::uint64_t atm = adjusted_tm(flags);
 	WTime nt(atm, m_tm, false);
@@ -936,9 +959,20 @@ INTNM::uint64_t WTime::GetSecondsIntoYear(INTNM::uint32_t mode) const {
 		return -1;
 
 	INTNM::uint64_t atm = adjusted_tm(mode) / 1000000;
-	WTime year(GetYear(mode), 1, 1, 0, 0, 0.0, m_tm);
+	WTime year(GetYear(mode), 1, 1, 0, 0, 0, m_tm);
 	return (atm - year.GetTotalSeconds());
 }
+
+
+WTimeSpan WTime::GetWTimeSpanIntoYear(INTNM::uint32_t mode) const {
+	if (m_time == (INTNM::uint64_t)(-1))
+		return WTimeSpan(-1, false);
+
+	INTNM::uint64_t atm = adjusted_tm(mode);
+	WTime year(GetYear(mode), 1, 1, 0, 0, 0, m_tm);
+	return WTimeSpan((INTNM::int64_t)(atm - year.m_time), false);
+}
+
 
 bool WTime::IsLeapYear(INTNM::uint32_t flags) const { 
 	if (m_time == (INTNM::uint64_t)(-1))
@@ -975,6 +1009,13 @@ void WTime::PurgeToMinute(INTNM::uint32_t flags)			{ if (m_time != (INTNM::uint6
 void WTime::PurgeToHour(INTNM::uint32_t flags)				{ if (m_time != (INTNM::uint64_t)(-1)) m_time = m_time - (adjusted_tm(flags) % (60LL * 60LL * 1000000LL)); };
 void WTime::PurgeToDay(INTNM::uint32_t flags)				{ if (m_time != (INTNM::uint64_t)(-1)) m_time = m_time - (adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL)); };
 
+
+void WTime::PurgeToYear(INTNM::uint32_t flags) {
+	if (m_time != (INTNM::uint64_t)(-1)) {
+		WTimeSpan secs = GetWTimeSpanIntoYear(flags);
+		m_time -= secs.GetTotalMicroSeconds();
+	}
+}
 
 
 const WTime& WTime::operator++() {
@@ -1041,24 +1082,53 @@ const WTime& WTime::operator=(const WTime& timeSrc) {
 }
 
 
-WTime WTime::operator-(const WTimeSpan &timeSpan) const	{ return WTime(m_time - timeSpan.GetTotalMicroSeconds(), m_tm, false); };
-WTime WTime::operator+(const WTimeSpan &timeSpan) const	{ return WTime(m_time + timeSpan.GetTotalMicroSeconds(), m_tm, false); };
-const WTime& WTime::operator-=(const WTimeSpan &timeSpan)	{ m_time -= timeSpan.GetTotalMicroSeconds(); return *this; };
-const WTime& WTime::operator+=(const WTimeSpan &timeSpan)	{ m_time += timeSpan.GetTotalMicroSeconds(); return *this; };
+const WTime& WTime::SetTime(const WTime& timeSrc) {
+	if (&timeSrc != this)
+		m_time = timeSrc.m_time;
+	return *this;
+}
 
-WTimeSpan WTime::operator-(const WTime& time) const	{ return WTimeSpan(m_time - time.m_time, false); };
-bool WTime::operator==(const WTime &time) const		{ return (m_time == time.m_time); };
-bool WTime::operator!=(const WTime &time) const		{ return (m_time != time.m_time); };
-bool WTime::operator<(const WTime &time) const		{ return (m_time < time.m_time); };
-bool WTime::operator>(const WTime &time) const		{ return (m_time > time.m_time); };
-bool WTime::operator<=(const WTime &time) const		{ return (m_time <= time.m_time); };
-bool WTime::operator>=(const WTime &time) const		{ return (m_time >= time.m_time); };
 
-const std::string WTimeManager::months_abbrev[12] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-const std::string WTimeManager::months[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
-		"October", "November", "December" };
-const std::string WTimeManager::days_abbrev[7] = { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
-const std::string WTimeManager::days[7] = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+bool WTime::operator==(const WTime &time) const {
+
+#ifdef _DEBUG
+	assert(m_time != (INTNM::uint64_t)(-1000000));
+	if ((m_time != (INTNM::uint64_t)-1) && (m_time != (INTNM::uint64_t)0) &&
+		(time.m_time != (INTNM::uint64_t)-1) && (time.m_time != (INTNM::uint64_t)0))
+		assert(time.m_tm == m_tm);
+#endif
+
+	return (m_time == time.m_time);
+}
+
+
+bool WTime::operator!=(const WTime &time) const {
+
+#ifdef _DEBUG
+	assert(m_time != (INTNM::uint64_t)(-1000000));
+	if ((m_time != (INTNM::uint64_t)-1) && (m_time != (INTNM::uint64_t)0) &&
+		(time.m_time != (INTNM::uint64_t)-1) && (time.m_time != (INTNM::uint64_t)0))
+		assert(time.m_tm == m_tm);
+#endif
+
+	return (m_time != time.m_time);
+}
+
+
+WTime WTime::operator-(const WTimeSpan &timeSpan) const		{ if (m_time != (INTNM::uint64_t)(-1)) return WTime(m_time - timeSpan.GetTotalMicroSeconds(), m_tm, false); return *this; }
+WTime WTime::operator+(const WTimeSpan &timeSpan) const		{ if (m_time != (INTNM::uint64_t)(-1)) return WTime(m_time + timeSpan.GetTotalMicroSeconds(), m_tm, false); return *this; }
+const WTime& WTime::operator-=(const WTimeSpan &timeSpan)	{ if (m_time != (INTNM::uint64_t)(-1)) m_time -= timeSpan.GetTotalMicroSeconds(); return *this; }
+const WTime& WTime::operator+=(const WTimeSpan &timeSpan)	{ if (m_time != (INTNM::uint64_t)(-1)) m_time += timeSpan.GetTotalMicroSeconds(); return *this; }
+WTimeSpan WTime::operator-(const WTime& time) const			{ assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return WTimeSpan(m_time - time.m_time, false); return WTimeSpan(-1, false); }
+bool WTime::operator<(const WTime &time) const				{ assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time < time.m_time); return false; }
+bool WTime::operator>(const WTime &time) const				{ assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time > time.m_time); return false; }
+bool WTime::operator<=(const WTime &time) const				{ assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time <= time.m_time); return false; }
+bool WTime::operator>=(const WTime &time) const				{ assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time >= time.m_time); return false; }
+
+const char *WTimeManager::months_abbrev[12]		= { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
+const char *WTimeManager::months[12]			= { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+const char *WTimeManager::days_abbrev[7]		= { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+const char *WTimeManager::days[7]				= { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
 
 
 std::string WTime::ToString(INTNM::uint32_t flags) const {
@@ -1161,21 +1231,24 @@ std::string WTime::ToString(INTNM::uint32_t flags) const {
 		str += buff;
 	}
 
-	if ((flags & WTIME_FORMAT_STRING_TIMEZONE))
+	if (((flags & WTIME_FORMAT_STRING_TIMEZONE)) && (m_tm))
 	{
 		int64_t offset = m_tm->m_worldLocation.m_timezone.GetTotalMinutes();
-		uint64_t intoYear = GetSecondsIntoYear(0);
-		if (m_tm->m_worldLocation.m_startDST < m_tm->m_worldLocation.m_endDST)
+		if (m_tm->m_worldLocation.m_startDST != m_tm->m_worldLocation.m_endDST)
 		{
-			if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() <= intoYear) &&
-				(intoYear < (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
-				offset += m_tm->m_worldLocation.m_amtDST.GetTotalMinutes();
-		}
-		else
-		{
-			if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() < intoYear) ||
-				(intoYear <= (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
-				offset += m_tm->m_worldLocation.m_amtDST.GetTotalMinutes();
+			uint64_t intoYear = GetSecondsIntoYear(0);
+			if (m_tm->m_worldLocation.m_startDST < m_tm->m_worldLocation.m_endDST)
+			{
+				if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() <= intoYear) &&
+					(intoYear < (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
+					offset += m_tm->m_worldLocation.m_amtDST.GetTotalMinutes();
+			}
+			else
+			{
+				if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() < intoYear) ||
+					(intoYear <= (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
+					offset += m_tm->m_worldLocation.m_amtDST.GetTotalMinutes();
+			}
 		}
 		if (offset == 0)
 			str += "Z";
@@ -1194,7 +1267,7 @@ std::string WTime::ToString(INTNM::uint32_t flags) const {
 				hourOffset++;
 				offset -= 60;
 			}
-			tm_snprintf(buff, 128, "%02d:%02d", hourOffset, offset);
+			tm_snprintf(buff, 128, "%02d:%02ld", hourOffset, offset);
 			str += buff;
 		}
 	}
@@ -1202,7 +1275,7 @@ std::string WTime::ToString(INTNM::uint32_t flags) const {
 }
 
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 bool WTime::systemParseDateTime(const TCHAR *lpszDate, INTNM::uint32_t flags) {
 	DWORD ole_flags = LOCALE_NOUSEROVERRIDE;
 	if (!(flags & WTIME_FORMAT_TIME))
@@ -1233,6 +1306,13 @@ bool str2int(INTNM::int32_t &i, char const *s, INTNM::int32_t base = 0)
 		return false;
 	i = l;
 	return true;
+}
+
+
+bool WTime::ParseDateTime(const std::wstring &lpszDate, INTNM::uint32_t flags)
+{
+	auto converted = std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t>().to_bytes(lpszDate);
+	return ParseDateTime(converted, flags);
 }
 
 
@@ -1509,7 +1589,7 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 }
 
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 CArchive& AFXAPI HSS_Time::operator<<(CArchive& ar, WTimeSpan timeSpan)	{
 	INTNM::uint64_t milli_id = 0x7ffeeffccffaaffd;
 	return ar << milli_id << timeSpan.m_timeSpan;

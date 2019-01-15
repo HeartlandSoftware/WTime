@@ -268,7 +268,8 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param tm the time manager that describes how the time is to be interpreted
 	 */
 	public WTime(long nYear, long nMonth, long nDay, long nHour, long nMin, long nSec, WTimeManager tm) {
-		construct_time_t(nYear, nMonth, nDay, nHour, nMin, nSec);
+		construct_time_t(nYear, nMonth, nDay, nHour, nMin, 0L);
+		m_time += (long)(nSec * 1000000.0);
 		m_tm = tm;
 	}
 
