@@ -356,6 +356,15 @@ public class WTime implements Serializable, Comparable<WTime> {
 		}
 		return new WTime(nYear, nMonth, nDay, nHour, nMin, nSec, tm);
 	}
+	
+	public WTime Now(WTimeManager tm, long flags) {
+		Calendar t = Calendar.getInstance();
+		int seconds = t.get(Calendar.SECOND);
+	    if (flags == FORMAT_EXCLUDE_SECONDS)
+	        seconds = 0;
+	    WTime temp = fromLocal(t.get(Calendar.YEAR), t.get(Calendar.MONTH), t.get(Calendar.DAY_OF_MONTH), t.get(Calendar.HOUR), t.get(Calendar.MINUTE), seconds, tm);
+	    return new WTime(temp, flags, (short)-1);
+	}
 
 	/**
 	 * Get the second offset with the given formatting parameters.
