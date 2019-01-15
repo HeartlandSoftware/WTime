@@ -21,7 +21,7 @@ package ca.hss.times;
 
 import ca.hss.general.OutVariable;
 
-import static ca.hss.math.general.*;
+import static ca.hss.math.General.*;
 
 /**
  * Calculates sunrise and sunset times.
@@ -60,20 +60,20 @@ public class SunriseSunsetCalc {
 		OutVariable<Integer> minOut = new OutVariable<Integer>();
 		OutVariable<Integer> secOut = new OutVariable<Integer>();
 		
-		double latitude = latLongForm.Latitude;
-		double longitude = latLongForm.Longitude;
+		double latitude = latLongForm.latitude;
+		double longitude = latLongForm.longitude;
 
 
 		if (true)
 		{
 			if((latitude >= -90) && (latitude < -89.8))
 			{
-				latLongForm.Latitude = -89.8;
+				latLongForm.latitude = -89.8;
 				latitude = -89.8;
 			}
 			if ((latitude <= 90) && (latitude > 89.8))
 			{
-				latLongForm.Latitude= 89.8;
+				latLongForm.latitude= 89.8;
 				latitude = 89.8;
 			}
 			
@@ -115,7 +115,7 @@ public class SunriseSunsetCalc {
 			}
 
 
-			double daySavings=latLongForm.DaytimeSaving?60:0;
+			double daySavings = latLongForm.daytimeSaving ? 60 : 0;
 			int zone = latLongForm.timezone;
 			if(zone > 12 || zone < -12.5)
 			{
@@ -129,12 +129,12 @@ public class SunriseSunsetCalc {
 				double riseTimeLST = riseTimeGMT - (60 * zone) + daySavings;	
 					//	in minutes
 				timeStringShortAMPM(riseTimeLST, JD, yearOut, monthOut, dayOut, hourOut, minOut, secOut);
-				riseSetForm.YearRise=(Integer)yearOut.value;
-				riseSetForm.MonthRise=(Integer)monthOut.value;
-				riseSetForm.DayRise=(Integer)dayOut.value;
-				riseSetForm.HourRise=(Integer)hourOut.value;
-				riseSetForm.MinRise=(Integer)minOut.value;
-				riseSetForm.SecRise=(Integer)secOut.value;
+				riseSetForm.yearRise=(Integer)yearOut.value;
+				riseSetForm.monthRise=(Integer)monthOut.value;
+				riseSetForm.dayRise=(Integer)dayOut.value;
+				riseSetForm.hourRise=(Integer)hourOut.value;
+				riseSetForm.minRise=(Integer)minOut.value;
+				riseSetForm.secRise=(Integer)secOut.value;
 
 				timeStringDate(riseTimeGMT, JD, yearOut, monthOut, dayOut, hourOut, minOut, secOut);
 			}
@@ -143,12 +143,12 @@ public class SunriseSunsetCalc {
 			{
 				double setTimeLST = setTimeGMT - (60 * zone) + daySavings;
 				timeStringShortAMPM(setTimeLST, JD, yearOut, monthOut, dayOut, hourOut, minOut, secOut);
-				riseSetForm.YearSet=(Integer)yearOut.value;
-				riseSetForm.MonthSet=(Integer)monthOut.value;
-				riseSetForm.DaySet=(Integer)dayOut.value;
-				riseSetForm.HourSet=(Integer)hourOut.value;
-				riseSetForm.MinSet=(Integer)minOut.value;
-				riseSetForm.SecSet=(Integer)secOut.value;
+				riseSetForm.yearSet=(Integer)yearOut.value;
+				riseSetForm.monthSet=(Integer)monthOut.value;
+				riseSetForm.daySet=(Integer)dayOut.value;
+				riseSetForm.hourSet=(Integer)hourOut.value;
+				riseSetForm.minSet=(Integer)minOut.value;
+				riseSetForm.secSet=(Integer)secOut.value;
 				timeStringDate(setTimeGMT, JD, yearOut, monthOut, dayOut, hourOut, minOut, secOut);
 
 			}
@@ -159,9 +159,9 @@ public class SunriseSunsetCalc {
 			double solNoonLST = solNoonGMT - (60 * zone) + daySavings;
 
 			timeString(solNoonLST, hourOut, minOut, secOut);
-			riseSetForm.SolarNoonHour=(Integer)hourOut.value;
-			riseSetForm.SolarNoonMin=(Integer)minOut.value;
-			riseSetForm.SolarNoonSec=(Integer)secOut.value;
+			riseSetForm.solarNoonHour=(Integer)hourOut.value;
+			riseSetForm.solarNoonMin=(Integer)minOut.value;
+			riseSetForm.solarNoonSec=(Integer)secOut.value;
 
 			timeString(solNoonGMT, hourOut, minOut, secOut);
 
@@ -191,12 +191,12 @@ public class SunriseSunsetCalc {
 					}
 
 					timeStringAMPMDate(newtime, newjd, yearOut, monthOut, dayOut, hourOut, minOut, secOut);
-					riseSetForm.YearRise=(Integer)yearOut.value;
-					riseSetForm.MonthRise=(Integer)monthOut.value;
-					riseSetForm.DayRise=(Integer)dayOut.value;
-					riseSetForm.HourRise=(Integer)hourOut.value;
-					riseSetForm.MinRise=(Integer)minOut.value;
-					riseSetForm.SecRise=(Integer)secOut.value;
+					riseSetForm.yearRise=(Integer)yearOut.value;
+					riseSetForm.monthRise=(Integer)monthOut.value;
+					riseSetForm.dayRise=(Integer)dayOut.value;
+					riseSetForm.hourRise=(Integer)hourOut.value;
+					riseSetForm.minRise=(Integer)minOut.value;
+					riseSetForm.secRise=(Integer)secOut.value;
 
 				}
 
@@ -222,12 +222,12 @@ public class SunriseSunsetCalc {
 					}
 
 					timeStringAMPMDate(newtime, newjd, yearOut, monthOut, dayOut, hourOut, minOut, secOut);
-					riseSetForm.YearRise=(Integer)yearOut.value;
-					riseSetForm.MonthRise=(Integer)monthOut.value;
-					riseSetForm.DayRise=(Integer)dayOut.value;
-					riseSetForm.HourRise=(Integer)hourOut.value;
-					riseSetForm.MinRise=(Integer)minOut.value;
-					riseSetForm.SecRise=(Integer)secOut.value;
+					riseSetForm.yearRise=(Integer)yearOut.value;
+					riseSetForm.monthRise=(Integer)monthOut.value;
+					riseSetForm.dayRise=(Integer)dayOut.value;
+					riseSetForm.hourRise=(Integer)hourOut.value;
+					riseSetForm.minRise=(Integer)minOut.value;
+					riseSetForm.secRise=(Integer)secOut.value;
 
 				}
 				else 
@@ -258,12 +258,12 @@ public class SunriseSunsetCalc {
 					}
 
 					timeStringAMPMDate(newtime, newjd, yearOut, monthOut, dayOut, hourOut, minOut, secOut);
-					riseSetForm.YearSet=(Integer)yearOut.value;
-					riseSetForm.MonthSet=(Integer)monthOut.value;
-					riseSetForm.DaySet=(Integer)dayOut.value;
-					riseSetForm.HourSet=(Integer)hourOut.value;
-					riseSetForm.MinSet=(Integer)minOut.value;
-					riseSetForm.SecSet=(Integer)secOut.value;
+					riseSetForm.yearSet=(Integer)yearOut.value;
+					riseSetForm.monthSet=(Integer)monthOut.value;
+					riseSetForm.daySet=(Integer)dayOut.value;
+					riseSetForm.hourSet=(Integer)hourOut.value;
+					riseSetForm.minSet=(Integer)minOut.value;
+					riseSetForm.secSet=(Integer)secOut.value;
 
 				}
 
@@ -289,12 +289,12 @@ public class SunriseSunsetCalc {
 					}
  
 					timeStringAMPMDate(newtime, newjd, yearOut, monthOut, dayOut, hourOut, minOut, secOut);
-					riseSetForm.YearSet=(Integer)yearOut.value;
-					riseSetForm.MonthSet=(Integer)monthOut.value;
-					riseSetForm.DaySet=(Integer)dayOut.value;
-					riseSetForm.HourSet=(Integer)hourOut.value;
-					riseSetForm.MinSet=(Integer)minOut.value;
-					riseSetForm.SecSet=(Integer)secOut.value;
+					riseSetForm.yearSet=(Integer)yearOut.value;
+					riseSetForm.monthSet=(Integer)monthOut.value;
+					riseSetForm.daySet=(Integer)dayOut.value;
+					riseSetForm.hourSet=(Integer)hourOut.value;
+					riseSetForm.minSet=(Integer)minOut.value;
+					riseSetForm.secSet=(Integer)secOut.value;
 
 				}
 

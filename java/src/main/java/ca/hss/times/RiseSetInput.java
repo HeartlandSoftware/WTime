@@ -28,11 +28,11 @@ class RiseSetInput {
 	/**
 	 * The latitude (west positive, in radians).
 	 */
-	public double Latitude;
+	public double latitude;
 	/**
 	 * The longitude (west positive, in radians).
 	 */
-	public double Longitude;
+	public double longitude;
 	/**
 	 * The year to calculate the sunrise/sunset for.
 	 */
@@ -52,5 +52,5 @@ class RiseSetInput {
 	/**
 	 * If the timezone is currently in daylight savings time (adds and hour to the timezone offset).
 	 */
-	public boolean DaytimeSaving;
+	public boolean daytimeSaving;
 }

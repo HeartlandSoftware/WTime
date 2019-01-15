@@ -84,7 +84,7 @@ public class WTimeManager {
 	 * @param index one of the ITERATION_ constants
 	 * @return
 	 */
-	public WTimeSpan TimeForIndex(int index) {
+	public WTimeSpan timeForIndex(int index) {
 		switch (index) {
 		case ITERATION_1SEC:
 			return new WTimeSpan(1);
@@ -112,7 +112,7 @@ public class WTimeManager {
 	 * @param time
 	 * @return
 	 */
-	public int IterationIndex(WTimeSpan time) {
+	public int iterationIndex(WTimeSpan time) {
 		long iteration_amt[] = {
 				1 * 1000000L,
 				60 * 1000000L,
@@ -126,7 +126,7 @@ public class WTimeManager {
 
 			int i;
 			for (i = 0; i < ITERATION_1WEEK; i++)
-				if (iteration_amt[i] >= time.GetTotalSeconds())
+				if (iteration_amt[i] >= time.getTotalSeconds())
 					break;
 			return i;
 	}
@@ -171,7 +171,7 @@ public class WTimeManager {
 	 * @param year the year to check
 	 * @return 366 if the year is a leap year, 365 otherwise
 	 */
-	static public short GetJulianCount(short year) {
+	static public short getJulianCount(short year) {
 		if (isLeapYear(year)) return 366; return 365;
 	}
 
@@ -179,17 +179,17 @@ public class WTimeManager {
 		short i;
 
 		if (julian.value > 0) {
-			i = GetJulianCount(year.value);
+			i = getJulianCount(year.value);
 			while (julian.value > i) {
 				year.value++;
 				julian.value = (short)(julian.value - i);
-				i = GetJulianCount(year.value);
+				i = getJulianCount(year.value);
 			}
 		}
 		else {
 			while (julian.value < 0) {
 				year.value--;
-				julian.value = (short)(julian.value + GetJulianCount(year.value));
+				julian.value = (short)(julian.value + getJulianCount(year.value));
 			}
 		}
 	}
@@ -201,7 +201,7 @@ public class WTimeManager {
 	 * @param day
 	 * @return
 	 */
-	static public short ToJulian(short year, short month, short day) {
+	static public short toJulian(short year, short month, short day) {
 		short i, calculated = 0;
 		if (year < 70)
 			year += 2000;
@@ -240,7 +240,7 @@ public class WTimeManager {
 	}
 
 	// converts month+day to julian (origin 0) for the provided year
-	static public void FromJulian(OutVariable<Short> julian, OutVariable<Short> year, OutVariable<Short> month, OutVariable<Short> day) {
+	static public void fromJulian(OutVariable<Short> julian, OutVariable<Short> year, OutVariable<Short> month, OutVariable<Short> day) {
 		if (year.value < 70)
 			year.value = (short)(year.value + 2000);
 		else if (year.value < 100)

@@ -204,22 +204,22 @@ public class WTime implements Serializable, Comparable<WTime> {
 		long time;
 		if (m_tm != null) {
 			if((flags & FORMAT_AS_LOCAL) != 0)
-				time = m_time + m_tm.getWorldLocation().m_TimeZone.GetTotalMicroSeconds();
+				time = m_time + m_tm.getWorldLocation().m_TimeZone.getTotalMicroSeconds();
 			else if ((flags & FORMAT_AS_SOLAR) != 0)
-				time = m_time + m_tm.getWorldLocation().m_solar_timezone(this).GetTotalMicroSeconds();
+				time = m_time + m_tm.getWorldLocation().m_solar_timezone(this).getTotalMicroSeconds();
 			else	time = m_time;
 
-			if (((flags & FORMAT_WITHDST)) != 0 && (WTimeSpan.NotEqual(m_tm.getWorldLocation().m_StartDST, m_tm.getWorldLocation().m_EndDST))) {
+			if (((flags & FORMAT_WITHDST)) != 0 && (WTimeSpan.notEqual(m_tm.getWorldLocation().m_StartDST, m_tm.getWorldLocation().m_EndDST))) {
 				WTime t = new WTime(time, null, false);
-				long secs = t.GetSecondsIntoYear((short)0);
+				long secs = t.getSecondsIntoYear((short)0);
 				if (m_tm.getWorldLocation().m_EndDST.compareTo(m_tm.getWorldLocation().m_StartDST) == 1) {
-					if (((long)m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() <= secs) &&
-					    (secs < (long)m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
-						time += m_tm.getWorldLocation().m_AmtDST.GetTotalMicroSeconds();
+					if (((long)m_tm.getWorldLocation().m_StartDST.getTotalSeconds() <= secs) &&
+					    (secs < (long)m_tm.getWorldLocation().m_EndDST.getTotalSeconds()))
+						time += m_tm.getWorldLocation().m_AmtDST.getTotalMicroSeconds();
 				} else {
-					if (((long)m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() < secs) ||
-					    (secs <= (long)m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
-						time += m_tm.getWorldLocation().m_AmtDST.GetTotalMicroSeconds();
+					if (((long)m_tm.getWorldLocation().m_StartDST.getTotalSeconds() < secs) ||
+					    (secs <= (long)m_tm.getWorldLocation().m_EndDST.getTotalSeconds()))
+						time += m_tm.getWorldLocation().m_AmtDST.getTotalMicroSeconds();
 				}
 			}
 		} else	time = m_time;
@@ -326,9 +326,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @return a new WTime instance for the given date and time
 	 */
 	public static WTime fromLocal(int nYear, int nMonth, int nDay, int nHour, int nMin, int nSec, WTimeManager tm) {
-		nHour -= tm.getWorldLocation().m_TimeZone.GetHours();
-		if (!WTimeSpan.Equal(tm.getWorldLocation().m_StartDST, tm.getWorldLocation().m_EndDST))
-			nHour -= tm.getWorldLocation().m_AmtDST.GetHours();
+		nHour -= tm.getWorldLocation().m_TimeZone.getHours();
+		if (!WTimeSpan.equal(tm.getWorldLocation().m_StartDST, tm.getWorldLocation().m_EndDST))
+			nHour -= tm.getWorldLocation().m_AmtDST.getHours();
 		if (nHour < 0) {
 			nHour += 24;
 			nDay -= 1;
@@ -362,7 +362,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param mode
 	 * @return
 	 */
-	public long GetTime(long mode) {
+	public long getTime(long mode) {
 		return adjusted_tm(mode) / 1000000L;
 	}
 
@@ -370,7 +370,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * Get the total number of seconds stored.
 	 * @return
 	 */
-	public long GetTotalSeconds() {
+	public long getTotalSeconds() {
 		return m_time / 1000000L;
 	}
 
@@ -378,7 +378,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * Get the total number of microseconds stored.
 	 * @return
 	 */
-	public long GetTotalMicroSeconds() {
+	public long getTotalMicroSeconds() {
 		return m_time;
 	}
 
@@ -386,7 +386,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * Get the associated time manager.
 	 * @return
 	 */
-	public WTimeManager GetTimeManager() {
+	public WTimeManager getTimeManager() {
 		return m_tm;
 	}
 
@@ -395,7 +395,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param tm the new time manager
 	 * @return
 	 */
-	public WTimeManager SetTimeManager(WTimeManager tm) {
+	public WTimeManager setTimeManager(WTimeManager tm) {
 		m_tm = tm;
 		return m_tm;
 	}
@@ -405,7 +405,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public long GetHour(long flags) {
+	public long getHour(long flags) {
 		return (long)((adjusted_tm(flags) / (60L * 60L * 1000000L)) % 24);
 	}
 
@@ -414,7 +414,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public long GetMinute(long flags) {
+	public long getMinute(long flags) {
 		return (long)((adjusted_tm(flags) / (60L * 1000000L)) % 60);
 	}
 
@@ -423,7 +423,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public long GetSecond(long flags) {
+	public long getSecond(long flags) {
 		return (long)((adjusted_tm(flags) / 1000000L) % 60);
 	}
 
@@ -432,7 +432,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public long GetMicroSeconds(long flags) {
+	public long getMicroSeconds(long flags) {
 		return (long)((adjusted_tm(flags) % 1000000L));
 	}
 
@@ -441,7 +441,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public WTimeSpan GetTimeOfDay(long flags) {
+	public WTimeSpan getTimeOfDay(long flags) {
 		long time = adjusted_tm(flags) % (60L * 60L * 24L * 1000000L);
 		return new WTimeSpan(time, false);
 	}
@@ -451,7 +451,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public long GetDayOfWeek(long flags) {
+	public long getDayOfWeek(long flags) {
 		long days = adjusted_tm(flags) / (24L * 60L * 60L * 1000000L) + 0;
 		long ret = (long)(days % 7);
 		return ret == 0 ? 7 : ret;
@@ -462,9 +462,9 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public long GetDayOfYear(long flags) {
+	public long getDayOfYear(long flags) {
 		long atm = adjusted_tm(flags) / 24 / 60 / 60 / 1000000;
-		WTime year = new WTime(GetYear(flags), 1, 1, 0, 0, 0, m_tm);
+		WTime year = new WTime(getYear(flags), 1, 1, 0, 0, 0, m_tm);
 		long year_atm = year.adjusted_tm(0) / 24 / 60 / 60 / 1000000;
 		return (atm - year_atm) + 1;
 	}
@@ -474,10 +474,10 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public long GetSecondsIntoYear(long flags) {
+	public long getSecondsIntoYear(long flags) {
 		long atm = adjusted_tm(flags) / 1000000;
-		WTime year = new WTime(GetYear(flags), 1, 1, 0, 0, 0, m_tm);
-		return (atm - year.GetTotalSeconds());
+		WTime year = new WTime(getYear(flags), 1, 1, 0, 0, 0, m_tm);
+		return (atm - year.getTotalSeconds());
 	}
 
 	/**
@@ -485,10 +485,10 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public double GetDayFractionOfYear(long flags) {
+	public double getDayFractionOfYear(long flags) {
 		long atm = adjusted_tm(flags) / 1000000;
-		WTime year = new WTime(GetYear(flags), 1, 1, 0, 0, 0, m_tm);
-		long total_secs = atm - year.GetTotalSeconds();
+		WTime year = new WTime(getYear(flags), 1, 1, 0, 0, 0, m_tm);
+		long total_secs = atm - year.getTotalSeconds();
 		return ((double)total_secs) / (24.0 * 60.0 * 60.0) + 1.0;
 	}
 
@@ -497,15 +497,15 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public boolean IsLeapYear(long flags) {
-		return WTimeManager.isLeapYear((short)GetYear(flags));
+	public boolean isLeapYear(long flags) {
+		return WTimeManager.isLeapYear((short)getYear(flags));
 	}
 
 	/**
 	 * Purge all time steps below seconds.
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 */
-	public void PurgeToSecond(long flags) {
+	public void purgeToSecond(long flags) {
 		m_time = m_time - (adjusted_tm(flags) % (1000000L));
 	}
 
@@ -513,7 +513,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * Purge all time steps below minutes.
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 */
-	public void PurgeToMinute(long flags) {
+	public void purgeToMinute(long flags) {
 		m_time = m_time - (adjusted_tm(flags) % (60L * 1000000L));
 	}
 
@@ -521,7 +521,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * Purge all time steps below hours.
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 */
-	public void PurgeToHour(long flags) {
+	public void purgeToHour(long flags) {
 		m_time = m_time - (adjusted_tm(flags) % (60L * 60L * 1000000L));
 	}
 
@@ -529,7 +529,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * Purge all time steps below days.
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 */
-	public void PurgeToDay(long flags) {
+	public void purgeToDay(long flags) {
 		m_time = m_time - (adjusted_tm(flags) % (60L * 60L * 24L * 1000000L));
 	}
 
@@ -538,7 +538,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public long GetYear(long flags) {
+	public long getYear(long flags) {
 		long z = adjusted_tm(flags) / 24 / 60 / 60 / 1000000;
 		z += 2305448;
 
@@ -557,7 +557,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public long GetMonth(long flags) {       // month of year (1 = Jan)
+	public long getMonth(long flags) {       // month of year (1 = Jan)
 		long z = adjusted_tm(flags) / 24 / 60 / 60 / 1000000;
 		z += 2305448;
 		long a = z + 32044;
@@ -575,7 +575,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags potential flags are FORMAT_AS_LOCAL or FORMAT_WITHDST
 	 * @return
 	 */
-	public long GetDay(long flags) {
+	public long getDay(long flags) {
 		long z = adjusted_tm(flags) / 24 / 60 / 60 / 1000000;
 		z += 2305448;
 
@@ -605,19 +605,19 @@ public class WTime implements Serializable, Comparable<WTime> {
 			return str;
 		}
 
-		year = (int)GetYear(flags);
-		month = (int)GetMonth(flags);
-		day = (int)GetDay(flags);
-		hour = (int)GetHour(flags);
-		minute = (int)GetMinute(flags);
-		second = (int)GetSecond(flags);
-		usecs = (int)GetMicroSeconds(flags);
+		year = (int)getYear(flags);
+		month = (int)getMonth(flags);
+		day = (int)getDay(flags);
+		hour = (int)getHour(flags);
+		minute = (int)getMinute(flags);
+		second = (int)getSecond(flags);
+		usecs = (int)getMicroSeconds(flags);
 
 		assert second >= 0 && second < 60;
 		assert minute >= 0 && minute < 60;
 		assert hour >= 0 && hour < 24;
 
-		day_of_week = ((int)GetDayOfWeek(flags));
+		day_of_week = ((int)getDayOfWeek(flags));
 
 		// decide if we should be abbreviating things or not
 		if ((flags & FORMAT_ABBREV) == FORMAT_ABBREV) {
@@ -711,17 +711,17 @@ public class WTime implements Serializable, Comparable<WTime> {
 		}
 		
 		if ((flags & FORMAT_STRING_TIMEZONE) != 0) {
-			long offset = m_tm.getWorldLocation().m_TimeZone.GetTotalMinutes();
-			long intoYear = GetSecondsIntoYear(0);
-			if (WTimeSpan.NotEqual(m_tm.getWorldLocation().m_EndDST, m_tm.getWorldLocation().m_StartDST)) {
-				if (WTimeSpan.LessThan(m_tm.getWorldLocation().m_StartDST, m_tm.getWorldLocation().m_EndDST)) {
-					if ((m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() <= intoYear) &&
-						(intoYear < m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
-						offset += m_tm.getWorldLocation().m_AmtDST.GetTotalMinutes();
+			long offset = m_tm.getWorldLocation().m_TimeZone.getTotalMinutes();
+			long intoYear = getSecondsIntoYear(0);
+			if (WTimeSpan.notEqual(m_tm.getWorldLocation().m_EndDST, m_tm.getWorldLocation().m_StartDST)) {
+				if (WTimeSpan.lessThan(m_tm.getWorldLocation().m_StartDST, m_tm.getWorldLocation().m_EndDST)) {
+					if ((m_tm.getWorldLocation().m_StartDST.getTotalSeconds() <= intoYear) &&
+						(intoYear < m_tm.getWorldLocation().m_EndDST.getTotalSeconds()))
+						offset += m_tm.getWorldLocation().m_AmtDST.getTotalMinutes();
 				}
-				else if ((m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() < intoYear) ||
-						 (intoYear <= m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
-					offset += m_tm.getWorldLocation().m_AmtDST.GetTotalMinutes();
+				else if ((m_tm.getWorldLocation().m_StartDST.getTotalSeconds() < intoYear) ||
+						 (intoYear <= m_tm.getWorldLocation().m_EndDST.getTotalSeconds()))
+					offset += m_tm.getWorldLocation().m_AmtDST.getTotalMinutes();
 			}
 			
 			if (offset == 0)
@@ -762,12 +762,12 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 */
 	public Calendar toCalendar(long flags) {
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.YEAR, (int)GetYear(flags));
-		cal.set(Calendar.MONTH, (int)GetMonth(flags));
-		cal.set(Calendar.DAY_OF_MONTH, (int)GetDay(flags));
-		cal.set(Calendar.HOUR_OF_DAY, (int)GetHour(flags));
-		cal.set(Calendar.MINUTE, (int)GetMinute(flags));
-		cal.set(Calendar.SECOND, (int)GetSecond(flags));
+		cal.set(Calendar.YEAR, (int)getYear(flags));
+		cal.set(Calendar.MONTH, (int)getMonth(flags));
+		cal.set(Calendar.DAY_OF_MONTH, (int)getDay(flags));
+		cal.set(Calendar.HOUR_OF_DAY, (int)getHour(flags));
+		cal.set(Calendar.MINUTE, (int)getMinute(flags));
+		cal.set(Calendar.SECOND, (int)getSecond(flags));
 		return cal;
 	}
 
@@ -777,8 +777,8 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param flags FORMAT_ flags that describe the layout of the string
 	 * @return
 	 */
-	public boolean ParseDateTime(String lpszDate, long flags) {
-		String d = new String(lpszDate);
+	public boolean parseDateTime(String lpszDate, long flags) {
+		String d = lpszDate;
 		d = d.trim();
 		if ((flags & FORMAT_PARSE_USING_SYSTEM) != 0)
 			return false;
@@ -997,16 +997,16 @@ public class WTime implements Serializable, Comparable<WTime> {
 					hour = min = sec = 0;
 				}
 				else {
-					hour = ts.GetHours();
-					min = ts.GetMinutes();
-					sec = ts.GetSeconds();
+					hour = ts.getHours();
+					min = ts.getMinutes();
+					sec = ts.getSeconds();
 				}
 				
 				if (timezone != null) {
 					ts = new WTimeSpan(timezone, s);
 					time_scan = s.value;
 					if (time_scan != 0) {
-						secondOffset = ts.GetTotalSeconds();
+						secondOffset = ts.getTotalSeconds();
 						if (negative)
 							secondOffset = -secondOffset;
 					}
@@ -1021,21 +1021,21 @@ public class WTime implements Serializable, Comparable<WTime> {
 			WTime t = new WTime(year, month, day, hour, min, sec, m_tm);
 			
 			if (secondOffset != 0) {
-				long offset = m_tm.getWorldLocation().m_TimeZone.GetTotalSeconds();
-				long intoYear = GetSecondsIntoYear(0);
-				if (WTimeSpan.NotEqual(m_tm.getWorldLocation().m_EndDST, m_tm.getWorldLocation().m_StartDST)) {
-					if (WTimeSpan.LessThan(m_tm.getWorldLocation().m_StartDST, m_tm.getWorldLocation().m_EndDST)) {
-						if ((m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() <= intoYear) &&
-							(intoYear < m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
-							offset += m_tm.getWorldLocation().m_AmtDST.GetTotalMinutes();
+				long offset = m_tm.getWorldLocation().m_TimeZone.getTotalSeconds();
+				long intoYear = getSecondsIntoYear(0);
+				if (WTimeSpan.notEqual(m_tm.getWorldLocation().m_EndDST, m_tm.getWorldLocation().m_StartDST)) {
+					if (WTimeSpan.lessThan(m_tm.getWorldLocation().m_StartDST, m_tm.getWorldLocation().m_EndDST)) {
+						if ((m_tm.getWorldLocation().m_StartDST.getTotalSeconds() <= intoYear) &&
+							(intoYear < m_tm.getWorldLocation().m_EndDST.getTotalSeconds()))
+							offset += m_tm.getWorldLocation().m_AmtDST.getTotalMinutes();
 					}
-					else if ((m_tm.getWorldLocation().m_StartDST.GetTotalSeconds() < intoYear) ||
-							 (intoYear <= m_tm.getWorldLocation().m_EndDST.GetTotalSeconds()))
-						offset += m_tm.getWorldLocation().m_AmtDST.GetTotalMinutes();
+					else if ((m_tm.getWorldLocation().m_StartDST.getTotalSeconds() < intoYear) ||
+							 (intoYear <= m_tm.getWorldLocation().m_EndDST.getTotalSeconds()))
+						offset += m_tm.getWorldLocation().m_AmtDST.getTotalMinutes();
 				}
 				offset -= secondOffset;
 				if (offset != 0)
-					t.Add(new WTimeSpan(offset));
+					t.add(new WTimeSpan(offset));
 			}
 			
 			m_time = t.m_time;
@@ -1064,7 +1064,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	public boolean equals(Object other) {
 		if (other.getClass() == WTime.class) {
 			WTime othertime = (WTime)other;
-			return Equal(this, othertime);
+			return equal(this, othertime);
 		}
 		return this == other;
 	}
@@ -1082,8 +1082,8 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * +=
 	 * @param s
 	 */
-	public WTime Add(WTimeSpan s) {
-		m_time += s.GetTotalMicroSeconds();
+	public WTime add(WTimeSpan s) {
+		m_time += s.getTotalMicroSeconds();
 		return this;
 	}
 
@@ -1093,16 +1093,16 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param s
 	 * @return
 	 */
-	public static WTime Add(WTime t, WTimeSpan s) {
-		return new WTime(t.m_time + s.GetTotalMicroSeconds(), t.m_tm, false);
+	public static WTime add(WTime t, WTimeSpan s) {
+		return new WTime(t.m_time + s.getTotalMicroSeconds(), t.m_tm, false);
 	}
 
 	/**
 	 * -=
 	 * @param s
 	 */
-	public WTime Subtract(WTimeSpan s) {
-		m_time -= s.GetTotalMicroSeconds();
+	public WTime subtract(WTimeSpan s) {
+		m_time -= s.getTotalMicroSeconds();
 		return this;
 	}
 
@@ -1112,8 +1112,8 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param s
 	 * @return
 	 */
-	public static WTime Subtract(WTime t, WTimeSpan s) {
-		return new WTime(t.m_time - s.GetTotalMicroSeconds(), t.m_tm, false);
+	public static WTime subtract(WTime t, WTimeSpan s) {
+		return new WTime(t.m_time - s.getTotalMicroSeconds(), t.m_tm, false);
 	}
 
 
@@ -1123,7 +1123,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param s
 	 * @return
 	 */
-	public static WTimeSpan Subtract(WTime t1, WTime t2) {
+	public static WTimeSpan subtract(WTime t1, WTime t2) {
 		return new WTimeSpan(t1.m_time - t2.m_time, false);
 	}
 
@@ -1133,7 +1133,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param t2
 	 * @return
 	 */
-	public static boolean Equal(WTime t1, WTime t2) {
+	public static boolean equal(WTime t1, WTime t2) {
 		return t1.m_time == t2.m_time;
 	}
 
@@ -1143,7 +1143,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param t2
 	 * @return
 	 */
-	public static boolean NotEqual(WTime t1, WTime t2) {
+	public static boolean notEqual(WTime t1, WTime t2) {
 		return t1.m_time != t2.m_time;
 	}
 
@@ -1153,7 +1153,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param t2
 	 * @return
 	 */
-	public static boolean LessThan(WTime t1, WTime t2) {
+	public static boolean lessThan(WTime t1, WTime t2) {
 		return t1.m_time < t2.m_time;
 	}
 
@@ -1163,7 +1163,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param t2
 	 * @return
 	 */
-	public static boolean LessThanEqualTo(WTime t1, WTime t2) {
+	public static boolean lessThanEqualTo(WTime t1, WTime t2) {
 		return t1.m_time <= t2.m_time;
 	}
 
@@ -1173,7 +1173,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param t2
 	 * @return
 	 */
-	public static boolean GreaterThan(WTime t1, WTime t2) {
+	public static boolean greaterThan(WTime t1, WTime t2) {
 		return t1.m_time > t2.m_time;
 	}
 
@@ -1183,7 +1183,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 * @param t2
 	 * @return
 	 */
-	public static boolean GreaterThanEqualTo(WTime t1, WTime t2) {
+	public static boolean greaterThanEqualTo(WTime t1, WTime t2) {
 		return t1.m_time >= t2.m_time;
 	}
 
@@ -1192,7 +1192,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 	 */
 	@Override
 	public int compareTo(WTime o) {
-		return (int)(GetTotalSeconds() - o.GetTotalSeconds());
+		return (int)(getTotalSeconds() - o.getTotalSeconds());
 	}
 
 	/**

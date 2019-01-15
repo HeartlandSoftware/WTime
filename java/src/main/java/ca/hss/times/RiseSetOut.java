@@ -27,69 +27,69 @@ class RiseSetOut {
 	/**
 	 * The year the sunrise took place in.
 	 */
-	public int YearRise;
+	public int yearRise;
 	/**
 	 * The month the sunrise took place in (0 - January).
 	 */
-	public int MonthRise;
+	public int monthRise;
 	/**
 	 * The day of the month the sunrise took place on.
 	 */
-	public int DayRise;
+	public int dayRise;
 	/**
 	 * The year the sunset took place in.
 	 */
-	public int YearSet;
+	public int yearSet;
 	/**
 	 * The month the sunset took place in (0 - January).
 	 */
-	public int MonthSet;
+	public int monthSet;
 	/**
 	 * The day of the month the sunset took place on.
 	 */
-	public int DaySet;
+	public int daySet;
 	/**
 	 * The hour of the sunrise.
 	 */
-	public int HourRise;
+	public int hourRise;
 	/**
 	 * The minute of the sunrise.
 	 */
-	public int MinRise;
+	public int minRise;
 	/**
 	 * The second of the sunrise.
 	 */
-	public int SecRise;
+	public int secRise;
 	/**
 	 * The hour of the sunset.
 	 */
-	public int HourSet;
+	public int hourSet;
 	/**
 	 * The second of the sunset.
 	 */
-	public int MinSet;
+	public int minSet;
 	/**
 	 * The second of the sunset.
 	 */
-	public int SecSet;
+	public int secSet;
 	/**
 	 * The solar noon hour.
 	 * 
 	 * Solar noon is the time when the sun is the highest above the horizon.
 	 */
-	public int SolarNoonHour;
+	public int solarNoonHour;
 	/**
 	 * The solar noon minute.
 	 * 
 	 * Solar noon is the time when the sun is the highest above the horizon.
 	 */
-	public int SolarNoonMin;
+	public int solarNoonMin;
 	/**
 	 * The solar noon second.
 	 * 
 	 * Solar noon is the time when the sun is the highest above the horizon.
 	 */
-	public int SolarNoonSec;
+	public int solarNoonSec;
 	/**
 	 * The equation of time for the given day.
 	 */

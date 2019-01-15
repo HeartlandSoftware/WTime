@@ -167,12 +167,12 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	public String toString(long flags) {
 		String str;
 		
-		long year = GetYears();
-		long day = (flags == WTime.FORMAT_YEAR) ? (long)(GetDays() - (year * 365.25 - 0.75)) : GetDays();
-		long hour = (flags == WTime.FORMAT_DAY) ? GetHours() : GetTotalHours();
-		long minute = GetMinutes();
-		long second = GetSeconds();
-		long usecs = GetMicroSeconds();
+		long year = getYears();
+		long day = (flags == WTime.FORMAT_YEAR) ? (long)(getDays() - (year * 365.25 - 0.75)) : getDays();
+		long hour = (flags == WTime.FORMAT_DAY) ? getHours() : getTotalHours();
+		long minute = getMinutes();
+		long second = getSeconds();
+		long usecs = getMicroSeconds();
 			
 		boolean	special_case = false;
 
@@ -301,7 +301,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the number of years in the time span.
 	 * @return
 	 */
-	public long GetYears() {
+	public long getYears() {
 		return (long)((double)m_timeSpan / 1000000.0 / 24.0 / 60.0 / 60.0 / 365.25 + 0.75);
 	}
 
@@ -309,7 +309,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the number of days in the time span.
 	 * @return
 	 */
-	public long GetDays() {
+	public long getDays() {
 		return m_timeSpan / (24L * 60L * 60L * 1000000L);
 	}
 
@@ -317,7 +317,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the total number of hours in the time span.
 	 * @return
 	 */
-	public long GetTotalHours() {
+	public long getTotalHours() {
 		return m_timeSpan / (60L * 60L * 1000000L);
 	}
 
@@ -325,7 +325,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the number of hours into the last day of the time span.
 	 * @return
 	 */
-	public long GetHours() {
+	public long getHours() {
 		return (long)(GetTotalHours() - GetDays() * 24);
 	}
 
@@ -333,7 +333,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the total number of minutes in the time span.
 	 * @return
 	 */
-	public long GetTotalMinutes() {
+	public long getTotalMinutes() {
 		return m_timeSpan / (60L * 1000000L);
 	}
 
@@ -341,7 +341,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the number of minutes into the last hour of the time span.
 	 * @return
 	 */
-	public long GetMinutes() {
+	public long getMinutes() {
 		return (long)(GetTotalMinutes() - GetTotalHours() * 60);
 	}
 
@@ -349,7 +349,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the total number of seconds stored in the time span.
 	 * @return
 	 */
-	public long GetTotalSeconds() {
+	public long getTotalSeconds() {
 		return m_timeSpan / 1000000L;
 	}
 
@@ -357,15 +357,15 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the number of seconds into the last minute of the time span.
 	 * @return
 	 */
-	public long GetSeconds() {
-		return (long)(GetTotalSeconds() - GetTotalMinutes() * 60);
+	public long getSeconds() {
+		return (long)(getTotalSeconds() - getTotalMinutes() * 60);
 	}
 
 	/**
 	 * Get the total number of microseconds in the time span.
 	 * @return
 	 */
-	long GetTotalMicroSeconds() {
+	long getTotalMicroSeconds() {
 		return m_timeSpan;
 	}
 
@@ -373,7 +373,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the number of microseconds in the last second of the time span
 	 * @return
 	 */
-	long GetMicroSeconds() {
+	long getMicroSeconds() {
 		return m_timeSpan % 1000000L;
 	}
 
@@ -381,7 +381,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the fraction of days of a year are stored in this time span.
 	 * @return
 	 */
-	double GetDaysFraction() {
+	double getDaysFraction() {
 		return ((double)m_timeSpan) / (24.0 * 60.0 * 60.0 * 1000000.0);
 	}
 
@@ -389,35 +389,35 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Get the fraction of a day stored in this time span.
 	 * @return
 	 */
-	double GetFractionOfDay() {
+	double getFractionOfDay() {
 		return ((double)(m_timeSpan % (24L * 60L * 60L * 1000000L))) / (24.0 * 60.0 * 60.0 * 1000000.0);
 	}
 
 	/**
 	 * Purge all time steps smaller than seconds.
 	 */
-	void PurgeToSecond() {
+	void purgeToSecond() {
 		m_timeSpan = m_timeSpan - (m_timeSpan % (1000000L));
 	}
 
 	/**
 	 * Purge all time steps smaller than minutes.
 	 */
-	public void PurgeToMinute() {
+	public void purgeToMinute() {
 		m_timeSpan = m_timeSpan - (m_timeSpan % (60L * 1000000L));
 	}
 
 	/**
 	 * Purge all time steps smaller than hours.
 	 */
-	public void PurgeToHour() {
+	public void purgeToHour() {
 		m_timeSpan = m_timeSpan - (m_timeSpan % (60L * 60L * 1000000L));
 	}
 
 	/**
 	 * Purge all time steps smaller that days.
 	 */
-	public void PurgeToDay() {
+	public void purgeToDay() {
 		m_timeSpan = m_timeSpan - (m_timeSpan % (60L * 60L * 24L * 1000000L));
 	}
 
@@ -438,7 +438,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Convert the time span to a java.util.Date.
 	 * @return
 	 */
-	public Date AsDateTimeSpan() {
+	public Date asDateTimeSpan() {
 		Date resultTimeSpan = new Date();
 		resultTimeSpan.setTime(m_timeSpan);
 		return resultTimeSpan;
@@ -450,7 +450,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @param s2
 	 * @return
 	 */
-	public static boolean Equal(WTimeSpan s1, WTimeSpan s2) {
+	public static boolean equal(WTimeSpan s1, WTimeSpan s2) {
 		return s1.m_timeSpan == s2.m_timeSpan;
 	}
 
@@ -460,7 +460,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @param s2
 	 * @return
 	 */
-	public static boolean NotEqual(WTimeSpan s1, WTimeSpan s2) {
+	public static boolean notEqual(WTimeSpan s1, WTimeSpan s2) {
 		return s1.m_timeSpan != s2.m_timeSpan;
 	}
 
@@ -470,7 +470,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @param s2
 	 * @return
 	 */
-	public static boolean GreaterThan(WTimeSpan s1, WTimeSpan s2) {
+	public static boolean greaterThan(WTimeSpan s1, WTimeSpan s2) {
 		return s1.m_timeSpan > s2.m_timeSpan;
 	}
 
@@ -480,7 +480,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @param s2
 	 * @return
 	 */
-	public static boolean GreaterThanEqualTo(WTimeSpan s1, WTimeSpan s2) {
+	public static boolean greaterThanEqualTo(WTimeSpan s1, WTimeSpan s2) {
 		return s1.m_timeSpan >= s2.m_timeSpan;
 	}
 
@@ -490,7 +490,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @param s2
 	 * @return
 	 */
-	public static boolean LessThan(WTimeSpan s1, WTimeSpan s2) {
+	public static boolean lessThan(WTimeSpan s1, WTimeSpan s2) {
 		return s1.m_timeSpan < s2.m_timeSpan;
 	}
 
@@ -500,7 +500,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @param s2
 	 * @return
 	 */
-	public static boolean LessThanEqualTo(WTimeSpan s1, WTimeSpan s2) {
+	public static boolean lessThanEqualTo(WTimeSpan s1, WTimeSpan s2) {
 		return s1.m_timeSpan <= s2.m_timeSpan;
 	}
 
@@ -510,9 +510,9 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @param value
 	 * @return
 	 */
-	public static WTimeSpan Multiply(WTimeSpan span, long value) {
+	public static WTimeSpan multiply(WTimeSpan span, long value) {
 		WTimeSpan ret = new WTimeSpan(span);
-		ret.Multiply(value);
+		ret.multiply(value);
 		return ret;
 	}
 
@@ -520,7 +520,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Divide a time span by a value.
 	 * @param value
 	 */
-	public void Divide(long value) {
+	public void divide(long value) {
 		m_timeSpan /= value;
 	}
 
@@ -528,7 +528,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Multiply this time span by a value.
 	 * @param value
 	 */
-	public void Multiply(long value) {
+	public void multiply(long value) {
 		m_timeSpan *= value;
 	}
 
@@ -536,15 +536,15 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * Subtract a time span from this one.
 	 * @param span
 	 */
-	public void Subtract(WTimeSpan span) {
+	public void subtract(WTimeSpan span) {
 		m_timeSpan -= span.m_timeSpan;
 	}
 	
 	@Override
 	public String toString() {
-		long h = GetHours();
-		long m = GetMinutes();
-		long s = GetSeconds();
+		long h = getHours();
+		long m = getMinutes();
+		long s = getSeconds();
 		String retval = String.valueOf(h);
 		if (m > 0 || s > 0) {
 			retval += ":";

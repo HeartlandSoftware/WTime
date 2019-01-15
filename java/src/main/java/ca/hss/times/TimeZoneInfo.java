@@ -82,8 +82,8 @@ public class TimeZoneInfo implements Comparable<TimeZoneInfo> {
 			timeZoneName = TranslationCallback.instance.translate(m_Id);
 
 		DecimalFormat myFormatter = new DecimalFormat("00");
-		double minutes = (double) (Math.abs(WTimeSpan.GetMinutes()));
-		String timeZoneTimeDiff = String.format("%d:%s", WTimeSpan.GetHours() + m_Dst.GetHours(), myFormatter.format(minutes));
+		double minutes = (double) (Math.abs(WTimeSpan.getMinutes()));
+		String timeZoneTimeDiff = String.format("%d:%s", WTimeSpan.getHours() + m_Dst.getHours(), myFormatter.format(minutes));
 		return (String.format("%s: %s (%s)", timeZoneCode, timeZoneName, timeZoneTimeDiff));
 	}
 
@@ -95,8 +95,8 @@ public class TimeZoneInfo implements Comparable<TimeZoneInfo> {
 		if (o == null)
 			return -1;
 
-		int compareTimeZone = this.m_TimeZone.AsDateTimeSpan().compareTo(o.m_TimeZone.AsDateTimeSpan());
-		int comareDST = this.m_Dst.AsDateTimeSpan().compareTo(o.m_Dst.AsDateTimeSpan());
+		int compareTimeZone = this.m_TimeZone.asDateTimeSpan().compareTo(o.m_TimeZone.asDateTimeSpan());
+		int comareDST = this.m_Dst.asDateTimeSpan().compareTo(o.m_Dst.asDateTimeSpan());
 
 		if (compareTimeZone == 0) {
 			return comareDST;

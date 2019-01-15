@@ -26,7 +26,7 @@ import ca.hss.annotations.Source;
 
 import ca.hss.general.OutVariable;
 
-import static ca.hss.math.general.*;
+import static ca.hss.math.General.*;
 
 /**
  * Stores information about a geographical area including its coordinates
@@ -926,7 +926,7 @@ public class WorldLocation implements Serializable {
 	 */
 	public static final TimeZoneInfo getTimeZoneFromOffset(int offset) {
 		for (TimeZoneInfo tzi : m_std_timezones)
-			if (tzi.getTimezoneOffset().GetHours() == offset)
+			if (tzi.getTimezoneOffset().getHours() == offset)
 				return tzi;
 		return null;
 	}
@@ -954,23 +954,23 @@ public class WorldLocation implements Serializable {
 	WTimeSpan m_solar_timezone(WTime solar_time) {
 							// used for GMT->solar time math based on longitude only, but don't assume that solar noon means the sun is right over you!
 
-		int	day = (int)solar_time.GetDay(WTime.FORMAT_AS_LOCAL),
-			year = (int)solar_time.GetYear(WTime.FORMAT_AS_LOCAL),
-			month = (int)solar_time.GetMonth(WTime.FORMAT_AS_LOCAL);
+		int	day = (int)solar_time.getDay(WTime.FORMAT_AS_LOCAL),
+			year = (int)solar_time.getYear(WTime.FORMAT_AS_LOCAL),
+			month = (int)solar_time.getMonth(WTime.FORMAT_AS_LOCAL);
 
 		RiseSetInput sInput = new RiseSetInput();
-		sInput.Latitude = RADIAN_TO_DEGREE((float)m_Latitude);
-		sInput.Longitude = RADIAN_TO_DEGREE((float)m_Longitude) * -1;
+		sInput.latitude = RADIAN_TO_DEGREE((float)m_Latitude);
+		sInput.longitude = RADIAN_TO_DEGREE((float)m_Longitude) * -1;
 		sInput.timezone = 0;
-		sInput.DaytimeSaving = false;
+		sInput.daytimeSaving = false;
 		sInput.year = year;
 		sInput.month = month;
 		sInput.day = day;
 		RiseSetOut sOut = new RiseSetOut();
 		SunriseSunsetCalc.calcSun(sInput,sOut);
 
-		WTimeSpan solarTime = new WTimeSpan(0, sOut.SolarNoonHour - 12, sOut.SolarNoonMin, sOut.SolarNoonSec);
-		WTimeSpan result = new WTimeSpan((long)0 - solarTime.GetTotalSeconds());
+		WTimeSpan solarTime = new WTimeSpan(0, sOut.solarNoonHour - 12, sOut.solarNoonMin, sOut.solarNoonSec);
+		WTimeSpan result = new WTimeSpan((long)0 - solarTime.getTotalSeconds());
 
 		return result;
 	}
@@ -986,26 +986,26 @@ public class WorldLocation implements Serializable {
 	 */
 	public int getSunRiseSetNoon(WTime daytime, OutVariable<WTime> Rise, OutVariable<WTime> Set, OutVariable<WTime> Noon) {
 
-		int day = (int)daytime.GetDay(WTime.FORMAT_AS_LOCAL);
-		int year = (int)daytime.GetYear(WTime.FORMAT_AS_LOCAL);
-		int month = (int)daytime.GetMonth(WTime.FORMAT_AS_LOCAL);
+		int day = (int)daytime.getDay(WTime.FORMAT_AS_LOCAL);
+		int year = (int)daytime.getYear(WTime.FORMAT_AS_LOCAL);
+		int month = (int)daytime.getMonth(WTime.FORMAT_AS_LOCAL);
 
 		RiseSetInput sInput = new RiseSetInput();
-		sInput.Latitude = RADIAN_TO_DEGREE(m_Latitude);
-		sInput.Longitude = -1 * RADIAN_TO_DEGREE(m_Longitude);
+		sInput.latitude = RADIAN_TO_DEGREE(m_Latitude);
+		sInput.longitude = -1 * RADIAN_TO_DEGREE(m_Longitude);
 		sInput.timezone = 0;
-		sInput.DaytimeSaving = false;
+		sInput.daytimeSaving = false;
 		sInput.year = year;//solar_time.GetYear();
 		sInput.month = month;//solar_time.GetMonth();
 		sInput.day = day;//solar_time.GetDay();
 		RiseSetOut sOut = new RiseSetOut();
 		int success = SunriseSunsetCalc.calcSun(sInput,sOut);
 
-		WTime riseTime = new WTime(sOut.YearRise,sOut.MonthRise,sOut.DayRise,sOut.HourRise,sOut.MinRise,sOut.SecRise,Rise.value.GetTimeManager());
+		WTime riseTime = new WTime(sOut.yearRise,sOut.monthRise,sOut.dayRise,sOut.hourRise,sOut.minRise,sOut.secRise,Rise.value.getTimeManager());
 		Rise.value = riseTime;
-		WTime setTime = new WTime(sOut.YearSet,sOut.MonthSet,sOut.DaySet,sOut.HourSet,sOut.MinSet,sOut.SecSet,Set.value.GetTimeManager());
+		WTime setTime = new WTime(sOut.yearSet,sOut.monthSet,sOut.daySet,sOut.hourSet,sOut.minSet,sOut.secSet,Set.value.getTimeManager());
 		Set.value = setTime;
-		WTime noonTime = new WTime(sInput.year,sInput.month,sInput.day, sOut.SolarNoonHour, sOut.SolarNoonMin, sOut.SolarNoonSec,Noon.value.GetTimeManager());
+		WTime noonTime = new WTime(sInput.year,sInput.month,sInput.day, sOut.solarNoonHour, sOut.solarNoonMin, sOut.solarNoonSec,Noon.value.getTimeManager());
 		Noon.value = noonTime;
 
 		return success;
@@ -1041,14 +1041,14 @@ public class WorldLocation implements Serializable {
 	 * @param set 0 if LST timezones should be used, 1 if DST timezones should be used
 	 * @return
 	 */
-	public TimeZoneInfo GuessTimeZone(short set) {
-		if (InsideNewZealand()) {
+	public TimeZoneInfo guessTimeZone(short set) {
+		if (insideNewZealand()) {
 			if (set == 0)
 				return m_std_timezones[15];
 			else if (set == 1)
 				return m_dst_timezones[15];
 		}
-		else if (InsideTasmania()) {
+		else if (insideTasmania()) {
 			if (set == 0)
 				return m_std_timezones[3];
 			else
@@ -1072,7 +1072,7 @@ public class WorldLocation implements Serializable {
 		TimeZoneInfo tzi = tz[0];
 		do
 		{
-			double ideal_longitude = ((double)tz[i].getTimezoneOffset().GetTotalSeconds()) / (double)(12.0 * 60.0 * 60.0) * Math.PI;
+			double ideal_longitude = ((double)tz[i].getTimezoneOffset().getTotalSeconds()) / (double)(12.0 * 60.0 * 60.0) * Math.PI;
 			double offset_longitude = Math.abs(longitude - ideal_longitude);
 			if (variation > offset_longitude) {
 				variation = offset_longitude;
@@ -1090,7 +1090,7 @@ public class WorldLocation implements Serializable {
 	 * @param set
 	 * @return
 	 */
-	public TimeZoneInfo CurrentTimeZone(short set) {
+	public TimeZoneInfo currentTimeZone(short set) {
 		TimeZoneInfo[] tz;
 		if (set == -1)	tz = m_mil_timezones;
 		else if (m_StartDST == m_EndDST)	tz = m_std_timezones;
@@ -1099,7 +1099,7 @@ public class WorldLocation implements Serializable {
 		int i=0;
 		do
 		{
-			if (WTimeSpan.Equal(tz[i].getTimezoneOffset(), m_TimeZone))
+			if (WTimeSpan.equal(tz[i].getTimezoneOffset(), m_TimeZone))
 				break;
 		}
 		while (tz[++i].getCode() != null);
@@ -1110,7 +1110,7 @@ public class WorldLocation implements Serializable {
 		return null;
 	}
 
-	boolean InsideCanada(double latitude, double longitude) {
+	boolean insideCanada(double latitude, double longitude) {
 		if (latitude < DEGREE_TO_RADIAN((float)42.0))		return false;
 		if (latitude > DEGREE_TO_RADIAN((float)83.0))		return false;
 		if (longitude < DEGREE_TO_RADIAN((float)-141.0))	return false;
@@ -1118,11 +1118,11 @@ public class WorldLocation implements Serializable {
 		return true;
 	}
 
-	boolean InsideCanada() {
-		return InsideCanada(m_Latitude, m_Longitude);
+	boolean insideCanada() {
+		return insideCanada(m_Latitude, m_Longitude);
 	}
 
-	boolean InsideNewZealand() {
+	boolean insideNewZealand() {
 		if ((m_Longitude > DEGREE_TO_RADIAN((float)172.5)) && (m_Longitude < DEGREE_TO_RADIAN((float)178.6))) {
 			if ((m_Latitude > DEGREE_TO_RADIAN((float)-41.75)) && (m_Latitude < DEGREE_TO_RADIAN((float)-34.3))) {	// general extents of New Zealand's north island
 				return true;
@@ -1137,7 +1137,7 @@ public class WorldLocation implements Serializable {
 		return false;
 	}
 
-	boolean InsideTasmania() {
+	boolean insideTasmania() {
 		if ((m_Longitude > DEGREE_TO_RADIAN(143.5)) && (m_Longitude < DEGREE_TO_RADIAN(149.0))) {
 			if ((m_Latitude > DEGREE_TO_RADIAN(-44.0)) && (m_Latitude < DEGREE_TO_RADIAN(-39.5))) {
 				return true;
@@ -1146,7 +1146,7 @@ public class WorldLocation implements Serializable {
 		return false;
 	}
 
-	boolean InsideAustraliaMainland() {
+	boolean insideAustraliaMainland() {
 		if ((m_Longitude > DEGREE_TO_RADIAN(113.15)) && (m_Longitude < DEGREE_TO_RADIAN(153.6333333))) {
 			if ((m_Latitude > DEGREE_TO_RADIAN(-39.133333)) && (m_Latitude < DEGREE_TO_RADIAN(-10.683333333))) {
 				return true;
