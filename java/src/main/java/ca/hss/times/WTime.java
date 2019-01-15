@@ -850,20 +850,22 @@ public class WTime implements Serializable, Comparable<WTime> {
 				((flags & 0x00ff) != FORMAT_STRING_YYYYMMDDT) &&
 				((flags & 0x00ff) != FORMAT_STRING_YYYYMMDDHH))
 				return false;
-			if ((flags & 0x000f) == FORMAT_STRING_YYYYMMDD)
+			if ((flags & 0x000f) == FORMAT_STRING_YYYYMMDD) {
 				if (dateBuf.length() != 8)
 					return false;
-			if ((flags & 0x000f) == FORMAT_STRING_YYYYMMDDHH)
+			}
+			else if ((flags & 0x000f) == FORMAT_STRING_YYYYMMDDHH) {
 				if (dateBuf.length() != 10)
 					return false;
+			}
 			String yr, mn, dy, hr;
 			//char yr[8], mn[4], dy[4], hr[4];
 			yr = dateBuf.substring(0, 4);
-			mn = dateBuf.substring(4, 2);
-			dy = dateBuf.substring(6, 2);
+			mn = dateBuf.substring(4, 6);
+			dy = dateBuf.substring(6, 8);
 			hr = "";
 			if ((flags & 0x00ff) == FORMAT_STRING_YYYYMMDDHH)
-				hr = dateBuf.substring(8, 2);
+				hr = dateBuf.substring(8, 10);
 			List<OutVariable<Object>> l = new ArrayList<OutVariable<Object>>();
 			OutVariable<Object> v = new OutVariable<Object>();
 			l.add(v);
@@ -1020,38 +1022,41 @@ public class WTime implements Serializable, Comparable<WTime> {
 
 			if ((flags & FORMAT_TIME) == FORMAT_TIME) {
 				tok = StringExtensions.strtok_s(null, "", context);
-				if (tok.startsWith("T"))
-					tok = tok.substring(1);
-				String timezone = null;
-				boolean negative = false;
-				boolean timezoneExists = tok.indexOf('+') >= 0 || tok.indexOf('-') >= 0;
-				if (timezoneExists) {
-					negative = tok.indexOf('-') >= 0;
-					String[] split = tok.split("[-\\+Z]");
-					if (split.length == 2) {
-						tok = split[0];
-						timezone = split[1];
+				//no time is specified
+				if (tok != null) {
+					if (tok.startsWith("T"))
+						tok = tok.substring(1);
+					String timezone = null;
+					boolean negative = false;
+					boolean timezoneExists = tok.indexOf('+') >= 0 || tok.indexOf('-') >= 0;
+					if (timezoneExists) {
+						negative = tok.indexOf('-') >= 0;
+						String[] split = tok.split("[-\\+Z]");
+						if (split.length == 2) {
+							tok = split[0];
+							timezone = split[1];
+						}
 					}
-				}
-				OutVariable<Short> s = new OutVariable<Short>();
-				WTimeSpan ts = new WTimeSpan(tok, s);
-				time_scan = s.value;
-				if (time_scan == 0) {
-					hour = min = sec = 0;
-				}
-				else {
-					hour = ts.getHours();
-					min = ts.getMinutes();
-					sec = ts.getSeconds();
-				}
-				
-				if (timezone != null) {
-					ts = new WTimeSpan(timezone, s);
+					OutVariable<Short> s = new OutVariable<Short>();
+					WTimeSpan ts = new WTimeSpan(tok, s);
 					time_scan = s.value;
-					if (time_scan != 0) {
-						secondOffset = ts.getTotalSeconds();
-						if (negative)
-							secondOffset = -secondOffset;
+					if (time_scan == 0) {
+						hour = min = sec = 0;
+					}
+					else {
+						hour = ts.getHours();
+						min = ts.getMinutes();
+						sec = ts.getSeconds();
+					}
+					
+					if (timezone != null) {
+						ts = new WTimeSpan(timezone, s);
+						time_scan = s.value;
+						if (time_scan != 0) {
+							secondOffset = ts.getTotalSeconds();
+							if (negative)
+								secondOffset = -secondOffset;
+						}
 					}
 				}
 			}

@@ -1217,8 +1217,9 @@ bool str2int(INTNM::int32_t &i, char const *s, INTNM::int32_t base = 0)
 }
 
 
-bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags) {
-#ifdef TIMES_WINDOWS
+bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, WorldLocation* location) {
+
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	if (flags & WTIME_FORMAT_PARSE_USING_SYSTEM)
 		return systemParseDateTime(lpszDate.c_str(), flags);
 #endif
@@ -1229,6 +1230,7 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags) {
 	INTNM::int32_t v1, v2, v3;
 	INTNM::int16_t time_scan = 0;
 	INTNM::int64_t secondOffset = 0;
+	bool timezoneExists = false;
 
 	bool delimit_found = false;
 	while (delimit[time_scan]) {
@@ -1245,7 +1247,7 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags) {
 		if (((flags & 0x000000ff) != WTIME_FORMAT_STRING_YYYYMMDD) &&
 			((flags & 0x000000ff) != WTIME_FORMAT_STRING_YYYYMMDDT) &&
 			((flags & 0x000000ff) != WTIME_FORMAT_STRING_YYYYMMDDHH))
-												return false;
+															return false;
 		if ((flags & 0x000000ff) == WTIME_FORMAT_STRING_YYYYMMDD)
 			if (lpszDate.size() != 8)						return false;
 		if ((flags & 0x000000ff) == WTIME_FORMAT_STRING_YYYYMMDDHH)
@@ -1256,12 +1258,13 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags) {
 		dy = lpszDate.substr(6, 2);
 		if ((flags & 0x000000ff) == WTIME_FORMAT_STRING_YYYYMMDDHH)
 			hr = lpszDate.substr(8, 2);
-		bool rd = str2int(year, yr.c_str()); if (!rd) return false;
-		rd = str2int(month, mn.c_str()); if (!rd) return false;
-		rd = str2int(day, dy.c_str()); if (!rd) return false;
+		bool rd = str2int(year, yr.c_str()); if (!rd)		return false;
+		rd = str2int(month, mn.c_str()); if (!rd)			return false;
+		rd = str2int(day, dy.c_str()); if (!rd)				return false;
 
 		if ((flags & 0x000000ff) == WTIME_FORMAT_STRING_YYYYMMDDHH) {
-			rd = str2int(hour, hr.c_str()); if (!rd) return false;
+			rd = str2int(hour, hr.c_str());
+			if (!rd)										return false;
 		} else	hour = 0;
 		min = sec = 0;
 	} else {
@@ -1270,56 +1273,84 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags) {
 		char* dateBuf = __strdup(lpszDate.c_str());
 
 		tok = __strtok(dateBuf, delimit, &next);
-		if (!tok)	
+		if (!tok) {
+			free(dateBuf);
 			return false;
-
+		}
 		short guess_month = 0;
 		if (!isdigit(tok[0])) {
 			if (((flags & 0x000000ff) != WTIME_FORMAT_STRING_MM_DD_YYYY) &&
 				((flags & 0x000000ff) != WTIME_FORMAT_STRING_MMhDDhYYYY) &&
-				((flags & 0x000000ff) != 0))
-												return false;
+				((flags & 0x000000ff) != 0)) {
+				free(dateBuf);
+				return false;
+			}
 			for (v1 = 0; v1 < 12; v1++)
-				if ((!__stricmp(WTimeManager::months[v1].c_str(), tok)) || (!__stricmp(WTimeManager::months_abbrev[v1].c_str(), tok)))
+				if ((!__stricmp(WTimeManager::months[v1], tok)) || (!__stricmp(WTimeManager::months_abbrev[v1], tok)))
 					break;
-			if (v1 == 12)								return false;
+			if (v1 == 12) {
+				free(dateBuf);
+				return false;
+			}
 			v1++;
 			guess_month = 1;
 		} else {
-			INTNM::int32_t rd = sscanf(tok, _T("%d"), &v1); if (rd != 1)			return false;
+			INTNM::int32_t rd = sscanf(tok, _T("%d"), &v1); 
+			if (rd != 1) {
+				free(dateBuf);
+				return false;
+			}
 		}
 
 		tok = __strtok(NULL, delimit, &next);
-		if (!tok)	
+		if (!tok) {
+			free(dateBuf);
 			return false;
+		}
 		if (!isdigit(tok[0])) {
 			if (((flags & 0x000000ff) != WTIME_FORMAT_STRING_DD_MM_YYYY) &&
 				((flags & 0x000000ff) != WTIME_FORMAT_STRING_YYYY_MM_DD) &&
 				((flags & 0x000000ff) != WTIME_FORMAT_STRING_DDhMMhYYYY) &&
 				((flags & 0x000000ff) != WTIME_FORMAT_STRING_YYYYhMMhDD) &&
 				((flags & 0x000000ff) != WTIME_FORMAT_STRING_YYYYhMMhDDT) &&
-				((flags & 0x000000ff) != 0))
-												return false;
+				((flags & 0x000000ff) != 0)) {
+				free(dateBuf);
+				return false;
+			}
 			for (v2 = 0; v2 < 12; v2++)
-				if ((!__stricmp(WTimeManager::months[v2].c_str(), tok)) || (!__stricmp(WTimeManager::months_abbrev[v2].c_str(), tok)))
+				if ((!__stricmp(WTimeManager::months[v2], tok)) || (!__stricmp(WTimeManager::months_abbrev[v2], tok)))
 					break;
-			if (v2 == 12)								return false;
+			if (v2 == 12) {
+				free(dateBuf);
+				return false;
+			}
 			v2++;
 			guess_month = 2;
 		} else {
-			INTNM::int32_t rd = sscanf(tok, _T("%d"), &v2); if (rd != 1)			return false;
+			INTNM::int32_t rd = sscanf(tok, _T("%d"), &v2);
+			if (rd != 1) {
+				free(dateBuf);
+				return false;
+			}
 		}
 
 		if ((flags & 0x000000ff) == WTIME_FORMAT_STRING_YYYYhMMhDDT)
 			tok = __strtok(NULL, delimit2, &next);
 		else
 			tok = __strtok(NULL, delimit, &next);
-		if (!tok)
+		if (!tok) {
+			free(dateBuf);
 			return false;
+		}
 		if (!isdigit(tok[0])) {
+			free(dateBuf);
 			return false;
 		} else {
-			INTNM::int32_t rd = sscanf(tok, _T("%d"), &v3); if (rd != 1)			return false;
+			INTNM::int32_t rd = sscanf(tok, _T("%d"), &v3);
+			if (rd != 1) {
+				free(dateBuf);
+				return false;
+			}
 		}
 
 		if (!(flags & 0x000000ff)) {
@@ -1358,46 +1389,61 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags) {
 			year = v3;
 		}
 
-		if (day >= 32)									return false;
-		if ((month < 1) || (month > 12))						return false;
-		if (year < 39)				year += 2000;
+		if (day >= 32) {
+			free(dateBuf);
+			return false;
+		}
+		if ((month < 1) || (month > 12)) {
+			free(dateBuf);
+			return false;
+		}
+		if (year < 39)							year += 2000;
 		else if ((year < 100) && (year > 60))	year += 1900;
 
 		if (flags & WTIME_FORMAT_TIME) {
 			bool negative = false;
 			char* save = next;
 			tok = __strtok(NULL, _T(""), &next);
-			bool timezoneExists = strchr(tok, '+') != nullptr || strchr(tok, '-') != nullptr;
-			if (timezoneExists)
+			if (tok != nullptr)
 			{
-				negative = strchr(tok, '-') != nullptr;
-				tok = __strtok(NULL, _T("-+Z"), &save);
-				next = save;
-			}
-			WTimeSpan ts(std::string(tok), &time_scan);
-			if (!time_scan)	
-				hour = min = sec = 0;
-			else {
-				hour = ts.GetHours();
-				min = ts.GetMinutes();
-				sec = ts.GetSeconds();
-			}
-
-			if (timezoneExists)
-			{
-				tok = __strtok(NULL, _T(""), &next);
-				if (tok)
+				timezoneExists = strchr(tok, '+') != nullptr || strchr(tok, '-') != nullptr || strchr(tok, 'Z') != nullptr;
+				if (timezoneExists)
 				{
-					WTimeSpan ts(std::string(tok), &time_scan);
-					if (time_scan)
+					negative = strchr(tok, '-') != nullptr;
+					tok = __strtok(NULL, _T("-+Z"), &save);
+					next = save;
+				}
+				WTimeSpan ts(std::string(tok), &time_scan);
+				if (!time_scan)
+					hour = min = sec = 0;
+				else {
+					hour = ts.GetHours();
+					min = ts.GetMinutes();
+					sec = ts.GetSeconds();
+				}
+
+				if (timezoneExists)
+				{
+					tok = __strtok(NULL, _T(""), &next);
+					if (tok)
 					{
-						secondOffset = ts.GetTotalSeconds();
-						if (negative)
-							secondOffset = -secondOffset;
+						WTimeSpan ts(std::string(tok), &time_scan);
+						if (time_scan)
+						{
+							secondOffset = ts.GetTotalSeconds();
+							if (negative)
+								secondOffset = -secondOffset;
+						}
 					}
 				}
 			}
-		} else	hour = min = sec = 0;
+			else
+				hour = min = sec = 0;
+		}
+		else	
+			hour = min = sec = 0;
+
+		free(dateBuf);
 	}
 
 	if ((year >= 1600) && (year < 2900)) {
@@ -1406,6 +1452,11 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags) {
 		{
 			int64_t offset = m_tm->m_worldLocation.m_timezone.GetTotalSeconds();
 			uint64_t intoYear = GetSecondsIntoYear(0);
+			if (location)
+			{
+				location->m_timezone = WTimeSpan(secondOffset);
+				location->m_amtDST = WTimeSpan(0);
+			}
 			if (m_tm->m_worldLocation.m_startDST < m_tm->m_worldLocation.m_endDST)
 			{
 				if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() <= intoYear) &&
@@ -1422,12 +1473,18 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags) {
 			if (offset)
 				t += WTimeSpan(offset);
 		}
+		else if (timezoneExists)
+		{
+			if (location)
+			{
+				location->m_timezone = WTimeSpan(0);
+				location->m_amtDST = WTimeSpan(0);
+			}
+		}
 
-		*this = t;	// get it as local time, then convert it to GMT for
-				// storage
-		INTNM::uint64_t atm = adjusted_tm(flags);
+		INTNM::uint64_t atm = adjusted_tm_math(flags);
 
-		m_time = m_time - (atm - m_time);
+		m_time = t.m_time - (atm - m_time);
 	}
 	return true;
 }
