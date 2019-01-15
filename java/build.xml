@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="Times" default="dist" basedir=".">
-	<property name="src" location="src" />
+	<property name="src" location="src/main/java" />
 	<property name="build" location="bin" />
 	<property name="dist" location="." />
 	<property name="projname" value="WTime"/>
