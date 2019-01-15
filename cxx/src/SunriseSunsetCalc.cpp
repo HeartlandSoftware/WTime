@@ -18,10 +18,20 @@
 
 #include "times_internal.h"
 
-#ifdef INTEL_COMPILER
+#ifdef HAVE_HSS_MATH
+#include "mathhss.h"
+#elif defined(INTEL_COMPILER)
 #include <mathimf.h>
 #else
 #include <cmath>
+
+#ifdef _MSC_VER
+void sincos(double val, double* p_sin, double *p_cos)
+{
+	*p_sin = ::sin(val);
+	*p_cos = ::cos(val);
+}
+#endif
 #endif
 
 #include "SunriseSunsetCalc.h"
@@ -401,8 +411,11 @@ double CSunriseSunsetCalc::calcSunRtAscension(double t)
 	double e = calcObliquityCorrection(t);
 	double lambda = calcSunApparentLong(t);
 
-	double tananum = (cos(degToRad(e)) * sin(degToRad(lambda)));
-	double tanadenom = (cos(degToRad(lambda)));
+	double rad_lambda = degToRad(lambda);
+	double sin_lambda, cos_lambda;
+	::sincos(rad_lambda, &sin_lambda, &cos_lambda);
+	double tananum = (cos(degToRad(e)) * sin_lambda);
+	double tanadenom = cos_lambda;
 	double alpha = radToDeg(atan2(tananum, tanadenom));
 	return alpha;		// in degrees
 }
@@ -450,9 +463,9 @@ double CSunriseSunsetCalc::calcEquationOfTime(double t)
 	double y = tan(degToRad(epsilon)/2.0);
 	y *= y;
 
-	double sin2l0 = sin(2.0 * degToRad(l0));
+	double sin2l0, cos2l0;
+	::sincos(2.0 * degToRad(l0), &sin2l0, &cos2l0);
 	double sinm   = sin(degToRad(m));
-	double cos2l0 = cos(2.0 * degToRad(l0));
 	double sin4l0 = sin(4.0 * degToRad(l0));
 	double sin2m  = sin(2.0 * degToRad(m));
 
