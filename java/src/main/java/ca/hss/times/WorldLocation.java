@@ -918,6 +918,22 @@ public class WorldLocation implements Serializable {
 				return tzi;
 		return null;
 	}
+	
+	public static final TimeZoneInfo getTimeZoneFromName(String name, int set) {
+		TimeZoneInfo[] tz;
+		if (set == -1)
+			tz = m_mil_timezones;
+		else if (set == 0)
+			tz = m_std_timezones;
+		else
+			tz = m_dst_timezones;
+		
+		for (TimeZoneInfo info : tz) {
+			if (info.getCode().equalsIgnoreCase(name) || info.getName().equalsIgnoreCase(name))
+				return info;
+		}
+		return null;
+	}
 
 	/**
 	 * Get a timezone from its offset from UTC.

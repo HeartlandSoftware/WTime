@@ -238,6 +238,24 @@ const ::TimeZoneInfo *WorldLocation::CurrentTimeZone(INTNM::int16_t set) const {
 	return NULL;
 }
 
+const ::TimeZoneInfo* WorldLocation::TimeZoneFromName(const std::string& name, INTNM::int16_t set)
+{
+	const ::TimeZoneInfo *tz;
+	if (set == -1)	tz = m_mil_timezones;
+	else if (set)	tz = m_dst_timezones;
+	else			tz = m_std_timezones;
+
+	while (tz->m_code)
+	{
+		if (boost::iequals(tz->m_code, name) || boost::iequals(tz->m_name, name))
+			break;
+		tz++;
+	}
+	if (tz->m_code)
+		return tz;
+	return nullptr;
+}
+
 
 WorldLocation::WorldLocation()
 #ifdef HSS_USE_CACHING
