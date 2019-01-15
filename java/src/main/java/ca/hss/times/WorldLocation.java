@@ -115,7 +115,7 @@ public class WorldLocation implements Serializable {
 		new TimeZoneInfo(new WTimeSpan(0, -1, 00, 0), new WTimeSpan(0, 1, 0, 0), "AZOST", "Azores Summer Time", "ui.label.zone.azost"),//atlantic//7
 		new TimeZoneInfo(new WTimeSpan(0, +4, 00, 0), new WTimeSpan(0, 1, 0, 0), "AZST", "Azerbaijan Summer Time", "ui.label.zone.azst"),//asia//8
 		new TimeZoneInfo(new WTimeSpan(0, +0, 00, 0), new WTimeSpan(0, 1, 0, 0), "BST", "British Summer Time", "ui.label.zone.bst"),//europe//9
-		new TimeZoneInfo(new WTimeSpan(0, -3, 00, 0), new WTimeSpan(0, 1, 0, 0), "BRST", "Brasília Summer Time ", "ui.label.zone.brst"),//south america//10
+		new TimeZoneInfo(new WTimeSpan(0, -3, 00, 0), new WTimeSpan(0, 1, 0, 0), "BRST", "Bras\u00EDlia Summer Time ", "ui.label.zone.brst"),//south america//10
 		new TimeZoneInfo(new WTimeSpan(0, -6, 00, 0), new WTimeSpan(0, 1, 0, 0), "CDT", "Central Daylight Time", "ui.label.zone.cdt"),//north america//11
 		new TimeZoneInfo(new WTimeSpan(0, +1, 00, 0), new WTimeSpan(0, 1, 0, 0), "CEST", "Central European Summer Time", "ui.label.zone.cest"),//europe//12
 		new TimeZoneInfo(new WTimeSpan(0, -4, 00, 0), new WTimeSpan(0, 1, 0, 0), "CDT", "Cuba Daylight Time", "ui.label.zone.cudt"),//caribbean//13
@@ -179,7 +179,7 @@ public class WorldLocation implements Serializable {
 		//b
 		new TimeZoneInfo(new WTimeSpan(0, +8, 00, 0), new WTimeSpan(0), "BNT", "Brunei Darussalam Time", "ui.label.zone.bnt"),//asia//18
 		new TimeZoneInfo(new WTimeSpan(0, -4, 00, 0), new WTimeSpan(0), "BOT", "Bolivia Time", "ui.label.zone.bot"),//south america//19
-		new TimeZoneInfo(new WTimeSpan(0, -3, 00, 0), new WTimeSpan(0), "BRT", "Brasília Time", "ui.label.zone.brt"),//south america//20
+		new TimeZoneInfo(new WTimeSpan(0, -3, 00, 0), new WTimeSpan(0), "BRT", "Bras\u00EDlia Time", "ui.label.zone.brt"),//south america//20
 		new TimeZoneInfo(new WTimeSpan(0, +6, 00, 0), new WTimeSpan(0), "BST", "Bangladesh Standard Time", "ui.label.zone.bast"),//asia//21
 		new TimeZoneInfo(new WTimeSpan(0, +6, 00, 0), new WTimeSpan(0), "BTT", "Bhutan Time", "ui.label.zone.btt"),//asia//22
 		//c
