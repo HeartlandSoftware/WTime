@@ -302,7 +302,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 * @return
 	 */
 	public long getYears() {
-		return (long)((double)m_timeSpan / 1000000.0 / 24.0 / 60.0 / 60.0 / 365.25 + 0.75);
+		return (long)((double)m_timeSpan / 1000000.0 / 24.0 / 60.0 / 60.0 / 365.25);
 	}
 
 	/**
@@ -359,6 +359,22 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 	 */
 	public long getSeconds() {
 		return (long)(getTotalSeconds() - getTotalMinutes() * 60);
+	}
+	
+	/**
+	 * Get the total number of milliseconds in the time span.
+	 * @return
+	 */
+	long getTotalMilliSeconds() {
+		return m_timeSpan / 1000L;
+	}
+
+	/**
+	 * Get the number of milliseconds in the last second of the time span
+	 * @return
+	 */
+	long getMilliSeconds() {
+		return (long)(getTotalMilliSeconds() - getTotalSeconds() * 1000);
 	}
 
 	/**

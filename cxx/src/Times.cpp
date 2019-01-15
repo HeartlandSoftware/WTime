@@ -159,19 +159,23 @@ WTimeSpan::WTimeSpan(const COleDateTimeSpan &timeSrc) {
 void WTimeSpan::SetTotalSeconds(INTNM::int64_t secs)			{ m_timeSpan = secs * 1000000LL; }
 
 
-INTNM::int64_t WTimeSpan::GetYears() const					{ return (INTNM::int64_t)((long double)m_timeSpan / 1000000.0 / 24.0 / 60.0 / 60.0 / 365.25 + 0.75); }
-INTNM::int64_t WTimeSpan::GetDays() const					{ return m_timeSpan / (24LL * 60LL * 60LL * 1000000LL); }
-INTNM::int64_t WTimeSpan::GetTotalHours() const				{ return m_timeSpan / (60LL * 60LL * 1000000LL); }
-INTNM::int32_t WTimeSpan::GetHours() const					{ return (INTNM::int32_t)(GetTotalHours() - GetDays() * 24); }
-INTNM::int64_t WTimeSpan::GetTotalMinutes() const				{ return m_timeSpan / (60LL * 1000000LL); }
-INTNM::int32_t WTimeSpan::GetMinutes() const					{ return (INTNM::int32_t)(GetTotalMinutes() - GetTotalHours() * 60); }
-INTNM::int64_t WTimeSpan::GetTotalSeconds() const				{ return m_timeSpan / 1000000LL; }
-INTNM::int32_t WTimeSpan::GetSeconds() const					{ return (INTNM::int32_t)(GetTotalSeconds() - GetTotalMinutes() * 60); }
-INTNM::int32_t WTimeSpan::GetMicroSeconds() const				{ return m_timeSpan % 1000000LL; }
-INTNM::int64_t WTimeSpan::GetTotalMicroSeconds() const			{ return m_timeSpan; }
+INTNM::int64_t WTimeSpan::GetYears() const							{ return (INTNM::int64_t)((long double)m_timeSpan / 1000000.0 / 24.0 / 60.0 / 60.0 / 365.25); }
+INTNM::int64_t WTimeSpan::GetWeeks() const							{ return m_timeSpan / (7LL * 24LL * 60LL * 60LL * 1000000LL); }
+INTNM::int64_t WTimeSpan::GetDays() const							{ return m_timeSpan / (24LL * 60LL * 60LL * 1000000LL); }
+INTNM::int64_t WTimeSpan::GetTotalHours() const						{ return m_timeSpan / (60LL * 60LL * 1000000LL); }
+INTNM::int32_t WTimeSpan::GetHours() const							{ return (INTNM::int32_t)(GetTotalHours() - GetDays() * 24); }
+INTNM::int64_t WTimeSpan::GetTotalMinutes() const					{ return m_timeSpan / (60LL * 1000000LL); }
+INTNM::int32_t WTimeSpan::GetMinutes() const						{ return (INTNM::int32_t)(GetTotalMinutes() - GetTotalHours() * 60); }
+INTNM::int64_t WTimeSpan::GetTotalSeconds() const					{ return m_timeSpan / 1000000LL; }
+INTNM::int32_t WTimeSpan::GetSeconds() const						{ return (INTNM::int32_t)(GetTotalSeconds() - GetTotalMinutes() * 60); }
+INTNM::int32_t WTimeSpan::GetMilliSeconds() const					{ return (INTNM::int32_t)(GetTotalMilliSeconds() - GetTotalSeconds() * 1000); }
+INTNM::int32_t WTimeSpan::GetTotalMilliSeconds() const				{ return m_timeSpan / 1000LL; }
+INTNM::int32_t WTimeSpan::GetMicroSeconds() const					{ return m_timeSpan % 1000000LL; }
+INTNM::int64_t WTimeSpan::GetTotalMicroSeconds() const				{ return m_timeSpan; }
 
-double WTimeSpan::GetDaysFraction() const				{ return ((double)m_timeSpan) / (24.0 * 60.0 * 60.0 * 1000000.0); }
-double WTimeSpan::GetFractionOfDay() const				{ return ((double)(m_timeSpan % (24LL * 60LL * 60LL * 1000000LL))) / (24.0 * 60.0 * 60.0 * 1000000.0); }
+double WTimeSpan::GetDaysFraction() const							{ return ((double)m_timeSpan) / (24.0 * 60.0 * 60.0 * 1000000.0); }
+double WTimeSpan::GetFractionOfDay() const							{ return ((double)(m_timeSpan % (24LL * 60LL * 60LL * 1000000LL))) / (24.0 * 60.0 * 60.0 * 1000000.0); }
+INTNM::int32_t WTimeSpan::GetSecondsOfDay() const					{ return m_timeSpan % (24LL * 60LL * 60LL * 1000000LL); }
 
 void WTimeSpan::PurgeToSecond()					{ m_timeSpan = m_timeSpan - (m_timeSpan % (1000000LL)); }
 void WTimeSpan::PurgeToMinute()					{ m_timeSpan = m_timeSpan - (m_timeSpan % (60LL * 1000000LL)); }
