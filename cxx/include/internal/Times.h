@@ -27,9 +27,10 @@
 
 #ifdef MSVC_COMPILER
 #pragma managed(push, off)
+#pragma pack(push, 4)
 #endif
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 #include <afx.h>
 #include <ATLComTime.h>
 #endif
@@ -89,7 +90,7 @@ namespace HSS_Time {
 namespace HSS_Time {
 
 
-class WTimeSpan {
+class TIMES_API WTimeSpan {
     friend class WTime;
     private:
 	INTNM::int64_t m_timeSpan;
@@ -102,7 +103,7 @@ class WTimeSpan {
 	WTimeSpan(INTNM::int32_t lDays, INTNM::int32_t nHours, INTNM::int32_t nMins, const double &nSecs);
 	WTimeSpan(INTNM::int32_t lDays, INTNM::int32_t nHours, INTNM::int32_t nMins, INTNM::int32_t nSecs, INTNM::int32_t uSecs);
 	WTimeSpan(const WTimeSpan &timeSrc);
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	explicit WTimeSpan(const COleDateTimeSpan &timeSrc);
 	WTimeSpan(const CString &timeSrc, INTNM::int16_t *cnt = NULL);
 #endif
@@ -112,7 +113,7 @@ class WTimeSpan {
 
 	std::string ToString(INTNM::uint32_t flags) const;
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	bool __FASTCALL ParseTime(const CString &time);
 #endif
 	bool __FASTCALL ParseTime(const TCHAR *lpszTime);
@@ -167,19 +168,19 @@ class WTimeSpan {
 	bool operator>(const WTimeSpan &timeSpan) const;
 	bool operator<=(const WTimeSpan &timeSpan) const;
 	bool operator>=(const WTimeSpan &timeSpan) const;
-	
-#ifdef TIMES_WINDOWS
-	friend CArchive& AFXAPI operator<<(CArchive& ar, WTimeSpan timeSpan);
-	friend CArchive& AFXAPI operator>>(CArchive& ar, WTimeSpan& rtimeSpan);
+
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
+	friend TIMES_API CArchive& AFXAPI operator<<(CArchive& ar, WTimeSpan timeSpan);
+	friend TIMES_API CArchive& AFXAPI operator>>(CArchive& ar, WTimeSpan& rtimeSpan);
 #endif
-	
-#ifdef TIMES_WINDOWS
+
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	COleDateTimeSpan AsCOleDateTimeSpan() const;
 #endif
 };
 
 
-class WTimeManager {
+class TIMES_API WTimeManager {
     public:
 	const WorldLocation	&m_worldLocation;
 					// where timezone, lat, and long are kept
@@ -209,9 +210,7 @@ class WTimeManager {
 };
                                                                                    
 
-#pragma pack(push, 4)			// force this class to be small
-
-class WTime {				// this value is always stored in GMT time!!! - unless you play with constructors or do it manually
+class TIMES_API WTime {				// this value is always stored in GMT time!!! - unless you play with constructors or do it manually
 private:
 	INTNM::uint64_t		m_time;	// this is a count of microseconds since January 1, 1600.  This may seem like an arbritrary point in time (and it is), but there is some
 					// logic to this: the Gregorian calendar started on October 4, 1582:
@@ -229,7 +228,7 @@ private:
 	void construct_time_t(INTNM::int32_t nYear, INTNM::int32_t nMonth, INTNM::int32_t nDay, INTNM::int32_t nHour, INTNM::int32_t nMin, INTNM::int32_t nSec);
 	INTNM::uint64_t adjusted_tm(INTNM::uint32_t flags) const;
 	INTNM::uint64_t adjusted_tm_math(INTNM::uint32_t flags) const;
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	bool systemParseDateTime(const TCHAR *lpszDate, INTNM::uint32_t flags);
 #endif
 
@@ -241,7 +240,7 @@ public:
 	WTime(INTNM::int32_t nYear, INTNM::int32_t nMonth, INTNM::int32_t nDay, INTNM::int32_t nHour, INTNM::int32_t nMin, INTNM::int32_t nSec, INTNM::int32_t uSec, const WTimeManager *tm);
 					// REMEMBER: years, hours, months, etc. are specified in GMT, even if
 					// you attach a timezone to it!!!
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	WTime(const COleDateTime& timeSrc, const WTimeManager *tm, INTNM::uint32_t flags);
 #endif
 	WTime(const WTime& timeSrc);
@@ -306,27 +305,27 @@ public:
 	bool operator>=(const WTime &time) const;
 
 	std::string ToString(INTNM::uint32_t flags) const;
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	bool ParseDateTime(const CString &lpszDate, INTNM::uint32_t flags/* for timezone, DST */);
 #endif
 	bool ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags/* for timezone, DST */, WorldLocation* location = nullptr);
 	bool ParseDateTime(const std::wstring &lpszDate, INTNM::uint32_t flags/* for timezone, DST */);
 									// match_str
-#ifdef TIMES_WINDOWS
-	friend CArchive& AFXAPI operator<<(CArchive& ar, const WTime &time);
-	friend CArchive& AFXAPI operator>>(CArchive& ar, WTime &rtime);
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
+	friend TIMES_API CArchive& AFXAPI operator<<(CArchive& ar, const WTime &time);
+	friend TIMES_API CArchive& AFXAPI operator>>(CArchive& ar, WTime &rtime);
 #endif
 	static INTNM::uint64_t updateSerializedULONGLONG(INTNM::uint64_t toUpdate);
-	
-#ifdef TIMES_WINDOWS
+
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	COleDateTime __FASTCALL AsCOleDateTime(INTNM::uint32_t flags) const;
 #endif
 };
 
 };
 
-#pragma pack(pop)			// undo our packing rules to what they were before
 
 #ifdef MSVC_COMPILER
+#pragma pack(pop)			// undo our packing rules to what they were before
 #pragma managed(pop)
 #endif

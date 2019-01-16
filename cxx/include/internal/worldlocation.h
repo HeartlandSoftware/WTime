@@ -34,7 +34,7 @@ namespace HSS_Time {
 #include "objectcache_mt.h"
 #endif
 
-#ifdef TIMES_WINDOWS
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 #include <afx.h>
 #endif
 
@@ -47,12 +47,11 @@ namespace HSS_Time {
 
 #ifdef MSVC_COMPILER
 #pragma managed(push, off)
+#pragma pack(push, 4)
 #endif
 
-#pragma pack(push, 4)
 
-
-struct TimeZoneInfo {
+struct TIMES_API TimeZoneInfo {
 	WTimeSpan	m_timezone;
 	WTimeSpan	m_dst;
 	const char	*m_code;
@@ -60,7 +59,7 @@ struct TimeZoneInfo {
 };
 
 
-class WorldLocation {		// this is what we have to define what a plot's location in the world is
+class TIMES_API WorldLocation {		// this is what we have to define what a plot's location in the world is
     public:
 	double		m_latitude;			// stored as radians!!!
 	double		m_longitude;
@@ -90,9 +89,9 @@ class WorldLocation {		// this is what we have to define what a plot's location 
 
 
 				// ***** input/output...
-#ifdef TIMES_WINDOWS
-	friend CArchive& operator>>(CArchive& is, WorldLocation &wl);
-	friend CArchive& operator<<(CArchive& os, const WorldLocation &wl);
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
+	friend TIMES_API CArchive& operator>>(CArchive& is, WorldLocation &wl);
+	friend TIMES_API CArchive& operator<<(CArchive& os, const WorldLocation &wl);
 #endif
 
 	WorldLocation &operator=(const WorldLocation &wl);
@@ -160,9 +159,9 @@ public:
 #endif
 };
 
-#pragma pack(pop)
 
 #ifdef MSVC_COMPILER
+#pragma pack(pop)
 #pragma managed(pop)
 #endif
 

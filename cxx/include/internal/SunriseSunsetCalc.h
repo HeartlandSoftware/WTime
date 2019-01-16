@@ -20,7 +20,9 @@
 
 #ifdef MSVC_COMPILER
 #pragma managed(push, off)
+#pragma pack(push, 4)
 #endif
+
 
 #include "times_internal.h"
 
@@ -28,14 +30,14 @@
 
 namespace HSS_Time_Private {
 
-typedef struct _RiseSetInput_struct{
+typedef struct TIMES_API _RiseSetInput_struct{
 	double Latitude, Longitude;		// west is positive, east is negative
 	INTNM::int32_t year, month, day;
 	INTNM::int32_t timezone;		// west is positive, east is negative
 	bool DaytimeSaving;
 } RISESET_IN_STRUCT;
 
-typedef struct _RiseSetOut_struct{
+typedef struct TIMES_API _RiseSetOut_struct{
 	INTNM::int32_t YearRise,MonthRise,DayRise;
 	INTNM::int32_t YearSet, MonthSet, DaySet;
 	INTNM::int32_t HourRise, MinRise, SecRise;
@@ -50,7 +52,7 @@ typedef struct _RiseSetOut_struct{
 
 
 namespace HSS_Time_Private {
-class CSunriseSunsetCalc
+class TIMES_API CSunriseSunsetCalc
 {
 public:
 	CSunriseSunsetCalc();
@@ -99,6 +101,8 @@ private:
 
 }
 
+
 #ifdef MSVC_COMPILER
+#pragma pack(pop)
 #pragma managed(pop)
 #endif

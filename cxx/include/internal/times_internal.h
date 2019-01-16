@@ -53,8 +53,12 @@
 #endif
 
 #ifdef _MSC_VER
-#include <tchar.h>
+#ifdef _AFXDLL
 #define TIMES_WINDOWS 1
+#else
+#undef _UNICODE
+#endif
+#include <tchar.h>
 
 #if _MSC_VER < 1900
 extern INTNM::int32_t c99_vsnprintf(char *outBuf, size_t size, const char* format, va_list ap);
@@ -91,8 +95,10 @@ typedef char TCHAR;
 
 #endif //_UNICODE
 
+#ifndef _T
 #define _TEXT(x)	__TEXT(x)
 #define _T(x)		__TEXT(x)
+#endif
 
 #endif
 
@@ -101,5 +107,37 @@ typedef char TCHAR;
 #endif
 
 #ifndef __FASTCALL
+#ifdef _MSC_VER
 #define __FASTCALL __stdcall
+#else
+#define __FASTCALL 
+#endif
+#endif
+
+
+#if defined(_MSC_VER) || defined(__CYGWIN__)
+#  ifdef TIMES_EXPORT
+#    ifdef __GNUC__
+#      define TIMES_API __attribute__((dllexport))
+#      define NO_THROW __attribute__((nothrow))
+#    else
+#      define TIMES_API __declspec(dllexport)
+#      define NO_THROW __declspec(nothrow)
+#    endif
+#  else
+#    ifdef __GNUC__
+#      define TIMES_API __attribute__((dllimport))
+#      define NO_THROW __attribute__((nothrow))
+#    else
+#      define TIMES_API __declspec(dllimport)
+#      define NO_THROW __declspec(nothrow)
+#    endif
+#  endif
+#else
+#  define NO_THROW __attribute__((nothrow))
+#  if __GNUC__ >= 4
+#    define TIMES_API __attribute__((visibility("default")))
+#  else
+#    define TIMES_API
+#  endif
 #endif
