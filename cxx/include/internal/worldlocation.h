@@ -39,6 +39,9 @@ namespace HSS_Time {
 #endif
 
 
+class Canada;
+
+
 namespace HSS_Time {
 
 
@@ -71,6 +74,7 @@ class WorldLocation {		// this is what we have to define what a plot's location 
 							// used for GMT->solar time math based on longitude only, but don't assume that solar noon means the sun is right over you!
 	INTNM::int16_t m_sun_rise_set(const WTime &local_day, WTime *Rise, WTime *Set, WTime *Noon) const;
 							// any time during the local "solar" day will glean the right times - suggestion is to use local noon time
+	Canada *canada;
 
     public:
 	WorldLocation();
@@ -82,6 +86,7 @@ class WorldLocation {		// this is what we have to define what a plot's location 
 	///<param name="longitude">The longitude in degrees</param>
 	///<param name="guessTimezone">True if the timezone should be guessed from the latitude and longitude</param>
 	WorldLocation(double latitude, double longitude, bool guessTimezone);
+	~WorldLocation();
 
 
 				// ***** input/output...
@@ -97,13 +102,15 @@ class WorldLocation {		// this is what we have to define what a plot's location 
 	const struct TimeZoneInfo *GuessTimeZone(INTNM::int16_t set) const;		// 0 for std time zones, 1 for dst time zones, -1 for military time zones
 	const struct TimeZoneInfo *CurrentTimeZone(INTNM::int16_t set) const;		// 0 for std time zones, 1 for dst time zones, -1 for military time zones
 
-	static bool InsideCanada(const double latitude, const double longitude);
+	bool InsideCanada(const double latitude, const double longitude);
 	bool InsideCanada() const;
 	bool InsideNewZealand() const;
 	bool InsideTasmania() const;
 	bool InsideAustraliaMainland() const;
 
-	static const struct TimeZoneInfo m_std_timezones[], m_dst_timezones[], m_mil_timezones[];
+	static const struct TimeZoneInfo m_std_timezones[];
+	static const struct TimeZoneInfo m_dst_timezones[];
+	static const struct TimeZoneInfo m_mil_timezones[];
 
 public:
 	///<summary>
@@ -132,6 +139,8 @@ public:
 	///<param name="set">Whether we want back a STD or DST timezone</param>
 	///<param name="valid">If supplied, will be set to 1 if a timezone was found for the corresponding location, and 0 otherwise</param>
 	static const TimeZoneInfo* TimeZoneFromLocation(const std::string& name, INTNM::int16_t set, bool* valid = NULL);
+
+	static const TimeZoneInfo* TimeZoneFromName(const std::string& name, INTNM::int16_t set);
 
     private:
 	struct sun_key {
