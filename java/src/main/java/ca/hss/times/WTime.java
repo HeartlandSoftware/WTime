@@ -358,13 +358,12 @@ public class WTime implements Serializable, Comparable<WTime> {
 		return new WTime(nYear, nMonth, nDay, nHour, nMin, nSec, tm);
 	}
 	
-	public WTime Now(WTimeManager tm, long flags) {
-		Calendar t = Calendar.getInstance();
+	public static WTime Now(WTimeManager tm, long flags) {
+		Calendar t = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 		int seconds = t.get(Calendar.SECOND);
 	    if (flags == FORMAT_EXCLUDE_SECONDS)
 	        seconds = 0;
-	    WTime temp = fromLocal(t.get(Calendar.YEAR), t.get(Calendar.MONTH), t.get(Calendar.DAY_OF_MONTH), t.get(Calendar.HOUR), t.get(Calendar.MINUTE), seconds, tm);
-	    return new WTime(temp, flags, (short)-1);
+	    return new WTime(t.get(Calendar.YEAR), t.get(Calendar.MONTH) + 1, t.get(Calendar.DAY_OF_MONTH), t.get(Calendar.HOUR), t.get(Calendar.MINUTE), seconds, tm);
 	}
 
 	/**
@@ -842,7 +841,7 @@ public class WTime implements Serializable, Comparable<WTime> {
 		long year = 0, month = 0, day = 0, hour = 0, min = 0, sec = 0;
 		long v1 = 0, v2 = 0, v3 = 0;
 		short time_scan = 0;
-		long secondOffset = 0;
+		Optional<Long> secondOffset = Optional.empty();
 
 		boolean delimit_found = false;
 		while (delimit.charAt(time_scan) != '\0') {
@@ -1038,13 +1037,17 @@ public class WTime implements Serializable, Comparable<WTime> {
 						tok = tok.substring(1);
 					String timezone = null;
 					boolean negative = false;
-					boolean timezoneExists = tok.indexOf('+') >= 0 || tok.indexOf('-') >= 0;
+					boolean timezoneExists = tok.indexOf('+') >= 0 || tok.indexOf('-') >= 0 || tok.indexOf('Z') > 0;
 					if (timezoneExists) {
 						negative = tok.indexOf('-') >= 0;
 						String[] split = tok.split("[-\\+Z]");
 						if (split.length == 2) {
 							tok = split[0];
 							timezone = split[1];
+						}
+						else if (tok.endsWith("Z")) {
+							tok = tok.substring(0, tok.length() - 1);
+							timezone = "Z";
 						}
 					}
 					OutVariable<Short> s = new OutVariable<Short>();
@@ -1060,12 +1063,18 @@ public class WTime implements Serializable, Comparable<WTime> {
 					}
 					
 					if (timezone != null) {
-						ts = new WTimeSpan(timezone, s);
-						time_scan = s.value;
-						if (time_scan != 0) {
-							secondOffset = ts.getTotalSeconds();
-							if (negative)
-								secondOffset = -secondOffset;
+						if (timezone.equals("Z")) {
+							secondOffset = Optional.of(0L);
+						}
+						else {
+							ts = new WTimeSpan(timezone, s);
+							time_scan = s.value;
+							if (time_scan != 0) {
+								if (negative)
+									secondOffset = Optional.of(-ts.getTotalSeconds());
+								else
+									secondOffset = Optional.of(ts.getTotalSeconds());
+							}
 						}
 					}
 				}
@@ -1078,20 +1087,20 @@ public class WTime implements Serializable, Comparable<WTime> {
 		if ((year >= 1600) && (year < 2900)) {
 			WTime t = new WTime(year, month, day, hour, min, sec, m_tm);
 			
-			if (secondOffset != 0) {
+			if (secondOffset.isPresent()) {
 				long offset = m_tm.getWorldLocation().m_TimeZone.getTotalSeconds();
 				long intoYear = getSecondsIntoYear(0);
 				if (WTimeSpan.notEqual(m_tm.getWorldLocation().m_EndDST, m_tm.getWorldLocation().m_StartDST)) {
 					if (WTimeSpan.lessThan(m_tm.getWorldLocation().m_StartDST, m_tm.getWorldLocation().m_EndDST)) {
 						if ((m_tm.getWorldLocation().m_StartDST.getTotalSeconds() <= intoYear) &&
 							(intoYear < m_tm.getWorldLocation().m_EndDST.getTotalSeconds()))
-							offset += m_tm.getWorldLocation().m_AmtDST.getTotalMinutes();
+							offset += m_tm.getWorldLocation().m_AmtDST.getTotalSeconds();
 					}
 					else if ((m_tm.getWorldLocation().m_StartDST.getTotalSeconds() < intoYear) ||
 							 (intoYear <= m_tm.getWorldLocation().m_EndDST.getTotalSeconds()))
-						offset += m_tm.getWorldLocation().m_AmtDST.getTotalMinutes();
+						offset += m_tm.getWorldLocation().m_AmtDST.getTotalSeconds();
 				}
-				offset -= secondOffset;
+				offset -= secondOffset.get();
 				if (offset != 0)
 					t.add(new WTimeSpan(offset));
 			}
