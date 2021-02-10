@@ -51,8 +51,28 @@ message WTime {
      * be represented with a timezone of -7 and a daylight of 1).
      */
     google.protobuf.StringValue timezone = 3;
+    /**
+     * An ID for a predefined set of timezone details.
+     */
+    google.protobuf.Int32Value timezone_id = 4;
 }
 
 message WTimeSpan {
     string time = 1;
+}
+
+message WTimeZone {
+    int32 version = 1;
+
+    oneof msg {
+        int32 timezoneIndex = 2;
+        WTZDetails timezoneDetails = 3;
+	};
+
+    message WTZDetails {
+        WTimeSpan amtTimeZone = 1;  /* offset from UTC */
+        WTimeSpan startDST = 2;     /* when DST starts, since Jan 1 */
+        WTimeSpan endDST = 3;       /* when DST ends, since Jan 1 */
+        WTimeSpan amtDST = 4;       /* offset from standard time to daylight savings time */
+	}
 }

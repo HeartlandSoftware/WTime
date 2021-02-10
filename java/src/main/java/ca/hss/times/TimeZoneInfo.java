@@ -32,6 +32,7 @@ public class TimeZoneInfo implements Comparable<TimeZoneInfo> {
 	private String m_Code;
 	private String m_Name;
 	private String m_Id;
+	private int m_uuid = 0;
 	
 	/**
 	 * Get the timezone offset from UTC.
@@ -58,14 +59,19 @@ public class TimeZoneInfo implements Comparable<TimeZoneInfo> {
 	 * @return the timezones unique id
 	 */
 	public String getID() { return m_Id; }
+	/**
+	 * Get the unique ID for this timezone.
+	 */
+	public int getUUID() { return m_uuid; }
 
-	TimeZoneInfo(WTimeSpan _timezone, WTimeSpan _dst, String _code, String _name, String _id) {
-		m_TimeZone = _timezone;
-		m_Dst = _dst;
-		m_Code = _code;
-		m_Name = _name;
-		m_Id = _id;
-	}
+    TimeZoneInfo(WTimeSpan _timezone, WTimeSpan _dst, String _code, String _name, String _id, int uuid) {
+        m_TimeZone = _timezone;
+        m_Dst = _dst;
+        m_Code = _code;
+        m_Name = _name;
+        m_Id = _id;
+        m_uuid = uuid;
+    }
 
 	/**
 	 * Converts the time zone info into a string. If a translation callback instance has
