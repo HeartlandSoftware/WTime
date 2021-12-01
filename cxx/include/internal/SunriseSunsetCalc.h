@@ -20,13 +20,16 @@
 
 #ifdef MSVC_COMPILER
 #pragma managed(push, off)
-#pragma pack(push, 4)
 #endif
 
 
 #include "times_internal.h"
 
 #include <string>
+
+#ifdef HSS_SHOULD_PRAGMA_PACK
+#pragma pack(push, 4)
+#endif
 
 namespace HSS_Time_Private {
 
@@ -45,7 +48,7 @@ typedef struct TIMES_API _RiseSetOut_struct{
 	INTNM::int32_t SolarNoonHour, SolarNoonMin, SolarNoonSec;
 	double eqTime;
 	double solarDec;
-	_RiseSetOut_struct(){};
+	_RiseSetOut_struct() = default;
 } RISESET_OUT_STRUCT;
 
 };
@@ -101,8 +104,10 @@ private:
 
 }
 
+#ifdef HSS_SHOULD_PRAGMA_PACK
+#pragma pack(pop)
+#endif
 
 #ifdef MSVC_COMPILER
-#pragma pack(pop)
 #pragma managed(pop)
 #endif

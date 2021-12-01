@@ -18,8 +18,9 @@
 
 #pragma once
 
-
+#include "intel_check.h"
 #include "config.h"
+#include "hssconfig/config.h"
 
 
 #ifdef HAVE_CSTDINT
@@ -65,7 +66,7 @@ extern INTNM::int32_t c99_vsnprintf(char *outBuf, size_t size, const char* forma
 extern INTNM::int32_t c99_snprintf(char *outBuf, size_t size, const char* format, ...);
 #endif //_MSC_VER < 1900
 
-#if _MSC_VER && !__INTEL_COMPILER
+#if defined(_MSC_VER) && !defined(__INTEL_COMPILER) && !defined(__INTEL_LLVM_COMPILER)
 #define MSVC_COMPILER 1
 #endif //_MSC_VER && !__INTEL_COMPILER
 #define __stricmp _stricmp
@@ -102,7 +103,7 @@ typedef char TCHAR;
 
 #endif
 
-#ifdef __INTEL_COMPILER
+#if defined(__INTEL_COMPILER) || defined(__INTEL_LLVM_COMPILER)
 #define INTEL_COMPILER 1
 #endif
 
@@ -116,6 +117,7 @@ typedef char TCHAR;
 
 
 #if defined(_MSC_VER) || defined(__CYGWIN__)
+#  define TIMES_STATIC 0
 #  ifdef TIMES_EXPORT
 #    ifdef __GNUC__
 #      define TIMES_API __attribute__((dllexport))
@@ -134,6 +136,7 @@ typedef char TCHAR;
 #    endif
 #  endif
 #else
+#  define TIMES_STATIC 1
 #  define NO_THROW __attribute__((nothrow))
 #  if __GNUC__ >= 4
 #    define TIMES_API __attribute__((visibility("default")))

@@ -317,8 +317,8 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 		String str;
 		
 		long year = getYears();
-		long day = (flags == WTime.FORMAT_YEAR) ? (long)(getDays() - (year * 365.25 - 0.75)) : getDays();
-		long hour = (flags == WTime.FORMAT_DAY) ? getHours() : getTotalHours();
+		long day = ((flags & WTime.FORMAT_YEAR) > 0) ? (long)(getDays() - (year * 365.25 - 0.75)) : getDays();
+		long hour = ((flags & WTime.FORMAT_DAY) > 0) ? getHours() : getTotalHours();
 		long minute = getMinutes();
 		long second = getSeconds();
 		long usecs = getMicroSeconds();
@@ -326,7 +326,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 		boolean	special_case = false;
 
 		if (m_timeSpan < 0) {
-			if (flags == WTime.FORMAT_EXCLUDE_SECONDS) {
+			if ((flags & WTime.FORMAT_EXCLUDE_SECONDS) > 0) {
 				if (second <= -30)			// perform any rounding
 					minute--;
 				if (minute == -60) {
@@ -345,7 +345,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 			minute = 0 - minute;			// take care of the sign which isn't needed for the minute
 			second = 0 - second;			// ...or the seconds
 			usecs = 0 - usecs;
-		} else if (flags == WTime.FORMAT_EXCLUDE_SECONDS) {
+		} else if ((flags & WTime.FORMAT_EXCLUDE_SECONDS) > 0) {
 			if (second >= 30)			// perform any rounding
 				minute++;
 			if (minute == 60) {
@@ -357,44 +357,44 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 				hour = 0;
 			}
 		}
-		if ((year == 0) || (!(flags == WTime.FORMAT_YEAR))) {
-			if ((day == 0) || (!(flags == WTime.FORMAT_DAY))) {
-				if (flags == WTime.FORMAT_EXCLUDE_SECONDS) {
+		if ((year == 0) || (!((flags & WTime.FORMAT_YEAR) > 0))) {
+			if ((day == 0) || (!((flags & WTime.FORMAT_DAY) > 0))) {
+				if ((flags & WTime.FORMAT_EXCLUDE_SECONDS) > 0) {
 					if (special_case)
 						str = String.format("%02d", minute);
 					else
 						str = String.format("%02d:%02d", hour, minute); 
 				} else if (special_case) {
-					if (flags == WTime.FORMAT_INCLUDE_USECS)		
+					if ((flags & WTime.FORMAT_INCLUDE_USECS) > 0)		
 						str = String.format("%02d:%02d:%02d", minute, second, usecs);
 					else
 						str = String.format("%02d:%02d", minute, second);
 				} else {
-					if (flags == WTime.FORMAT_INCLUDE_USECS)
+					if ((flags & WTime.FORMAT_INCLUDE_USECS) > 0)
 						str = String.format("%02d:%02d:%02d:%02d", hour, minute, second, usecs);
 					else
 						str = String.format("%02d:%02d:%02d", hour, minute, second);
 				}
 			} else {
-				if ((hour == 0) && (minute == 0) && (second == 0) && (flags == WTime.FORMAT_CONDITIONAL_TIME)) {
+				if ((hour == 0) && (minute == 0) && (second == 0) && ((flags & WTime.FORMAT_CONDITIONAL_TIME) > 0)) {
 					if (day == 1) // only day data and we're told to do that, so don't print hours, min's, sec's
 						str = "1 day";
 					else
 						str = Long.toString(day) + " days";
 				} else if (day == 1) {
-					if (flags == WTime.FORMAT_EXCLUDE_SECONDS)
+					if ((flags & WTime.FORMAT_EXCLUDE_SECONDS) > 0)
 						str = "1 day " + Long.toString(hour) + ":" + Long.toString(minute);
 					else {
-						if (flags == WTime.FORMAT_INCLUDE_USECS)
+						if ((flags & WTime.FORMAT_INCLUDE_USECS) > 0)
 							str = String.format("1 day %02d:%02d:%02d:%02d", hour, minute, second, usecs);
 						else
 							str = String.format("1 day %02d:%02d:%02d", hour, minute, second);
 					}
 				} else {
-					if (flags == WTime.FORMAT_EXCLUDE_SECONDS)
+					if ((flags & WTime.FORMAT_EXCLUDE_SECONDS) > 0)
 						str = String.format("%d days %02d:%02d", day, hour, minute);
 					else {
-						if (flags == WTime.FORMAT_INCLUDE_USECS)
+						if ((flags & WTime.FORMAT_INCLUDE_USECS) > 0)
 							str = String.format("%d days %02d:%02d:%02d:%02d", day, hour, minute, second, usecs);
 						else
 							str = String.format("%d days %02d:%02d:%02d", day, hour, minute, second);
@@ -402,25 +402,25 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 				}
 			}
 		} else {
-			if ((day == 0) && (hour == 0) && (minute == 0) && (second == 0) && (flags == WTime.FORMAT_CONDITIONAL_TIME)) {
+			if ((day == 0) && (hour == 0) && (minute == 0) && (second == 0) && ((flags & WTime.FORMAT_CONDITIONAL_TIME) > 0)) {
 				if (year == 1) // only day data and we're told to do that, so don't print hours, min's, sec's						
 					str = "1 year";
 				else
 					str = Long.toString(year) + " years";
 			} else if (year == 1) {
-				if (flags == WTime.FORMAT_EXCLUDE_SECONDS)
+				if ((flags & WTime.FORMAT_EXCLUDE_SECONDS) > 0)
 					str = String.format("1 year %d days %02d:%02d", day, hour, minute);
 				else {
-					if (flags == WTime.FORMAT_INCLUDE_USECS)
+					if ((flags & WTime.FORMAT_INCLUDE_USECS) > 0)
 						str = String.format("1 year %d days %02d:%02d:%02d:%02d", day, hour, minute, second, usecs);
 					else
 						str = String.format("1 year %d days %02d:%02d:%02d", day, hour, minute, second);
 				}
 			} else {
-				if (flags == WTime.FORMAT_EXCLUDE_SECONDS)
+				if ((flags & WTime.FORMAT_EXCLUDE_SECONDS) > 0)
 					str = String.format("%d years %d days %02d:%02d", year, day, hour, minute);
 				else {
-					if (flags == WTime.FORMAT_INCLUDE_USECS)
+					if ((flags & WTime.FORMAT_INCLUDE_USECS) > 0)
 						str = String.format("%d years %d days %02d:%02d:%02d:%02d", year, day, hour, minute, second, usecs);
 					else
 						str = String.format("%d years %d days %02d:%02d:%02d", year, day, hour, minute, second);

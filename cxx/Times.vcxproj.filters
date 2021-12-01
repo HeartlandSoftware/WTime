@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{8ad60b5a-25bf-469e-92ec-49428d2de3df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{e96a6db1-f819-42bf-800d-be17d76917ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\proto">
+      <UniqueIdentifier>{e96a6db1-f819-42bf-800d-be17d76917f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\internal">
+      <UniqueIdentifier>{8be5e13f-f57f-4d11-828d-1e4a881e3e72}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\proto">
+      <UniqueIdentifier>{8be5e13f-f57f-4d11-828d-1e4a881e3e73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="proto">
+      <UniqueIdentifier>{57d3645e-e13f-4291-81a6-2b85fee37d91}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include/config.h">
+      <filter>include\internal</filter>
+    </ClInclude>
+    <ClInclude Include="include/internal/SunriseSunsetCalc.h">
+      <filter>include\internal</filter>
+    </ClInclude>
+    <ClInclude Include="include/internal/Times.h">
+      <filter>include\internal</filter>
+    </ClInclude>
+    <ClInclude Include="include/internal/times_internal.h">
+      <filter>include\internal</filter>
+    </ClInclude>
+    <ClInclude Include="include/internal/worldlocation.h">
+      <filter>include\internal</filter>
+    </ClInclude>
+    <ClInclude Include="include/wtime.pb.h">
+      <filter>include\proto</filter>
+    </ClInclude>
+    <ClInclude Include="include/WTime.h">
+      <filter>include</filter>
+    </ClInclude>
+    <ClInclude Include="include\internal\WTimeProto.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src/SunriseSunsetCalc.cpp">
+      <filter>src</filter>
+    </ClCompile>
+    <ClCompile Include="src/Times.cpp">
+      <filter>src</filter>
+    </ClCompile>
+    <ClCompile Include="src/TimezoneMapper.cpp">
+      <filter>src</filter>
+    </ClCompile>
+    <ClCompile Include="src/worldlocation.cpp">
+      <filter>src</filter>
+    </ClCompile>
+    <ClCompile Include="src/Canada_Detail.cpp">
+      <filter>src</filter>
+    </ClCompile>
+    <ClCompile Include="src/WTimeProto.cpp">
+      <filter>src</filter>
+    </ClCompile>
+    <ClCompile Include="src/generated/wtime.pb.cc">
+      <filter>src\proto</filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="src\Times.rc">
+      <Filter>src</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\proto\wtime.proto">
+      <Filter>proto</Filter>
+    </None>
+    <None Include="include\internal\RegionMap.inl">
+      <Filter>include\internal</Filter>
+    </None>
+  </ItemGroup>
+</Project>

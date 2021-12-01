@@ -20,6 +20,7 @@
     <SccProvider>
     </SccProvider>
     <Keyword>MFCProj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -29,11 +30,10 @@
     <CharacterSet>NotSet</CharacterSet>
     <CLRSupport>false</CLRSupport>
     <WholeProgramOptimization>false</WholeProgramOptimization>
-    <PlatformToolset>Intel C++ Compiler 19.0</PlatformToolset>
-    <BasePlatformToolset>v141</BasePlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
+    <BasePlatformToolset>v142</BasePlatformToolset>
     <UseIntelIPP>false</UseIntelIPP>
     <UseIntelMKL>No</UseIntelMKL>
-    <UseILP64Interfaces>false</UseILP64Interfaces>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
@@ -41,7 +41,8 @@
     <UseOfAtl>false</UseOfAtl>
     <CharacterSet>NotSet</CharacterSet>
     <CLRSupport>false</CLRSupport>
-    <PlatformToolset>Intel C++ Compiler 19.0</PlatformToolset>
+    <PlatformToolset>Intel C++ Compiler 2021</PlatformToolset>
+    <BasePlatformToolset>v142</BasePlatformToolset>
     <UseIntelIPP>false</UseIntelIPP>
     <UseIntelMKL>No</UseIntelMKL>
   </PropertyGroup>
@@ -72,9 +73,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>HSS_Times</TargetName>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(ONEAPI_ROOT)compiler\latest\windows\compiler\lib\$(IntelPlatform)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>HSS_Times</TargetName>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(IPP1AProductDir)\lib\$(IntelPlatform);$(LibraryPath);$(ONEAPI_ROOT)compiler\latest\windows\compiler\lib\$(IntelPlatform)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -101,13 +104,13 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <CallingConvention>Cdecl</CallingConvention>
       <CompileAs>Default</CompileAs>
-      <UseMSVC>true</UseMSVC>
-      <AdditionalOptions>-Qoption,cpp,--extended_float_type  /Qdiag-disable:1885 %(AdditionalOptions)</AdditionalOptions>
+      <UseMSVC>false</UseMSVC>
+      <AdditionalOptions>/Qoption,cpp,--extended_float_types /Qlong-double /Qdiag-disable:1885 %(AdditionalOptions)</AdditionalOptions>
       <FloatingPointModel>Precise</FloatingPointModel>
-      <LanguageStandard>
-      </LanguageStandard>
-      <CCppSupport>Cpp17Support</CCppSupport>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <CCppSupport>Cpp17Support</CCppSupport>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -124,7 +127,7 @@ call ant -file protome.xml -Dfilename=wtime compile</Command>
     </PreBuildEvent>
     <Link>
       <AdditionalLibraryDirectories>$(PROTOBUF)\debug\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libprotobufd.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(PROTOBUF)\debug\lib\libprotobufd.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -132,13 +135,13 @@ call ant -file protome.xml -Dfilename=wtime compile</Command>
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile>
-      <Optimization>Full</Optimization>
+      <Optimization>Disabled</Optimization>
       <InlineFunctionExpansion>Default</InlineFunctionExpansion>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
       <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
       <AdditionalIncludeDirectories>$(BOOST);$(PROTOBUF)\include;$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\ErrorCalc;$(ProjectDir)..\..\CoreLib\Lowlevel;$(ProjectDir)..\..\CoreLib\Math;$(ProjectDir)..\..\CoreLib\Geography;$(ProjectDIr)..\..\CoreMFC\Multithread;$(ProjectDir)..\..\HSS_Versions;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_WIN32_WINNT=0x0601;_WIN32_IE=0x0A00;WINVER=0x0601;_SECURE_SCL=0;_ATL_MIXED;_BIND_TO_CURRENT_MFC_VERSION;_BIND_TO_CURRENT_CRT_VERSION;_BIND_TO_CURRENT_VCLIBS_VERSION;PROTOBUF_USE_DLLS;TIMES_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;_WIN32_WINNT=0x0601;_WIN32_IE=0x0A00;WINVER=0x0601;_ATL_MIXED;_BIND_TO_CURRENT_MFC_VERSION;_BIND_TO_CURRENT_CRT_VERSION;_BIND_TO_CURRENT_VCLIBS_VERSION;PROTOBUF_USE_DLLS;TIMES_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <StructMemberAlignment>8Bytes</StructMemberAlignment>
@@ -160,11 +163,11 @@ call ant -file protome.xml -Dfilename=wtime compile</Command>
       <CompileAs>Default</CompileAs>
       <EnablePREfast>false</EnablePREfast>
       <UseMSVC>true</UseMSVC>
-      <AdditionalOptions>-Qoption,cpp,--extended_float_type /Qdiag-disable:1885 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/Qoption,cpp,--extended_float_types /Qdiag-disable:1885 /Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
       <FloatingPointModel>Precise</FloatingPointModel>
-      <LanguageStandard>
-      </LanguageStandard>
       <CCppSupport>Cpp17Support</CCppSupport>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -181,8 +184,7 @@ call ant -file protome.xml -Dfilename=wtime compile</Command>
 call ant -file protome.xml -Dfilename=wtime compile</Command>
     </PreBuildEvent>
     <Link>
-      <AdditionalLibraryDirectories>$(PROTOBUF)\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>libprotobuf.lib</AdditionalDependencies>
+      <AdditionalDependencies>$(PROTOBUF)\lib\libprotobuf.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -207,7 +209,8 @@ call ant -file protome.xml -Dfilename=wtime compile</Command>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Default</BasicRuntimeChecks>
       <BrowseInformation Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</BrowseInformation>
-      <UseMSVC Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</UseMSVC>
+      <UseMSVC Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</UseMSVC>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/std:c++17 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <ClCompile Include="src/Canada_Detail.cpp">
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(BOOST);$(PROTOBUF)\include;$(GDAL)\include\;$(ProjectDir)include;$(ProjectDir)include\internal;$(ProjectDir);$(ProjectDir)..\..\CoreLib\ErrorCalc;$(ProjectDir)..\..\CoreLib\Lowlevel;$(ProjectDir)..\..\CoreLib\Math;$(ProjectDir)..\..\CoreLib\Geography;$(ProjectDIr)..\..\CoreMFC\Multithread;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>

@@ -23,7 +23,7 @@
 #include "Times.h"
 #include "wtime.pb.h"
 #include "times_internal.h"
-
+#include "validation_object.h"
 #include <boost/algorithm/string/predicate.hpp>
 
 namespace HSS_Time
@@ -35,6 +35,8 @@ namespace HSS_Time
 			std::uint64_t time;
 			std::int64_t offset;
 			std::int64_t dst;
+			std::uint32_t timezone;
+			bool valid;
 		};
 
 		class TIMES_API TimeSerializer
@@ -42,13 +44,17 @@ namespace HSS_Time
 		public:
 			static HSS::Times::WTime* serializeTime(const WTime& time);
 
-			static DeserializationData deserializeTime(const HSS::Times::WTime& time);
+			static DeserializationData deserializeTime(const HSS::Times::WTime& time, std::shared_ptr<validation::validation_object> valid, const std::string& name);
 
-			static WTime* deserializeTime(const HSS::Times::WTime& time, const WTimeManager* manager);
+			static WTime* deserializeTime(const HSS::Times::WTime& time, const WTimeManager* manager, std::shared_ptr<validation::validation_object> valid, const std::string& name);
 
 			static HSS::Times::WTimeSpan* serializeTimeSpan(const WTimeSpan& span);
 
-			static WTimeSpan* deserializeTimeSpan(const HSS::Times::WTimeSpan& span);
+			static WTimeSpan* deserializeTimeSpan(const HSS::Times::WTimeSpan& span, std::shared_ptr<validation::validation_object> valid, const std::string& name);
+
+			static HSS::Times::WTimeZone* serializeTimeZone(const WorldLocation& worldLocation);
+
+			static void deserializeTimeZone(const HSS::Times::WTimeZone& zone, WorldLocation& worldLocation, std::shared_ptr<validation::validation_object> valid, const std::string& name);
 		};
 	}
 }

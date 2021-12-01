@@ -16,6 +16,8 @@
  * limitations under the License.
  */
 
+#include "double_error.h"
+#include "times_internal.h"
 #include "Canada.cpp"
 
 bool insideCanadaDetail(Canada **canada, const double latitude, const double longitude) {

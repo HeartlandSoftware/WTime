@@ -27,7 +27,6 @@
 
 #ifdef MSVC_COMPILER
 #pragma managed(push, off)
-#pragma pack(push, 4)
 #endif
 
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
@@ -35,11 +34,16 @@
 #include <ATLComTime.h>
 #endif
 
+#ifdef HSS_SHOULD_PRAGMA_PACK
+#pragma pack(push, 4)
+#endif
+
 namespace HSS_Time {
 	class WorldLocation;
 	class WTimeSpan;
 	class WTime;
 };
+
 
 #define WTIME_FORMAT_TIME				0x00100000	// stick on the time
 #define WTIME_FORMAT_DAY				0x00200000	// stick on the day
@@ -88,6 +92,13 @@ namespace HSS_Time {
 
 
 namespace HSS_Time {
+
+#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
+	TIMES_API CArchive& AFXAPI operator<<(CArchive& ar, const WTimeSpan timeSpan);
+	TIMES_API CArchive& AFXAPI operator>>(CArchive& ar, WTimeSpan& rtimeSpan);
+	TIMES_API CArchive& AFXAPI operator<<(CArchive& ar, const WTime &time);
+	TIMES_API CArchive& AFXAPI operator>>(CArchive& ar, WTime &rtime);
+#endif
 
 
 class TIMES_API WTimeSpan {
@@ -138,6 +149,7 @@ class TIMES_API WTimeSpan {
 	INTNM::int64_t __FASTCALL GetTotalMicroSeconds() const;
 
 	double __FASTCALL GetDaysFraction() const;
+	double __FASTCALL GetSecondsFraction() const;
 	double __FASTCALL GetFractionOfDay() const;
 	INTNM::int32_t __FASTCALL GetSecondsOfDay() const;
 
@@ -162,6 +174,9 @@ class TIMES_API WTimeSpan {
 	const WTimeSpan operator*=(double f);
 	const WTimeSpan operator/=(double f);
 
+#ifdef __cpp_impl_three_way_comparison
+	auto operator<=>(const WTimeSpan& timeSpan) const;
+#endif
 	bool operator==(const WTimeSpan &timeSpan) const;
 	bool operator!=(const WTimeSpan &timeSpan) const;
 	bool operator<(const WTimeSpan &timeSpan) const;
@@ -170,11 +185,9 @@ class TIMES_API WTimeSpan {
 	bool operator>=(const WTimeSpan &timeSpan) const;
 
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
-	friend TIMES_API CArchive& AFXAPI operator<<(CArchive& ar, WTimeSpan timeSpan);
-	friend TIMES_API CArchive& AFXAPI operator>>(CArchive& ar, WTimeSpan& rtimeSpan);
-#endif
+	friend TIMES_API CArchive& AFXAPI HSS_Time::operator<<(CArchive& ar, const WTimeSpan timeSpan);
+	friend TIMES_API CArchive& AFXAPI HSS_Time::operator>>(CArchive& ar, WTimeSpan& rtimeSpan);
 
-#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	COleDateTimeSpan AsCOleDateTimeSpan() const;
 #endif
 };
@@ -207,6 +220,8 @@ class TIMES_API WTimeManager {
 	static const char *months[12];
 	static const char *days_abbrev[7];
 	static const char *days[7];
+
+	static const WTimeManager GetSystemTimeManager(WorldLocation& location);
 };
                                                                                    
 
@@ -249,6 +264,15 @@ public:
 
 public:
     static WTime Now(const WTimeManager *tm, INTNM::uint32_t flags);
+	static WTime& GlobalMin();
+	static WTime& GlobalMax();
+	static WTime GlobalMin(const WTimeManager* tm);
+	static WTime GlobalMax(const WTimeManager* tm);
+
+#if TIMES_STATIC==1
+private:
+	static WTime _gmin, _gmax;
+#endif
 
 public:
 	INTNM::uint64_t /*time_t*/ GetTime(INTNM::uint32_t mode) const;
@@ -314,18 +338,20 @@ public:
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	friend TIMES_API CArchive& AFXAPI operator<<(CArchive& ar, const WTime &time);
 	friend TIMES_API CArchive& AFXAPI operator>>(CArchive& ar, WTime &rtime);
-#endif
-	static INTNM::uint64_t updateSerializedULONGLONG(INTNM::uint64_t toUpdate);
 
-#if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	COleDateTime __FASTCALL AsCOleDateTime(INTNM::uint32_t flags) const;
 #endif
+
+	static INTNM::uint64_t updateSerializedULONGLONG(INTNM::uint64_t toUpdate);
 };
 
 };
 
 
 #ifdef MSVC_COMPILER
-#pragma pack(pop)			// undo our packing rules to what they were before
 #pragma managed(pop)
+#endif
+
+#ifdef HSS_SHOULD_PRAGMA_PACK
+#pragma pack(pop)			// undo our packing rules to what they were before
 #endif

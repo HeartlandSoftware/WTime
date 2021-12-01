@@ -593,10 +593,7 @@ public class SunriseSunsetCalc {
 	}
 	
 	private static double calcSolNoonUTC(double t, double longitude) {
-		/*double newt =*/ calcTimeJulianCent(calcJDFromJulianCent(t) + 0.5 + longitude/360.0); 
-
 		double eqTime = calcEquationOfTime(t);
-		/*double solarNoonDec =*/ calcSunDeclination(t);
 		double solNoonUTC = 720 + (longitude * 4) - eqTime; // min
 		
 		return solNoonUTC;

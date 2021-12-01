@@ -26,6 +26,7 @@
 #endif
 #include "worldlocation.h"
 #include "Times.h"
+#include "types.h"
 #include <stdarg.h>
 #include <string.h>
 #include <memory>
@@ -37,8 +38,33 @@
 #include <ctime>
 #include <codecvt>
 #include <assert.h>
+#include <optional>
+#include <inttypes.h>
+#include <sys/stat.h>
 
 #include <boost/algorithm/string.hpp>
+
+#ifdef __GNUC__
+#include <unistd.h>
+#include <algorithm>
+#include <fstream>
+#endif
+
+#ifndef S_ISDIR
+#define S_ISDIR(m) (((m) & S_IFMT) == S_IFDIR)
+#endif
+
+#ifndef PATH_MAX
+#ifdef MAX_PATH
+#define PATH_MAX MAX_PATH
+#else
+#define PATH_MAX 250
+#endif
+#endif
+
+#ifdef _MSC_VER
+#define realpath(N, R) _fullpath((R), (N), sizeof(R))
+#endif
 
 
 #define WTIME_1900	(9467107200000000LL)
@@ -79,7 +105,6 @@ INTNM::int32_t c99_snprintf(char *outBuf, size_t size, const char *format, ...)
 #endif
 
 
-
 WTimeSpan::WTimeSpan() {
 }
 
@@ -114,14 +139,16 @@ WTimeSpan::WTimeSpan(const WTimeSpan &timeSrc) {
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 WTimeSpan::WTimeSpan(const CString &timeSrc, INTNM::int16_t *cnt)
 {
-	WTimeSpan w(std::string((LPCTSTR)timeSrc), cnt);
+	CT2CA pszConvertedAnsiString(timeSrc);
+	WTimeSpan w(std::string(pszConvertedAnsiString), cnt);
 	*this = w;
 }
 #endif
 
 WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
-	INTNM::int32_t day = 0, hour, minute, read = 0, idx = 0;
-	double second;
+	INTNM::int32_t day = 0, hour = 0, minute = 0, read = 0;
+	std::string::size_type idx = 0;
+	double second = 0.0;
 	bool found = false;
 
 	std::string trimmedSrc = boost::trim_copy(timeSrc);
@@ -134,6 +161,8 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 		std::string value = "";
 		bool afterT = false;
 		bool isFraction = false;
+		if (cnt)
+			*cnt = 0;
 		while (idx < trimmedSrc.length())
 		{
 			char c = trimmedSrc[idx];
@@ -146,7 +175,7 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 			}
 			else if (c >= '0' && c <= '9')
 				value += c;
-			else
+			else if (value.length() > 0)
 			{
 				double val = -1;
 				int ival = -1;
@@ -166,6 +195,8 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 							second = val * 31'536'000;
 						else
 							day = ival * 365;
+						if (cnt)
+							(*cnt)++;
 						break;
 					case 'M':
 					case 'm':
@@ -175,6 +206,8 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 								second = val * 60;
 							else
 								minute = ival;
+							if (cnt)
+								(*cnt)++;
 						}
 						else
 						{
@@ -183,6 +216,8 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 								second = val * 2'592'000;
 							else
 								day = ival * 30;
+							if (cnt)
+								(*cnt)++;
 						}
 						break;
 					case 'D':
@@ -191,6 +226,8 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 							second = val * 86'400;
 						else
 							day = ival;
+						if (cnt)
+							(*cnt)++;
 						break;
 					case 'W':
 					case 'w':
@@ -198,6 +235,8 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 							second = val * 7 * 86'400;
 						else
 							day = ival * 7;
+						if (cnt)
+							(*cnt)++;
 						break;
 					case 'H':
 					case 'h':
@@ -205,6 +244,8 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 							second = val * 3600;
 						else
 							hour = ival;
+						if (cnt)
+							(*cnt)++;
 						break;
 					case 'S':
 					case 's':
@@ -212,10 +253,12 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 							second = val;
 						else
 							second = ival;
+						if (cnt)
+							(*cnt)++;
 						break;
 					}
 				}
-				value = "";
+				value.clear();
 				//only the smallest value is allowed to be a fraction
 				if (isFraction)
 					break;
@@ -308,7 +351,7 @@ WTimeSpan::WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt) {
 
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 WTimeSpan::WTimeSpan(const COleDateTimeSpan &timeSrc) {
-	WTimeSpan cts((INTNM::int32_t)timeSrc.GetTotalDays(), timeSrc.GetHours(), timeSrc.GetMinutes(), timeSrc.GetSeconds());
+	WTimeSpan cts((INTNM::int32_t)timeSrc.GetTotalDays(), timeSrc.GetHours(), timeSrc.GetMinutes(), (std::int32_t)timeSrc.GetSeconds());
 	*this = cts;
 }
 #endif
@@ -317,7 +360,7 @@ WTimeSpan::WTimeSpan(const COleDateTimeSpan &timeSrc) {
 void WTimeSpan::SetTotalSeconds(INTNM::int64_t secs)				{ m_timeSpan = secs * 1000000LL; }
 
 
-INTNM::int64_t WTimeSpan::GetYears() const							{ return (INTNM::int64_t)((long double)m_timeSpan / 1000000.0 / 24.0 / 60.0 / 60.0 / 365.25); }
+INTNM::int64_t WTimeSpan::GetYears() const							{ return (INTNM::int64_t)((long double)m_timeSpan / 1000000.0 / 24.0 / 60.0 / 60.0 / 365.25 /*+ 0.75*/); }
 INTNM::int64_t WTimeSpan::GetWeeks() const							{ return m_timeSpan / (7LL * 24LL * 60LL * 60LL * 1000000LL); }
 INTNM::int64_t WTimeSpan::GetDays() const							{ return m_timeSpan / (24LL * 60LL * 60LL * 1000000LL); }
 INTNM::int64_t WTimeSpan::GetTotalHours() const						{ return m_timeSpan / (60LL * 60LL * 1000000LL); }
@@ -332,6 +375,7 @@ INTNM::int32_t WTimeSpan::GetMicroSeconds() const					{ return m_timeSpan % 1000
 INTNM::int64_t WTimeSpan::GetTotalMicroSeconds() const				{ return m_timeSpan; }
 
 double WTimeSpan::GetDaysFraction() const							{ return ((double)m_timeSpan) / (24.0 * 60.0 * 60.0 * 1000000.0); }
+double WTimeSpan::GetSecondsFraction() const						{ return ((double)m_timeSpan) / 1000000.0; }
 double WTimeSpan::GetFractionOfDay() const							{ return ((double)(m_timeSpan % (24LL * 60LL * 60LL * 1000000LL))) / (24.0 * 60.0 * 60.0 * 1000000.0); }
 INTNM::int32_t WTimeSpan::GetSecondsOfDay() const					{ return m_timeSpan % (24LL * 60LL * 60LL * 1000000LL); }
 
@@ -355,13 +399,15 @@ const WTimeSpan WTimeSpan::operator/=(INTNM::int32_t factor)		{ m_timeSpan /= fa
 const WTimeSpan WTimeSpan::operator*=(double f)						{ long double ts = (long double)m_timeSpan; ts *= f; m_timeSpan = (INTNM::int64_t)ts; return *this; }
 const WTimeSpan WTimeSpan::operator/=(double f)						{ long double ts = (long double)m_timeSpan; ts /= f; m_timeSpan = (INTNM::int64_t)ts; return *this; }
 
+#ifdef __cpp_impl_three_way_comparison
+auto WTimeSpan::operator<=>(const WTimeSpan& timeSpan) const		{ return (m_timeSpan <=> timeSpan.m_timeSpan); }
+#endif
 bool WTimeSpan::operator==(const WTimeSpan &timeSpan) const			{ return (m_timeSpan == timeSpan.m_timeSpan); }
 bool WTimeSpan::operator!=(const WTimeSpan &timeSpan) const			{ return (m_timeSpan != timeSpan.m_timeSpan); }
 bool WTimeSpan::operator<(const WTimeSpan &timeSpan) const			{ return (m_timeSpan < timeSpan.m_timeSpan); }
 bool WTimeSpan::operator>(const WTimeSpan &timeSpan) const			{ return (m_timeSpan > timeSpan.m_timeSpan); }
 bool WTimeSpan::operator<=(const WTimeSpan &timeSpan) const			{ return (m_timeSpan <= timeSpan.m_timeSpan); }
 bool WTimeSpan::operator>=(const WTimeSpan &timeSpan) const			{ return (m_timeSpan >= timeSpan.m_timeSpan); }
-
 
 bool WTimeSpan::ParseTime(const TCHAR *lpszTime) {
 #ifdef _UNICODE
@@ -383,7 +429,8 @@ bool WTimeSpan::ParseTime(const TCHAR *lpszTime) {
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 bool WTimeSpan::ParseTime(const CString &time)
 {
-	return ParseTime(std::string((LPCTSTR)time));
+	CT2CA pszConvertedAnsiString(time);
+	return ParseTime(std::string(pszConvertedAnsiString));
 }
 #endif
 
@@ -415,7 +462,7 @@ std::string WTimeSpan::ToString(INTNM::uint32_t flags) const {
 			if (m_timeSpan < 0)
 				str = "-";
 			else
-				str = "";
+				str.clear();
 			str += "P";
 			if (year < 0)
 				year = -year;
@@ -460,7 +507,7 @@ std::string WTimeSpan::ToString(INTNM::uint32_t flags) const {
 					{
 						str += ".";
 						std::string temp = "";
-						int zeroIdx = 5;
+						std::string::size_type zeroIdx = 5;
 						for (int i = zeroIdx; i >= 0; i--)
 						{
 							INTNM::int32_t digit = usecs % 10;
@@ -474,8 +521,8 @@ std::string WTimeSpan::ToString(INTNM::uint32_t flags) const {
 							temp = temp.substr(0, zeroIdx + 1);
 						}
 						str += temp;
-						str += "S";
 					}
+					str += "S";
 				}
 			}
 		}
@@ -484,7 +531,7 @@ std::string WTimeSpan::ToString(INTNM::uint32_t flags) const {
 	{
 		char buff[128];
 		INTNM::int32_t	year = (INTNM::int32_t)GetYears(),
-			day = (flags & WTIME_FORMAT_YEAR) ? ((INTNM::int32_t)(GetDays() - ((long double)year * 365.25))) : ((INTNM::int32_t)GetDays()),
+			day = (flags & WTIME_FORMAT_YEAR) ? ((INTNM::int32_t)(GetDays() - ((long double)year * 365.25 /*- 0.75*/))) : ((INTNM::int32_t)GetDays()),
 			hour = (flags & WTIME_FORMAT_DAY) ? GetHours() : (INTNM::int32_t)GetTotalHours(),
 			minute = GetMinutes(),
 			second = GetSeconds(),
@@ -722,6 +769,207 @@ void WTimeManager::FromJulian(INTNM::int16_t julian, INTNM::int16_t *year, INTNM
 }
 
 
+static std::string_view extractTimezoneFromPath(const char* rp)
+{
+	std::string_view result = rp;
+	std::string_view zoneinfo = "zoneinfo";
+	std::size_t pos = result.rfind(zoneinfo);
+	if (pos == result.npos)
+		return "";
+	pos = result.find('/', pos);
+	result.remove_prefix(pos + 1);
+	return result;
+}
+
+
+static std::string findTimezonePath()
+{
+	struct stat sb;
+	constexpr auto defaultDir = "/usr/share/zoneinfo";
+	constexpr auto buildRootDir = "/usr/share/zoneinfo/uclibc";
+
+	if (stat(buildRootDir, &sb) == 0 && S_ISDIR(sb.st_mode))
+		return buildRootDir;
+	else if (stat(defaultDir, &sb) == 0 && S_ISDIR(sb.st_mode))
+		return defaultDir;
+	return "";
+}
+
+
+static std::string cachedFindTimezonePath()
+{
+	static const std::string dir = findTimezonePath();
+	return dir;
+}
+
+
+static bool checkValidFile(const char* timezone)
+{
+	char rp[PATH_MAX + 1] = {};
+	if (realpath(timezone, rp) == nullptr)
+		return false;
+	return extractTimezoneFromPath(rp) != "posixrules";
+}
+
+
+const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
+{
+#ifdef _MSC_VER
+	DYNAMIC_TIME_ZONE_INFORMATION dtzi{};
+	if (GetDynamicTimeZoneInformation(&dtzi) != TIME_ZONE_ID_INVALID)
+	{
+		auto len = wcslen(dtzi.TimeZoneKeyName);
+		char buffer[128];
+		memset(buffer, 0, 128);
+		wcstombs(buffer, dtzi.TimeZoneKeyName, len);
+		auto zone = WorldLocation::TimeZoneFromWindowsName(buffer);
+
+		bool isDST = false;
+		if (dtzi.DaylightBias != 0)
+		{
+			time_t now;
+			time(&now);
+			tm tnow;
+			gmtime_s(&tnow, &now);
+			//it is the month that DST starts
+			if (tnow.tm_mon == dtzi.DaylightDate.wMonth)
+				isDST = (tnow.tm_mday > dtzi.DaylightDate.wDay) || (tnow.tm_mday == dtzi.DaylightDate.wDay && tnow.tm_hour > dtzi.DaylightDate.wHour);
+			//it is the month that DST ends
+			else if (tnow.tm_mon == dtzi.StandardDate.wMonth)
+				isDST = (tnow.tm_mday < dtzi.StandardDate.wDay) || (tnow.tm_mday == dtzi.StandardDate.wDay && tnow.tm_hour < dtzi.StandardDate.wHour);
+			//daylight saving starts earlier in the year than standard time
+			else if (dtzi.DaylightDate.wMonth < dtzi.StandardDate.wMonth)
+				isDST = (tnow.tm_mon > dtzi.DaylightDate.wMonth) && (tnow.tm_mon < dtzi.StandardDate.wMonth);
+			//standard time start earlier in the year than daylight savings time
+			else
+				isDST = (tnow.tm_mon > dtzi.DaylightDate.wMonth) || (tnow.tm_mon < dtzi.StandardDate.wMonth);
+		}
+
+		if (zone)
+		{
+			if (isDST)
+				zone = WorldLocation::GetDaylightSavingsTimeZone(zone);
+			location.SetTimeZoneOffset(zone);
+		}
+		else
+		{
+			location.m_timezone(HSS_Time::WTimeSpan((dtzi.Bias + dtzi.StandardBias) * 60));
+			//it is currently DST
+			if (isDST)
+			{
+				location.m_amtDST(HSS_Time::WTimeSpan(dtzi.DaylightBias * 60));
+				location.m_startDST(HSS_Time::WTimeSpan(0));
+				location.m_endDST(HSS_Time::WTimeSpan(366, 0, 0, 0));
+			}
+		}
+	}
+#else
+	std::string timezoneRegion;
+	bool complete = false;
+	//for OSs that store time info in a file like "/usr/share/zoneinfo/America/Winnipeg"
+	//using the symlink "/etc/localtime"
+	{
+		bool found = true;
+		struct stat sb;
+		constexpr auto timezone = "/etc/localtime";
+		if (lstat(timezone, &sb) == 0 && S_ISLNK(sb.st_mode) && sb.st_size > 0)
+		{
+			static const bool useRealpath = checkValidFile(timezone);
+			char rp[PATH_MAX + 1] = {};
+			if (useRealpath)
+			{
+				if (realpath(timezone, rp) == nullptr)
+					found = false;//error
+			}
+			else
+			{
+				if (readlink(timezone, rp, sizeof(rp) - 1) <= 0)
+					found = false;//error
+			}
+
+			if (found)
+				timezoneRegion = extractTimezoneFromPath(rp);
+			complete = true;
+		}
+	}
+
+	//for OSs that store time info in a file like "/usr/share/zoneinfo/America/Winnipeg"
+	//using the symlink "/etc/TZ"
+	if (!complete)
+	{
+		struct stat sb;
+		constexpr auto timezone = "/etc/TZ";
+		if (lstat(timezone, &sb) == 0 && S_ISLNK(sb.st_mode) && sb.st_size > 0)
+		{
+			char rp[PATH_MAX + 1] = {};
+			if (readlink(timezone, rp, sizeof(rp) - 1) > 0)
+			{
+				timezoneRegion = std::string(rp);
+
+				const std::size_t pos = timezoneRegion.find(cachedFindTimezonePath());
+				if (pos != timezoneRegion.npos)
+					timezoneRegion.erase(0, cachedFindTimezonePath().size() + 1 + pos);
+			}
+			complete = true;
+		}
+	}
+
+	//for OSs where the timezone is the first line of "/etc/timezone"
+	if (!complete)
+	{
+		std::ifstream file("/etc/timezone");
+		if (file.is_open())
+		{
+			std::getline(file, timezoneRegion);
+			if (!timezoneRegion.empty())
+				complete = true;
+		}
+	}
+
+	//for OSs where the timezone is the first line of "/var/db/zoneinfo"
+	if (!complete)
+	{
+		std::ifstream file("/var/db/zoneinfo");
+		if (file.is_open())
+		{
+			std::getline(file, timezoneRegion);
+			if (!timezoneRegion.empty())
+				complete = true;
+		}
+	}
+
+	//for OSs where the timezone is in "/etc/sysconfig/clock"
+	//and stored as 'ZONE="America/Winnipeg"'
+	if (!complete)
+	{
+		std::ifstream file("/etc/sysconfig/clock");
+		std::string result;
+		while (file)
+		{
+			std::getline(file, result);
+			auto p = result.find("ZONE=\"");
+			if (p != std::string::npos)
+			{
+				result.erase(p, p + 6);
+				result.erase(result.rfind('"'));
+				complete = true;
+				break;
+			}
+		}
+	}
+
+	if (timezoneRegion.size())
+	{
+		auto zone = WorldLocation::TimeZoneFromRegionName(timezoneRegion);
+		if (zone)
+			location.SetTimeZoneOffset(zone);
+	}
+#endif
+
+	return WTimeManager(std::move(location));
+}
+
+
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 WTime::WTime(const COleDateTime& timeSrc, const WTimeManager *tm, INTNM::uint32_t flags) {
 	construct_time_t(timeSrc.GetYear(), timeSrc.GetMonth(), timeSrc.GetDay(), timeSrc.GetHour(), timeSrc.GetMinute(), timeSrc.GetSecond() );
@@ -735,7 +983,7 @@ WTime::WTime(const COleDateTime& timeSrc, const WTimeManager *tm, INTNM::uint32_
 WTime WTime::Now(const WTimeManager *tm, INTNM::uint32_t flags)
 {
     std::time_t t = std::time(0);
-    std::tm* now = std::localtime(&t);
+    std::tm* now = std::gmtime(&t);
     auto seconds = now->tm_sec;
     if (flags & WTIME_FORMAT_EXCLUDE_SECONDS)
         seconds = 0;
@@ -743,8 +991,23 @@ WTime WTime::Now(const WTimeManager *tm, INTNM::uint32_t flags)
     return WTime(temp, flags, -1);
 }
 
+#if TIMES_STATIC==1
+WTime   WTime::_gmin(1900, 1, 1, 0, 0, 0, nullptr);
+WTime	WTime::_gmax(2100, 1, 1, 0, 0, 0, nullptr);
+#else
+WTime   _gmin(1900, 1, 1, 0, 0, 0, nullptr),
+		_gmax(2100, 1, 1, 0, 0, 0, nullptr);
+#endif
+
+WTime& WTime::GlobalMin() { return _gmin; }
+WTime& WTime::GlobalMax() {	return _gmax; }
+
+WTime WTime::GlobalMin(const WTimeManager* tm) { return WTime(_gmin, tm); }
+WTime WTime::GlobalMax(const WTimeManager* tm) { return WTime(_gmax, tm); }
+
 
 WTime::WTime(const WTimeManager *tm) { 
+	m_time = (INTNM::uint64_t)(-1);
 	m_tm = tm;
 }
 
@@ -823,7 +1086,7 @@ void WTime::construct_time_t(INTNM::int32_t nYear, INTNM::int32_t nMonth, INTNM:
 
 
 INTNM::uint64_t WTime::adjusted_tm(INTNM::uint32_t flags) const {
-	assert(m_time != (INTNM::uint64_t)(-1000000));
+	weak_assert(m_time != (INTNM::uint64_t)(-1000000));
 	if ((!m_time) || (m_time == (INTNM::uint64_t)-1))
 		return m_time;
 	if (!flags) 
@@ -851,7 +1114,7 @@ COleDateTime WTime::AsCOleDateTime(INTNM::uint32_t flags) const {
 
 
 INTNM::uint64_t WTime::adjusted_tm_math(INTNM::uint32_t mode) const {
-	assert(m_time != (INTNM::uint64_t)(-1000000));
+	weak_assert(m_time != (INTNM::uint64_t)(-1000000));
 
 	if (mode & WTIME_FORMAT_AS_SOLAR)
 		if (mode & (WTIME_FORMAT_WITHDST | WTIME_FORMAT_AS_LOCAL))
@@ -859,22 +1122,22 @@ INTNM::uint64_t WTime::adjusted_tm_math(INTNM::uint32_t mode) const {
 	INTNM::uint64_t time;
 	if (m_tm) {
 		if (mode & WTIME_FORMAT_AS_LOCAL)
-			time = m_time + m_tm->m_worldLocation.m_timezone.GetTotalMicroSeconds();
+			time = m_time + m_tm->m_worldLocation.m_timezone().GetTotalMicroSeconds();
 		else if (mode & WTIME_FORMAT_AS_SOLAR)
 			time = m_time + m_tm->m_worldLocation.m_solar_timezone(*this).GetTotalMicroSeconds();
 		else	time = m_time;
 
-		if ((mode & WTIME_FORMAT_WITHDST) && (m_tm->m_worldLocation.m_startDST != m_tm->m_worldLocation.m_endDST)) {
+		if ((mode & WTIME_FORMAT_WITHDST) && (m_tm->m_worldLocation.m_startDST() != m_tm->m_worldLocation.m_endDST())) {
 			WTime t(time, NULL, false);
 			INTNM::uint64_t secs = t.GetSecondsIntoYear(0);
-			if (m_tm->m_worldLocation.m_startDST < m_tm->m_worldLocation.m_endDST) {
-				if (((INTNM::uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() <= secs) &&
-				    (secs < (INTNM::uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
-					time += m_tm->m_worldLocation.m_amtDST.GetTotalMicroSeconds();
+			if (m_tm->m_worldLocation.m_startDST() < m_tm->m_worldLocation.m_endDST()) {
+				if (((INTNM::uint64_t)m_tm->m_worldLocation.m_startDST().GetTotalSeconds() <= secs) &&
+				    (secs < (INTNM::uint64_t)m_tm->m_worldLocation.m_endDST().GetTotalSeconds()))
+					time += m_tm->m_worldLocation.m_amtDST().GetTotalMicroSeconds();
 			} else {
-				if (((INTNM::uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() < secs) ||
-				    (secs <= (INTNM::uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
-					time += m_tm->m_worldLocation.m_amtDST.GetTotalMicroSeconds();
+				if (((INTNM::uint64_t)m_tm->m_worldLocation.m_startDST().GetTotalSeconds() < secs) ||
+				    (secs <= (INTNM::uint64_t)m_tm->m_worldLocation.m_endDST().GetTotalSeconds()))
+					time += m_tm->m_worldLocation.m_amtDST().GetTotalMicroSeconds();
 			}
 		}
 	} else	time = m_time;
@@ -1075,6 +1338,12 @@ const WTime& WTime::operator-=(INTNM::int32_t years) {
 
 const WTime& WTime::operator=(const WTime& timeSrc) { 
 	if (&timeSrc != this) {
+
+#ifdef _DEBUG
+		if (m_tm)
+			weak_assert(m_tm == timeSrc.m_tm);
+#endif
+
 		m_time = timeSrc.m_time;
 		m_tm = timeSrc.m_tm;
 	}
@@ -1092,10 +1361,10 @@ const WTime& WTime::SetTime(const WTime& timeSrc) {
 bool WTime::operator==(const WTime &time) const {
 
 #ifdef _DEBUG
-	assert(m_time != (INTNM::uint64_t)(-1000000));
+	weak_assert(m_time != (INTNM::uint64_t)(-1000000));
 	if ((m_time != (INTNM::uint64_t)-1) && (m_time != (INTNM::uint64_t)0) &&
 		(time.m_time != (INTNM::uint64_t)-1) && (time.m_time != (INTNM::uint64_t)0))
-		assert(time.m_tm == m_tm);
+		weak_assert(time.m_tm == m_tm);
 #endif
 
 	return (m_time == time.m_time);
@@ -1105,10 +1374,10 @@ bool WTime::operator==(const WTime &time) const {
 bool WTime::operator!=(const WTime &time) const {
 
 #ifdef _DEBUG
-	assert(m_time != (INTNM::uint64_t)(-1000000));
+	weak_assert(m_time != (INTNM::uint64_t)(-1000000));
 	if ((m_time != (INTNM::uint64_t)-1) && (m_time != (INTNM::uint64_t)0) &&
 		(time.m_time != (INTNM::uint64_t)-1) && (time.m_time != (INTNM::uint64_t)0))
-		assert(time.m_tm == m_tm);
+		weak_assert(time.m_tm == m_tm);
 #endif
 
 	return (m_time != time.m_time);
@@ -1119,11 +1388,11 @@ WTime WTime::operator-(const WTimeSpan &timeSpan) const		{ if (m_time != (INTNM:
 WTime WTime::operator+(const WTimeSpan &timeSpan) const		{ if (m_time != (INTNM::uint64_t)(-1)) return WTime(m_time + timeSpan.GetTotalMicroSeconds(), m_tm, false); return *this; }
 const WTime& WTime::operator-=(const WTimeSpan &timeSpan)	{ if (m_time != (INTNM::uint64_t)(-1)) m_time -= timeSpan.GetTotalMicroSeconds(); return *this; }
 const WTime& WTime::operator+=(const WTimeSpan &timeSpan)	{ if (m_time != (INTNM::uint64_t)(-1)) m_time += timeSpan.GetTotalMicroSeconds(); return *this; }
-WTimeSpan WTime::operator-(const WTime& time) const			{ assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return WTimeSpan(m_time - time.m_time, false); return WTimeSpan(-1, false); }
-bool WTime::operator<(const WTime &time) const				{ assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time < time.m_time); return false; }
-bool WTime::operator>(const WTime &time) const				{ assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time > time.m_time); return false; }
-bool WTime::operator<=(const WTime &time) const				{ assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time <= time.m_time); return false; }
-bool WTime::operator>=(const WTime &time) const				{ assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time >= time.m_time); return false; }
+WTimeSpan WTime::operator-(const WTime& time) const			{ weak_assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return WTimeSpan(m_time - time.m_time, false); return WTimeSpan(-1, false); }
+bool WTime::operator<(const WTime &time) const				{ weak_assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time < time.m_time); return false; }
+bool WTime::operator>(const WTime &time) const				{ weak_assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time > time.m_time); return false; }
+bool WTime::operator<=(const WTime &time) const				{ weak_assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time <= time.m_time); return false; }
+bool WTime::operator>=(const WTime &time) const				{ weak_assert(time.m_tm == m_tm); if (m_time != (INTNM::uint64_t)(-1)) return (m_time >= time.m_time); return false; }
 
 const char *WTimeManager::months_abbrev[12]		= { "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 const char *WTimeManager::months[12]			= { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -1138,7 +1407,7 @@ std::string WTime::ToString(INTNM::uint32_t flags) const {
 	INTNM::int32_t year, month, day, hour, minute, second, usecs, day_of_week;
 	bool need_leading_space;
 
-	assert(m_time != (INTNM::uint64_t)(-1000000));
+	weak_assert(m_time != (INTNM::uint64_t)(-1000000));
 	if (/*(!m_time) ||*/ (m_time == (INTNM::uint64_t)-1)) {
 		str = "[Time Not Set]";
 		return str;
@@ -1233,21 +1502,21 @@ std::string WTime::ToString(INTNM::uint32_t flags) const {
 
 	if (((flags & WTIME_FORMAT_STRING_TIMEZONE)) && (m_tm))
 	{
-		int64_t offset = m_tm->m_worldLocation.m_timezone.GetTotalMinutes();
-		if (m_tm->m_worldLocation.m_startDST != m_tm->m_worldLocation.m_endDST)
+		int64_t offset = m_tm->m_worldLocation.m_timezone().GetTotalMinutes();
+		if (m_tm->m_worldLocation.m_startDST() != m_tm->m_worldLocation.m_endDST())
 		{
 			uint64_t intoYear = GetSecondsIntoYear(0);
-			if (m_tm->m_worldLocation.m_startDST < m_tm->m_worldLocation.m_endDST)
+			if (m_tm->m_worldLocation.m_startDST() < m_tm->m_worldLocation.m_endDST())
 			{
-				if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() <= intoYear) &&
-					(intoYear < (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
-					offset += m_tm->m_worldLocation.m_amtDST.GetTotalMinutes();
+				if (((uint64_t)m_tm->m_worldLocation.m_startDST().GetTotalSeconds() <= intoYear) &&
+					(intoYear < (uint64_t)m_tm->m_worldLocation.m_endDST().GetTotalSeconds()))
+					offset += m_tm->m_worldLocation.m_amtDST().GetTotalMinutes();
 			}
 			else
 			{
-				if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() < intoYear) ||
-					(intoYear <= (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
-					offset += m_tm->m_worldLocation.m_amtDST.GetTotalMinutes();
+				if (((uint64_t)m_tm->m_worldLocation.m_startDST().GetTotalSeconds() < intoYear) ||
+					(intoYear <= (uint64_t)m_tm->m_worldLocation.m_endDST().GetTotalSeconds()))
+					offset += m_tm->m_worldLocation.m_amtDST().GetTotalMinutes();
 			}
 		}
 		if (offset == 0)
@@ -1267,7 +1536,7 @@ std::string WTime::ToString(INTNM::uint32_t flags) const {
 				hourOffset++;
 				offset -= 60;
 			}
-			tm_snprintf(buff, 128, "%02d:%02ld", hourOffset, offset);
+			tm_snprintf(buff, 128, "%02" PRId32 ":%02" PRId64, hourOffset, offset);
 			str += buff;
 		}
 	}
@@ -1320,7 +1589,14 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	if (flags & WTIME_FORMAT_PARSE_USING_SYSTEM)
+	{
+#if _UNICODE
+		std::wstring wideDate(lpszDate.begin(), lpszDate.end());
+		return systemParseDateTime(wideDate.c_str(), flags);
+#else //_UNICODE
 		return systemParseDateTime(lpszDate.c_str(), flags);
+#endif //_UNICODE
+	}
 #endif
 
 	static const char delimit[] = "./\\:;-, \t";
@@ -1328,7 +1604,7 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 	INTNM::int32_t year, month, day, hour, min, sec;
 	INTNM::int32_t v1, v2, v3;
 	INTNM::int16_t time_scan = 0;
-	INTNM::int64_t secondOffset = 0;
+	std::optional<INTNM::int64_t> secondOffset = std::nullopt;
 	bool timezoneExists = false;
 
 	bool delimit_found = false;
@@ -1394,7 +1670,7 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 			v1++;
 			guess_month = 1;
 		} else {
-			INTNM::int32_t rd = sscanf(tok, _T("%d"), &v1); 
+			INTNM::int32_t rd = sscanf(tok, "%d", &v1); 
 			if (rd != 1) {
 				free(dateBuf);
 				return false;
@@ -1426,7 +1702,7 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 			v2++;
 			guess_month = 2;
 		} else {
-			INTNM::int32_t rd = sscanf(tok, _T("%d"), &v2);
+			INTNM::int32_t rd = sscanf(tok, "%d", &v2);
 			if (rd != 1) {
 				free(dateBuf);
 				return false;
@@ -1445,7 +1721,7 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 			free(dateBuf);
 			return false;
 		} else {
-			INTNM::int32_t rd = sscanf(tok, _T("%d"), &v3);
+			INTNM::int32_t rd = sscanf(tok, "%d", &v3);
 			if (rd != 1) {
 				free(dateBuf);
 				return false;
@@ -1502,15 +1778,23 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 		if (flags & WTIME_FORMAT_TIME) {
 			bool negative = false;
 			char* save = next;
-			tok = __strtok(NULL, _T(""), &next);
+			tok = __strtok(NULL, "", &next);
 			if (tok != nullptr)
 			{
-				timezoneExists = strchr(tok, '+') != nullptr || strchr(tok, '-') != nullptr || strchr(tok, 'Z') != nullptr;
-				if (timezoneExists)
+				if (strchr(tok, 'Z'))
 				{
-					negative = strchr(tok, '-') != nullptr;
-					tok = __strtok(NULL, _T("-+Z"), &save);
-					next = save;
+					secondOffset = std::optional<INTNM::int64_t>{ 0 };
+					tok = __strtok(NULL, "-+Z", &save);
+				}
+				else
+				{
+					timezoneExists = strchr(tok, '+') != nullptr || strchr(tok, '-') != nullptr;
+					if (timezoneExists)
+					{
+						negative = strchr(tok, '-') != nullptr;
+						tok = __strtok(NULL, "-+Z", &save);
+						next = save;
+					}
 				}
 				WTimeSpan ts(std::string(tok), &time_scan);
 				if (!time_scan)
@@ -1523,15 +1807,16 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 
 				if (timezoneExists)
 				{
-					tok = __strtok(NULL, _T(""), &next);
+					tok = __strtok(NULL, "", &next);
 					if (tok)
 					{
 						WTimeSpan ts(std::string(tok), &time_scan);
 						if (time_scan)
 						{
-							secondOffset = ts.GetTotalSeconds();
 							if (negative)
-								secondOffset = -secondOffset;
+								secondOffset = std::optional<INTNM::int64_t>{ -ts.GetTotalSeconds() };
+							else
+								secondOffset = std::optional<INTNM::int64_t>{ ts.GetTotalSeconds() };
 						}
 					}
 				}
@@ -1547,28 +1832,31 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 
 	if ((year >= 1600) && (year < 2900)) {
 		WTime t(year, month, day, hour, min, sec, m_tm);
-		if (secondOffset)
+		if (secondOffset.has_value())
 		{
-			int64_t offset = m_tm->m_worldLocation.m_timezone.GetTotalSeconds();
-			uint64_t intoYear = GetSecondsIntoYear(0);
+			int64_t offset = m_tm->m_worldLocation.m_timezone().GetTotalSeconds();
+			uint64_t intoYear = t.GetSecondsIntoYear(0);
 			if (location)
 			{
-				location->m_timezone = WTimeSpan(secondOffset);
-				location->m_amtDST = WTimeSpan(0);
+				location->m_timezone(WTimeSpan(secondOffset.value()));
+				location->m_amtDST(WTimeSpan(0));
 			}
-			if (m_tm->m_worldLocation.m_startDST < m_tm->m_worldLocation.m_endDST)
+			if (m_tm->m_worldLocation.m_startDST() != m_tm->m_worldLocation.m_endDST())
 			{
-				if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() <= intoYear) &&
-					(intoYear < (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
-					offset += m_tm->m_worldLocation.m_amtDST.GetTotalSeconds();
+				if (m_tm->m_worldLocation.m_startDST() < m_tm->m_worldLocation.m_endDST())
+				{
+					if (((uint64_t)m_tm->m_worldLocation.m_startDST().GetTotalSeconds() <= intoYear) &&
+						(intoYear < (uint64_t)m_tm->m_worldLocation.m_endDST().GetTotalSeconds()))
+						offset += m_tm->m_worldLocation.m_amtDST().GetTotalSeconds();
+				}
+				else
+				{
+					if (((uint64_t)m_tm->m_worldLocation.m_startDST().GetTotalSeconds() < intoYear) ||
+						(intoYear <= (uint64_t)m_tm->m_worldLocation.m_endDST().GetTotalSeconds()))
+						offset += m_tm->m_worldLocation.m_amtDST().GetTotalSeconds();
+				}
 			}
-			else
-			{
-				if (((uint64_t)m_tm->m_worldLocation.m_startDST.GetTotalSeconds() < intoYear) ||
-					(intoYear <= (uint64_t)m_tm->m_worldLocation.m_endDST.GetTotalSeconds()))
-					offset += m_tm->m_worldLocation.m_amtDST.GetTotalSeconds();
-			}
-			offset -= secondOffset;
+			offset -= secondOffset.value();
 			if (offset)
 				t += WTimeSpan(offset);
 		}
@@ -1576,8 +1864,8 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 		{
 			if (location)
 			{
-				location->m_timezone = WTimeSpan(0);
-				location->m_amtDST = WTimeSpan(0);
+				location->m_timezone(WTimeSpan(0));
+				location->m_amtDST(WTimeSpan(0));
 			}
 		}
 
@@ -1590,7 +1878,7 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 
 
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
-CArchive& AFXAPI HSS_Time::operator<<(CArchive& ar, WTimeSpan timeSpan)	{
+CArchive& AFXAPI HSS_Time::operator<<(CArchive& ar, const WTimeSpan timeSpan)	{
 	INTNM::uint64_t milli_id = 0x7ffeeffccffaaffd;
 	return ar << milli_id << timeSpan.m_timeSpan;
 }
