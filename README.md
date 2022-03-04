@@ -1,4 +1,6 @@
-[![Apache 2](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://github.com/HeartlandSoftware/WTime/blob/master/LICENSE)
+![Latest Version](https://img.shields.io/github/v/release/HeartlandSoftware/WTime)
+![Maven Package](https://github.com/HeartlandSoftware/WTime/actions/workflows/maven-publish.yml/badge.svg)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/HeartlandSoftware/WTime/blob/master/LICENSE)
 
 # WTime
 
