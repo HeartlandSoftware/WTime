@@ -49,6 +49,9 @@ jobs:
 
     - name: Build with Maven
       run: mvn --batch-mode clean compile package
+      
+    - name: Run tests with Maven
+      run: mvn --batch-mode test
     
     - name: Create release
       uses: softprops/action-gh-release@v1
