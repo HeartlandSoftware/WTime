@@ -76,6 +76,6 @@ jobs:
         tag_name: refs/tags/${{ steps.incVer.outputs.application_version }}
         
     - name: Publish package
-      run: mvn --batch-mode deploy -X
+      run: mvn --batch-mode deploy
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
