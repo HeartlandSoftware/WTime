@@ -31,6 +31,15 @@ jobs:
         distribution: 'temurin'
         server-id: github
         cache: 'maven'
+        
+    - name: Install Protoc
+      uses: arduino/setup-protoc@v1
+      with:
+        version: '3.11.1'
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Build Protobuf
+      run: protoc --java_out src/main/java --proto_path ../proto/ wtime.proto
     
     - name: Increment the version number
       id: incVer
