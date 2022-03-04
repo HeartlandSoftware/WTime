@@ -9,6 +9,7 @@ on:
       - master
     paths:
       - java/**
+      - .github/**
 
 jobs:
   build:
@@ -17,6 +18,9 @@ jobs:
     permissions:
       contents: write
       packages: write
+    defaults:
+      run:
+        working-directory: ./java
 
     steps:
     - uses: actions/checkout@v3
