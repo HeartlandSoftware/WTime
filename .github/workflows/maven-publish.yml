@@ -68,19 +68,14 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
-    - name: Run tests with Maven
-      run: mvn --batch-mode test
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    
     - name: Create release
       uses: softprops/action-gh-release@v1
       with:
         name: ${{ steps.incVer.outputs.application_version }}
-        files: target/*.jar
+        files: java/target/WTime.jar
         tag_name: refs/tags/${{ steps.incVer.outputs.application_version }}
         
     - name: Publish package
-      run: mvn --batch-mode deploy
+      run: mvn --batch-mode deploy -X
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
