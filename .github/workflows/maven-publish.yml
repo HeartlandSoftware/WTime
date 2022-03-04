@@ -30,6 +30,7 @@ jobs:
         java-version: '8'
         distribution: 'temurin'
         server-id: github
+        cache: 'maven'
     
     - name: Increment the version number
       id: incVer
@@ -43,6 +44,8 @@ jobs:
         git commit -m "Update the version" -m "[skip ci]"
         git tag -a v$APPLICATION_VERSION -m "Release v$APPLICATION_VERSION"
         echo "::set-output name=application_version::v$APPLICATION_VERSION"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     - name: Push changes
       uses: ad-m/github-push-action@master
@@ -53,9 +56,13 @@ jobs:
 
     - name: Build with Maven
       run: mvn --batch-mode clean compile package
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       
     - name: Run tests with Maven
       run: mvn --batch-mode test
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
     - name: Create release
       uses: softprops/action-gh-release@v1
