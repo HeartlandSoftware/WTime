@@ -22,7 +22,7 @@
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/HeartlandSoftware/WTime</url>
+      <url>https://maven.pkg.github.com/HeartlandSoftware/*</url>
     </repository>
   </distributionManagement>
   <dependencies>
@@ -50,7 +50,7 @@
     <dependency>
       <groupId>ca.hss</groupId>
       <artifactId>hss-java</artifactId>
-      <version>1.2.0-2</version>
+      <version>1.2.0-3</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/com.google.protobuf/protobuf-java -->
     <dependency>
