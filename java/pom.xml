@@ -15,14 +15,14 @@
     <repository>
       <id>github</id>
       <name>GitHub HSS_Java</name>
-      <url>https://maven.pkg.github.com/HeartlandSoftware/HSS_Java</url>
+      <url>https://maven.pkg.github.com/HeartlandSoftware/*</url>
     </repository>
   </repositories>
   <distributionManagement>
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/HeartlandSoftware/*</url>
+      <url>https://maven.pkg.github.com/HeartlandSoftware/WTime</url>
     </repository>
   </distributionManagement>
   <dependencies>
