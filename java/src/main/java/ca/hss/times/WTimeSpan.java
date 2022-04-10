@@ -386,7 +386,7 @@ public class WTimeSpan implements Comparable<WTimeSpan>, Serializable {
 						str = "1 day " + Long.toString(hour) + ":" + Long.toString(minute);
 					else {
 						if ((flags & WTime.FORMAT_INCLUDE_USECS) > 0)
-							str = String.format("1 day %02d:%02d:%02d:%02d", hour, minute, second, usecs);
+							str = String.format("1 day %02d:%02d:%02d.%02d", hour, minute, second, usecs);
 						else
 							str = String.format("1 day %02d:%02d:%02d", hour, minute, second);
 					}
