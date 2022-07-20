@@ -44,7 +44,7 @@ jobs:
         fileName: "includes.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "HSS_LowLevel"
+        out-file-path: "cxx/HSS_LowLevel"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download ErrorCalc include files
@@ -55,7 +55,7 @@ jobs:
         fileName: "includes.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "ErrorCalc"
+        out-file-path: "cxx/ErrorCalc"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Multithread include files
@@ -66,7 +66,7 @@ jobs:
         fileName: "includes.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "HSS_Multithread"
+        out-file-path: "cxx/HSS_Multithread"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Math include files
@@ -77,7 +77,7 @@ jobs:
         fileName: "includes.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "HSS_Math"
+        out-file-path: "cxx/HSS_Math"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Geography include files
@@ -88,7 +88,7 @@ jobs:
         fileName: "includes.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "HSS_Geography"
+        out-file-path: "cxx/HSS_Geography"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download LowLevel lib
@@ -100,7 +100,7 @@ jobs:
         fileName: "LowLevel.lib"
         tarBall: false
         zipBall: false
-        out-file-path: "dlibs"
+        out-file-path: "cxx/dlibs"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download LowLevel lib
@@ -112,7 +112,7 @@ jobs:
         fileName: "libLowLevel.a"
         tarBall: false
         zipBall: false
-        out-file-path: "dlibs"
+        out-file-path: "cxx/dlibs"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download ErrorCalc lib
@@ -124,7 +124,7 @@ jobs:
         fileName: "ErrorCalc.lib"
         tarBall: false
         zipBall: false
-        out-file-path: "dlibs"
+        out-file-path: "cxx/dlibs"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download ErrorCalc lib
@@ -136,7 +136,7 @@ jobs:
         fileName: "libErrorCalc.a"
         tarBall: false
         zipBall: false
-        out-file-path: "dlibs"
+        out-file-path: "cxx/dlibs"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Multithread lib
@@ -148,7 +148,7 @@ jobs:
         fileName: "lib-Windows-2019.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "dlibs"
+        out-file-path: "cxx/dlibs"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Multithread lib
@@ -160,7 +160,7 @@ jobs:
         fileName: "lib-Ubuntu-20.04.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "dlibs"
+        out-file-path: "cxx/dlibs"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Math lib
@@ -172,7 +172,7 @@ jobs:
         fileName: "lib-Windows-2019.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "HSS_Math"
+        out-file-path: "cxx/HSS_Math"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Math lib
@@ -184,7 +184,7 @@ jobs:
         fileName: "lib-Ubuntu-20.04.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "HSS_Math"
+        out-file-path: "cxx/HSS_Math"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Geography lib
@@ -196,7 +196,7 @@ jobs:
         fileName: "lib-Windows-2019.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "HSS_Geography"
+        out-file-path: "cxx/HSS_Geography"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Geography lib
@@ -208,12 +208,13 @@ jobs:
         fileName: "lib-Ubuntu-20.04.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "HSS_Geography"
+        out-file-path: "cxx/HSS_Geography"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Unarchive downloaded include files
       shell: pwsh
       run: |
+        cd cxx
         Expand-Archive ErrorCalc/includes.zip -DestinationPath ErrorCalc
         Expand-Archive HSS_LowLevel/includes.zip -DestinationPath HSS_LowLevel
         Expand-Archive HSS_Multithread/includes.zip -DestinationPath HSS_Multithread
@@ -224,6 +225,7 @@ jobs:
       if: matrix.os == 'windows-2019'
       shell: pwsh
       run: |
+        cd cxx
         Expand-Archive dlibs/lib-Windows-2019.zip -DestinationPath dlibs
         Expand-Archive HSS_Math/lib-Windows-2019.zip -DestinationPath dlibs
         Expand-Archive HSS_Geography/lib-Windows-2019.zip -DestinationPath dlibs
@@ -232,6 +234,7 @@ jobs:
       if: matrix.os == 'ubuntu-20.04'
       shell: pwsh
       run: |
+        cd cxx
         Expand-Archive dlibs/lib-Ubuntu-20.04.zip -DestinationPath dlibs
         Expand-Archive HSS_Math/lib-Ubuntu-20.04.zip -DestinationPath dlibs
         Expand-Archive HSS_Geography/lib-Ubuntu-20.04.zip -DestinationPath dlibs
@@ -263,6 +266,7 @@ jobs:
       if: matrix.os == 'windows-2019'
       shell: pwsh
       run: |
+        cd cxx
         Invoke-WebRequest "https://www.zlib.net/zlib1212.zip" -OutFile zlib.zip
         Expand-Archive zlib.zip -DestinationPath zlib
         mv zlib/zlib-1.2.12/* zlib
@@ -276,6 +280,7 @@ jobs:
     - name: Download protobuf
       shell: pwsh
       run: |
+        cd cxx
         Invoke-WebRequest "https://github.com/protocolbuffers/protobuf/releases/download/v${{ env.PROTO_VERSION }}/protobuf-cpp-${{ env.PROTO_VERSION }}.zip" -OutFile protobuf.zip
         Expand-Archive protobuf.zip -DestinationPath protobuf
         mv protobuf/protobuf-${{ env.PROTO_VERSION }}/* protobuf
@@ -284,6 +289,7 @@ jobs:
       if: matrix.os == 'windows-2019'
       shell: pwsh
       run: |
+        cd cxx
         cd protobuf
         cd cmake
         mkdir build
@@ -296,6 +302,7 @@ jobs:
       if: matrix.os == 'ubuntu-20.04'
       shell: pwsh
       run: |
+        cd cxx
         cd protobuf
         cd cmake
         mkdir build
@@ -306,7 +313,10 @@ jobs:
     - name: Bundle Include Files
       if: matrix.os == 'ubuntu-20.04'
       shell: pwsh
-      run: Compress-Archive -Path include -DestinationPath includes.zip
+      run: |
+        cd cxx
+        Compress-Archive -Path include -DestinationPath includes.zip
+        mv includes.zip ..
 
     - name: Upload Include Bundle
       if: matrix.os == 'ubuntu-20.04'
@@ -320,11 +330,12 @@ jobs:
       id: configure-ubuntu
       if: matrix.os == 'ubuntu-20.04'
       run: |
+        cd cxx
         mkdir build
         cd build
         mkdir ubuntu
         cd ubuntu
-        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }} -DLOWLEVEL_INCLUDE_DIR=HSS_LowLevel/include -DTHIRD_PARTY_INCLUDE_DIR=HSS_LowLevel/third_party -DMULTITHREAD_INCLUDE_DIR=HSS_Multithread/include -DERROR_CALC_INCLUDE_DIR=ErrorCalc/include -DMATH_INCLUDE_DIR=HSS_Math/include -DGEOGRAPHY_INCLUDE_DIR=HSS_Geography/include -DPROTOBUF_INCLUDE_DIR=protobuf/src -DLOCAL_LIBRARY_DIR=dlibs -DPROTOBUF_LIBRARY_DIR=protobuf/cmake/build -DGDAL_INCLUDE_DIR=/usr/include/gdal -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        cmake ../.. -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }} -DLOWLEVEL_INCLUDE_DIR=HSS_LowLevel/include -DTHIRD_PARTY_INCLUDE_DIR=HSS_LowLevel/third_party -DMULTITHREAD_INCLUDE_DIR=HSS_Multithread/include -DERROR_CALC_INCLUDE_DIR=ErrorCalc/include -DMATH_INCLUDE_DIR=HSS_Math/include -DGEOGRAPHY_INCLUDE_DIR=HSS_Geography/include -DPROTOBUF_INCLUDE_DIR=protobuf/src -DLOCAL_LIBRARY_DIR=dlibs -DPROTOBUF_LIBRARY_DIR=protobuf/cmake/build -DGDAL_INCLUDE_DIR=/usr/include/gdal -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         APPLICATION_VERSION=$(grep CMAKE_PROJECT_VERSION: CMakeCache.txt | cut -d "=" -f2)
         APPLICATION_VERSION_MAJOR=$(grep CMAKE_PROJECT_VERSION_MAJOR: CMakeCache.txt | cut -d "=" -f2)
         echo "::set-output name=release_version::$APPLICATION_VERSION"
@@ -333,13 +344,13 @@ jobs:
     - name: Build Ubuntu
       if: matrix.os == 'ubuntu-20.04'
       run: |
-        cd build/ubuntu
+        cd cxx/build/ubuntu
         cmake --build .
         
     - name: Test Ubuntu
       if: matrix.os == 'ubuntu-20.04'
       run: |
-        cd build/ubuntu
+        cd cxx/build/ubuntu
         cp ../../dlibs/*.so.* .
         ctest
         
@@ -347,6 +358,7 @@ jobs:
       id: setup-windows
       if: matrix.os == 'windows-2019'
       run: |
+        cd cxx
         git clone https://github.com/google/googletest.git googletest
         cd googletest
         mkdir msvc
@@ -360,12 +372,14 @@ jobs:
       if: matrix.os == 'windows-2019'
       shell: pwsh
       run: |
+        cd cxx
         Invoke-WebRequest "https://heartlandsoftwaresolutions.sharepoint.com/:u:/g/HSS_Releases/EXnrOV_5audDuUmQjHymeDYBC_nMbcSQcOjP5Wi4IcPvkA?e=d8HeAq&download=1" -OutFile gdal.7z
         & 7z.exe x gdal.7z -ogdal -y
         
     - name: Configure CMake Windows
       if: matrix.os == 'windows-2019'
       run: |
+        cd cxx
         mkdir build
         cd build
         mkdir windows
@@ -375,14 +389,16 @@ jobs:
     - name: Build Windows
       if: matrix.os == 'windows-2019'
       run: |
-        cd build/windows
+        cd cxx/build/windows
         cmake --build . --config ${{env.BUILD_TYPE}}
         
     - name: Archive Ubuntu Library
       if: matrix.os == 'ubuntu-20.04'
       shell: pwsh
       run: |
+        cd cxx
         Compress-Archive -DestinationPath lib-Ubuntu-20.04.zip -Path build\ubuntu\libWTime.so,build\ubuntu\libWTime.so.${{ steps.configure-ubuntu.outputs.release_version_major }},build\ubuntu\libWTime.so.${{ steps.configure-ubuntu.outputs.release_version }}
+        mv lib-Ubuntu-20.04.zip ..
         
     - name: Upload Ubuntu Library
       if: matrix.os == 'ubuntu-20.04'
@@ -396,7 +412,9 @@ jobs:
       if: matrix.os == 'windows-2019'
       shell: pwsh
       run: |
+        cd cxx
         Compress-Archive -DestinationPath lib-Windows-2019.zip -Path build\windows\Release\WTime.dll,build\windows\Release\WTime.lib
+        mv lib-Windows-2019.zip ..
         
     - name: Upload Windows Library
       if: matrix.os == 'windows-2019'
