@@ -227,7 +227,7 @@ jobs:
         Expand-Archive HSS_Multithread/includes.zip -DestinationPath HSS_Multithread
         Expand-Archive HSS_Math/includes.zip -DestinationPath HSS_Math
         Expand-Archive HSS_Geography/includes.zip -DestinationPath HSS_Geography
-        cp HSS_Geography/main/cpp/Canada.cpp HSS_Geography
+        cp HSS_Geography/main/cpp/Canada.cpp HSS_Geography/include
         
     - name: Unarchive downloaded Windows libraries
       if: matrix.os == 'windows-2019'
