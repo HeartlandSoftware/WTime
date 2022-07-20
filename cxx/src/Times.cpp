@@ -982,19 +982,12 @@ WTime::WTime(const COleDateTime& timeSrc, const WTimeManager *tm, INTNM::uint32_
 
 WTime WTime::Now(const WTimeManager *tm, INTNM::uint32_t flags)
 {
-    time_t t = std::time(0);
-	struct tm now;
-
-#ifdef _MSC_VER
-	gmtime_s(&now, &t);
-#else
-	gmtime_r(&t, &now);
-#endif
-
-	auto seconds = now.tm_sec;
+    std::time_t t = std::time(0);
+    std::tm* now = std::gmtime(&t);
+    auto seconds = now->tm_sec;
     if (flags & WTIME_FORMAT_EXCLUDE_SECONDS)
         seconds = 0;
-    WTime temp(now.tm_year + 1900, now.tm_mon + 1, now.tm_mday, now.tm_hour, now.tm_min, seconds, tm);
+    WTime temp(now->tm_year + 1900, now->tm_mon + 1, now->tm_mday, now->tm_hour, now->tm_min, seconds, tm);
     return WTime(temp, flags, -1);
 }
 
@@ -1047,6 +1040,19 @@ WTime::WTime(INTNM::uint64_t time, const WTimeManager *tm, bool units_are_second
 		m_time = time * 1000000LL; 
 	else 
 		m_time = time; 
+	m_tm = tm;
+}
+
+
+WTime::WTime(const GDALTime &time, const WTimeManager* tm) {
+	if (time.theTime != (INTNM::uint64_t)(-1)) {
+		m_time = time.theTime * 1000000LL + (time.millisecs % 1000LL) * 1000LL;
+		if (time.nTZFlag == 1) {	// 0 is unknown, 1 is local time, 100 is GMT according to GDAL doc's
+			WTime gmt(*this, WTIME_FORMAT_AS_LOCAL | WTIME_FORMAT_WITHDST, -1);
+			m_time = gmt.m_time;
+		}
+	} else
+		m_time = time.theTime;
 	m_tm = tm;
 }
 
@@ -1162,6 +1168,19 @@ const WTimeManager *WTime::SetTimeManager(const WTimeManager *tm)	{ m_tm = tm; r
 bool WTime::IsValid() const											{ return (m_time != (INTNM::uint64_t)-1); }
 
 
+GDALTime WTime::AsGDALTime(INTNM::uint32_t mode) const {
+	GDALTime theTime;
+	if (m_time != (INTNM::uint64_t)(-1))
+		theTime.theTime = (adjusted_tm(mode) - WTIME_1970) / 1000000LL;
+	theTime.millisecs = GetMilliSeconds(mode);
+	if (m_tm)
+		theTime.nTZFlag = (mode & WTIME_FORMAT_AS_LOCAL) ? 1 : 100;
+	else
+		theTime.nTZFlag = 0;
+	return theTime;
+}
+
+
 INTNM::int32_t WTime::GetYear(INTNM::uint32_t mode) const {
 	if (m_time == (INTNM::uint64_t)(-1))
 		return -1;
@@ -1220,6 +1239,7 @@ INTNM::int32_t WTime::GetMinute(INTNM::uint32_t flags) const			{ if (m_time == (
 INTNM::int32_t WTime::GetSecond(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) / 1000000LL) % 60); };
 INTNM::int32_t WTime::GetMilliSeconds(INTNM::uint32_t flags) const		{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) / 1000LL) % 1000); };
 INTNM::int32_t WTime::GetMicroSeconds(INTNM::uint32_t flags) const		{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) % 1000000LL)); };
+double WTime::GetSecondsFraction(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return ((double)(adjusted_tm(flags) % 1000000LL)) / 1000000.0; };
 WTimeSpan WTime::GetTimeOfDay(INTNM::uint32_t flags) const				{ if (m_time == (INTNM::uint64_t)(-1)) return WTimeSpan(-1, false); INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL); return WTimeSpan(time, false); };
 INTNM::int32_t WTime::GetDayOfWeek(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1; INTNM::int64_t days = adjusted_tm(flags) / (24LL * 60LL * 60LL * 1000000LL) + 0; INTNM::int32_t ret = (INTNM::int32_t)(days % 7); return ret == 0 ? 7L : ret; };
 
