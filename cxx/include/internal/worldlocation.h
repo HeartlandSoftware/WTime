@@ -66,13 +66,13 @@ struct TIMES_API TimeZoneInfo {
 
 
 class TIMES_API WorldLocation {		// this is what we have to define what a plot's location in the world is
-    public:
+public:
 	double		_latitude;			// stored as radians!!!
 	double		_longitude;
 	WTimeSpan	__timezone;			// time zone
 	WTimeSpan	_startDST,			// when daylight savings turns on - from start of year
 				_endDST,			// when daylight savings turns off - from start of year
-							// if you want to disable DST, then just set these to the same value
+									// if you want to disable DST, then just set these to the same value
 				_amtDST;			// amount to adjust for DST
 	const TimeZoneInfo* _timezoneInfo;
 
@@ -181,7 +181,7 @@ public:
 							// any time during the local "solar" day will glean the right times - suggestion is to use local noon time
 	Canada *canada;
 
-    public:
+public:
 	WorldLocation();
 	WorldLocation(const WorldLocation &wl);
 	///<summary>
@@ -204,7 +204,7 @@ public:
 	bool operator==(const WorldLocation &wl) const;
 	bool operator!=(const WorldLocation &wl) const;
 
-	const struct TimeZoneInfo *GuessTimeZone(INTNM::int16_t set) const;		// 0 for std time zones, 1 for dst time zones, -1 for military time zones
+	const struct TimeZoneInfo *GuessTimeZone(INTNM::int16_t set) const;									// 0 for std time zones, 1 for dst time zones, -1 for military time zones
 	const struct TimeZoneInfo *CurrentTimeZone(INTNM::int16_t set, bool* hidden = nullptr) const;		// 0 for std time zones, 1 for dst time zones, -1 for military time zones
 
 	bool InsideCanada(const double latitude, const double longitude);

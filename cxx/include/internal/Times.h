@@ -21,6 +21,7 @@
 #include "times_internal.h"
 #include "worldlocation.h"
 #include "SunriseSunsetCalc.h"
+#include "poly.gis.h"
 
 #include <string>
 
@@ -177,12 +178,12 @@ class TIMES_API WTimeSpan {
 #ifdef __cpp_impl_three_way_comparison
 	auto operator<=>(const WTimeSpan& timeSpan) const;
 #endif
-	bool operator==(const WTimeSpan &timeSpan) const;
-	bool operator!=(const WTimeSpan &timeSpan) const;
-	bool operator<(const WTimeSpan &timeSpan) const;
-	bool operator>(const WTimeSpan &timeSpan) const;
-	bool operator<=(const WTimeSpan &timeSpan) const;
-	bool operator>=(const WTimeSpan &timeSpan) const;
+	bool operator==(const WTimeSpan& timeSpan) const;
+	bool operator!=(const WTimeSpan& timeSpan) const;
+	bool operator<(const WTimeSpan& timeSpan) const;
+	bool operator>(const WTimeSpan& timeSpan) const;
+	bool operator<=(const WTimeSpan& timeSpan) const;
+	bool operator>=(const WTimeSpan& timeSpan) const;
 
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 	friend TIMES_API CArchive& AFXAPI HSS_Time::operator<<(CArchive& ar, const WTimeSpan timeSpan);
@@ -250,6 +251,7 @@ private:
 public:
 	explicit WTime(const WTimeManager *tm);
 	WTime(INTNM::uint64_t /*time_t*/ time, const WTimeManager *tm, bool units_are_seconds = true);
+	WTime(const GDALTime& time, const WTimeManager *tm);
 	WTime(INTNM::int32_t nYear, INTNM::int32_t nMonth, INTNM::int32_t nDay, INTNM::int32_t nHour, INTNM::int32_t nMin, INTNM::int32_t nSec, const WTimeManager *tm);
 	WTime(INTNM::int32_t nYear, INTNM::int32_t nMonth, INTNM::int32_t nDay, INTNM::int32_t nHour, INTNM::int32_t nMin, double nSec, const WTimeManager *tm);
 	WTime(INTNM::int32_t nYear, INTNM::int32_t nMonth, INTNM::int32_t nDay, INTNM::int32_t nHour, INTNM::int32_t nMin, INTNM::int32_t nSec, INTNM::int32_t uSec, const WTimeManager *tm);
@@ -276,6 +278,7 @@ private:
 
 public:
 	INTNM::uint64_t /*time_t*/ GetTime(INTNM::uint32_t mode) const;
+	GDALTime AsGDALTime(INTNM::uint32_t mode) const;
 	INTNM::uint64_t /*long*/ GetTotalSeconds() const;
 	INTNM::uint64_t GetTotalMilliSeconds() const;
 	INTNM::uint64_t GetTotalMicroSeconds() const;
@@ -290,6 +293,7 @@ public:
  	INTNM::int32_t __FASTCALL GetHour(INTNM::uint32_t flags) const;
 	INTNM::int32_t __FASTCALL GetMinute(INTNM::uint32_t flags) const;
 	INTNM::int32_t __FASTCALL GetSecond(INTNM::uint32_t flags) const;
+	double __FASTCALL GetSecondsFraction(INTNM::uint32_t flags) const;
 	INTNM::int32_t __FASTCALL GetMilliSeconds(INTNM::uint32_t flags) const;
 	INTNM::int32_t __FASTCALL GetMicroSeconds(INTNM::uint32_t flags) const;
 	WTimeSpan __FASTCALL GetTimeOfDay(INTNM::uint32_t flags) const;

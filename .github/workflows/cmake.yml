@@ -1,0 +1,458 @@
+name: CMake
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - cxx/**
+      - .github/workflows/cmake.yml
+
+env:
+  BUILD_TYPE: Release
+  BOOST_VERSION: 1.76.0
+  PROTO_VERSION: 3.13.0
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os:
+          - ubuntu-20.04
+          - windows-2019
+        include:
+          - os: ubuntu-20.04
+            os_version: 20.04
+            build_tool: gcc
+          - os: windows-2019
+            os_version: 2019
+            build_tool: msvc142
+
+    runs-on: ${{ matrix.os }}
+
+    outputs:
+      release_version: ${{ steps.configure-ubuntu.outputs.release_version }}
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Download LowLevel include files
+      uses: robinraju/release-downloader@v1.3
+      with:
+        repository: "HeartlandSoftware/HSS_LowLevel"
+        latest: true
+        fileName: "includes.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "HSS_LowLevel"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download ErrorCalc include files
+      uses: robinraju/release-downloader@v1.3
+      with:
+        repository: "HeartlandSoftware/ErrorCalc"
+        latest: true
+        fileName: "includes.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "ErrorCalc"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Multithread include files
+      uses: robinraju/release-downloader@v1.3
+      with:
+        repository: "HeartlandSoftware/HSS_Multithread"
+        latest: true
+        fileName: "includes.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "HSS_Multithread"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Math include files
+      uses: robinraju/release-downloader@v1.3
+      with:
+        repository: "HeartlandSoftware/HSS_Math"
+        latest: true
+        fileName: "includes.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "HSS_Math"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Geography include files
+      uses: robinraju/release-downloader@v1.3
+      with:
+        repository: "HeartlandSoftware/HSS_Geography"
+        latest: true
+        fileName: "includes.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "HSS_Geography"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download LowLevel lib
+      uses: robinraju/release-downloader@v1.3
+      if: matrix.os == 'windows-2019'
+      with:
+        repository: "HeartlandSoftware/HSS_LowLevel"
+        latest: true
+        fileName: "LowLevel.lib"
+        tarBall: false
+        zipBall: false
+        out-file-path: "dlibs"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download LowLevel lib
+      uses: robinraju/release-downloader@v1.3
+      if: matrix.os == 'ubuntu-20.04'
+      with:
+        repository: "HeartlandSoftware/HSS_LowLevel"
+        latest: true
+        fileName: "libLowLevel.a"
+        tarBall: false
+        zipBall: false
+        out-file-path: "dlibs"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download ErrorCalc lib
+      uses: robinraju/release-downloader@v1.3
+      if: matrix.os == 'windows-2019'
+      with:
+        repository: "HeartlandSoftware/ErrorCalc"
+        latest: true
+        fileName: "ErrorCalc.lib"
+        tarBall: false
+        zipBall: false
+        out-file-path: "dlibs"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download ErrorCalc lib
+      uses: robinraju/release-downloader@v1.3
+      if: matrix.os == 'ubuntu-20.04'
+      with:
+        repository: "HeartlandSoftware/ErrorCalc"
+        latest: true
+        fileName: "libErrorCalc.a"
+        tarBall: false
+        zipBall: false
+        out-file-path: "dlibs"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Multithread lib
+      uses: robinraju/release-downloader@v1.3
+      if: matrix.os == 'windows-2019'
+      with:
+        repository: "HeartlandSoftware/HSS_Multithread"
+        latest: true
+        fileName: "lib-Windows-2019.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "dlibs"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Multithread lib
+      uses: robinraju/release-downloader@v1.3
+      if: matrix.os == 'ubuntu-20.04'
+      with:
+        repository: "HeartlandSoftware/HSS_Multithread"
+        latest: true
+        fileName: "lib-Ubuntu-20.04.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "dlibs"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Math lib
+      uses: robinraju/release-downloader@v1.3
+      if: matrix.os == 'windows-2019'
+      with:
+        repository: "HeartlandSoftware/HSS_Math"
+        latest: true
+        fileName: "lib-Windows-2019.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "HSS_Math"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Math lib
+      uses: robinraju/release-downloader@v1.3
+      if: matrix.os == 'ubuntu-20.04'
+      with:
+        repository: "HeartlandSoftware/HSS_Math"
+        latest: true
+        fileName: "lib-Ubuntu-20.04.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "HSS_Math"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Geography lib
+      uses: robinraju/release-downloader@v1.3
+      if: matrix.os == 'windows-2019'
+      with:
+        repository: "HeartlandSoftware/HSS_Geography"
+        latest: true
+        fileName: "lib-Windows-2019.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "HSS_Geography"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Geography lib
+      uses: robinraju/release-downloader@v1.3
+      if: matrix.os == 'ubuntu-20.04'
+      with:
+        repository: "HeartlandSoftware/HSS_Geography"
+        latest: true
+        fileName: "lib-Ubuntu-20.04.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "HSS_Geography"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Unarchive downloaded include files
+      shell: pwsh
+      run: |
+        Expand-Archive ErrorCalc/includes.zip -DestinationPath ErrorCalc
+        Expand-Archive HSS_LowLevel/includes.zip -DestinationPath HSS_LowLevel
+        Expand-Archive HSS_Multithread/includes.zip -DestinationPath HSS_Multithread
+        Expand-Archive HSS_Math/includes.zip -DestinationPath HSS_Math
+        Expand-Archive HSS_Geography/includes.zip -DestinationPath HSS_Geography
+        
+    - name: Unarchive downloaded Windows libraries
+      if: matrix.os == 'windows-2019'
+      shell: pwsh
+      run: |
+        Expand-Archive dlibs/lib-Windows-2019.zip -DestinationPath dlibs
+        Expand-Archive HSS_Math/lib-Windows-2019.zip -DestinationPath dlibs
+        Expand-Archive HSS_Geography/lib-Windows-2019.zip -DestinationPath dlibs
+        
+    - name: Unarchive downloaded Ubuntu libraries
+      if: matrix.os == 'ubuntu-20.04'
+      shell: pwsh
+      run: |
+        Expand-Archive dlibs/lib-Ubuntu-20.04.zip -DestinationPath dlibs
+        Expand-Archive HSS_Math/lib-Ubuntu-20.04.zip -DestinationPath dlibs
+        Expand-Archive HSS_Geography/lib-Ubuntu-20.04.zip -DestinationPath dlibs
+        
+    # Retrieve the cache, uses cache@v2
+    - name: Cache boost
+      uses: actions/cache@v2
+      id: cache-boost
+      with:
+        # Set the default path as the path to cache
+        path: '${{ runner.workspace }}/boost_*.tar.gz'
+        # Use the version as the key to only cache the correct version
+        key: boost-${{ env.BOOST_VERSION }}
+    
+    - name: Install boost
+      uses: egor-tensin/build-boost@v1
+      id: install-boost
+      with:
+        version: ${{ env.BOOST_VERSION }}
+        toolset: ${{ matrix.build_tool }}
+        libraries: system chrono
+
+    - name: Setup Ubuntu
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        sudo apt install libgtest-dev libgdal-dev
+        
+    - name: Build zlib
+      if: matrix.os == 'windows-2019'
+      shell: pwsh
+      run: |
+        Invoke-WebRequest "https://www.zlib.net/zlib1212.zip" -OutFile zlib.zip
+        Expand-Archive zlib.zip -DestinationPath zlib
+        mv zlib/zlib-1.2.12/* zlib
+        cd zlib
+        mkdir build
+        cd build
+        cmake -DCMAKE_INSTALL_PREFIX=install ../
+        cmake --build . --config Release
+        cmake --install .
+        
+    - name: Download protobuf
+      shell: pwsh
+      run: |
+        Invoke-WebRequest "https://github.com/protocolbuffers/protobuf/releases/download/v${{ env.PROTO_VERSION }}/protobuf-cpp-${{ env.PROTO_VERSION }}.zip" -OutFile protobuf.zip
+        Expand-Archive protobuf.zip -DestinationPath protobuf
+        mv protobuf/protobuf-${{ env.PROTO_VERSION }}/* protobuf
+        
+    - name: Build protobuf
+      if: matrix.os == 'windows-2019'
+      shell: pwsh
+      run: |
+        cd protobuf
+        cd cmake
+        mkdir build
+        cd build
+        $zlibpath = Resolve-Path -path ../../../zlib/build/install
+        cmake -Dprotobuf_WITH_ZLIB=ON -DZLIB_ROOT="$zlibpath" -Dprotobuf_BUILD_SHARED_LIBS=ON ../
+        cmake --build . --config Release --target libprotobuf
+        
+    - name: Build protobuf
+      if: matrix.os == 'ubuntu-20.04'
+      shell: pwsh
+      run: |
+        cd protobuf
+        cd cmake
+        mkdir build
+        cd build
+        cmake ../ -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+        cmake --build . --target libprotobuf
+    - name: Bundle Include Files
+      if: matrix.os == 'ubuntu-20.04'
+      shell: pwsh
+      run: Compress-Archive -Path include -DestinationPath includes.zip
+
+    - name: Upload Include Bundle
+      if: matrix.os == 'ubuntu-20.04'
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-libs
+        path: includes.zip
+        retention-days: 1
+        
+    - name: Configure CMake Ubuntu
+      id: configure-ubuntu
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        mkdir build
+        cd build
+        mkdir ubuntu
+        cd ubuntu
+        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }} -DLOWLEVEL_INCLUDE_DIR=HSS_LowLevel/include -DTHIRD_PARTY_INCLUDE_DIR=HSS_LowLevel/third_party -DMULTITHREAD_INCLUDE_DIR=HSS_Multithread/include -DERROR_CALC_INCLUDE_DIR=ErrorCalc/include -DMATH_INCLUDE_DIR=HSS_Math/include -DGEOGRAPHY_INCLUDE_DIR=HSS_Geography/include -DPROTOBUF_INCLUDE_DIR=protobuf/src -DLOCAL_LIBRARY_DIR=dlibs -DPROTOBUF_LIBRARY_DIR=protobuf/cmake/build -DGDAL_INCLUDE_DIR=/usr/include/gdal -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        APPLICATION_VERSION=$(grep CMAKE_PROJECT_VERSION: CMakeCache.txt | cut -d "=" -f2)
+        APPLICATION_VERSION_MAJOR=$(grep CMAKE_PROJECT_VERSION_MAJOR: CMakeCache.txt | cut -d "=" -f2)
+        echo "::set-output name=release_version::$APPLICATION_VERSION"
+        echo "::set-output name=release_version_major::$APPLICATION_VERSION_MAJOR"
+        
+    - name: Build Ubuntu
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        cd build/ubuntu
+        cmake --build .
+        
+    - name: Test Ubuntu
+      if: matrix.os == 'ubuntu-20.04'
+      run: |
+        cd build/ubuntu
+        cp ../../dlibs/*.so.* .
+        ctest
+        
+    - name: Setup Windows
+      id: setup-windows
+      if: matrix.os == 'windows-2019'
+      run: |
+        git clone https://github.com/google/googletest.git googletest
+        cd googletest
+        mkdir msvc
+        cd msvc
+        cmake ../ -Dgtest_force_shared_crt=ON
+        cmake --build . --config Release
+        echo "::set-output name=google_test_include_dir::googletest/googletest/include"
+        echo "::set-output name=google_test_library_dir::googletest/msvc/lib/Release"
+        
+    - name: Download GDAL
+      if: matrix.os == 'windows-2019'
+      shell: pwsh
+      run: |
+        Invoke-WebRequest "https://heartlandsoftwaresolutions.sharepoint.com/:u:/g/HSS_Releases/EXnrOV_5audDuUmQjHymeDYBC_nMbcSQcOjP5Wi4IcPvkA?e=d8HeAq&download=1" -OutFile gdal.7z
+        & 7z.exe x gdal.7z -ogdal -y
+        
+    - name: Configure CMake Windows
+      if: matrix.os == 'windows-2019'
+      run: |
+        mkdir build
+        cd build
+        mkdir windows
+        cd windows
+        cmake ../../ -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }} -DMSVC=1 -DGTEST_INCLUDE_DIR=${{ steps.setup-windows.outputs.google_test_include_dir }} -DGTEST_LIBRARY_DIR=${{ steps.setup-windows.outputs.google_test_library_dir }} -DLOWLEVEL_INCLUDE_DIR=HSS_LowLevel/include -DTHIRD_PARTY_INCLUDE_DIR=HSS_LowLevel/third_party -DMULTITHREAD_INCLUDE_DIR=HSS_Multithread/include -DERROR_CALC_INCLUDE_DIR=ErrorCalc/include -DMATH_INCLUDE_DIR=HSS_Math/include -DGEOGRAPHY_INCLUDE_DIR=HSS_Geography/include -DGDAL_INCLUDE_DIR=gdal/include -DPROTOBUF_INCLUDE_DIR=protobuf/src -DLOCAL_LIBRARY_DIR=dlibs -DPROTOBUF_LIBRARY_DIR=protobuf/cmake/build/Release -DGDAL_LIBRARY_DIR=gdal/lib -DBOOST_LIBRARY_DIR=${{ steps.install-boost.outputs.librarydir }}\..
+        
+    - name: Build Windows
+      if: matrix.os == 'windows-2019'
+      run: |
+        cd build/windows
+        cmake --build . --config ${{env.BUILD_TYPE}}
+        
+    - name: Archive Ubuntu Library
+      if: matrix.os == 'ubuntu-20.04'
+      shell: pwsh
+      run: |
+        Compress-Archive -DestinationPath lib-Ubuntu-20.04.zip -Path build\ubuntu\libWTime.so,build\ubuntu\libWTime.so.${{ steps.configure-ubuntu.outputs.release_version_major }},build\ubuntu\libWTime.so.${{ steps.configure-ubuntu.outputs.release_version }}
+        
+    - name: Upload Ubuntu Library
+      if: matrix.os == 'ubuntu-20.04'
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-libs
+        path: lib-Ubuntu-20.04.zip
+        retention-days: 1
+
+    - name: Archive Windows Library
+      if: matrix.os == 'windows-2019'
+      shell: pwsh
+      run: |
+        Compress-Archive -DestinationPath lib-Windows-2019.zip -Path build\windows\Release\WTime.dll,build\windows\Release\WTime.lib
+        
+    - name: Upload Windows Library
+      if: matrix.os == 'windows-2019'
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-libs
+        path: lib-Windows-2019.zip
+        retention-days: 1
+
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      contents: write
+      pull-requests: read
+  
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Tag the repository
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        RELEASE_TAG=c${{ needs.build.outputs.release_version }}
+        git tag -a $RELEASE_TAG -m "C++ release on $(date +'%Y-%m-%d') for commit $(git rev-parse HEAD)"
+        
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
+        tags: true
+
+    - name: Download Libraries
+      uses: actions/download-artifact@v2
+      with:
+        name: release-libs
+
+    - name: Create Release Notes
+      id: build-notes
+      uses: mikepenz/release-changelog-builder-action@v2.9.0
+      with:
+        toTag: v${{ needs.build.outputs.release_version }}
+        fromTag: v2.3.9-9
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Create release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: ${{ needs.build.outputs.release_version }}
+        body: ${{ steps.build-notes.outputs.changelog }}
+        files: |
+          lib-Windows-2019.zip
+          lib-Ubuntu-20.04.zip
+          includes.zip
+        tag_name: refs/tags/c${{ needs.build.outputs.release_version }}
+        
