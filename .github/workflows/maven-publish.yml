@@ -9,7 +9,7 @@ on:
       - master
     paths:
       - java/**
-      - .github/**
+      - .github/workflows/maven-publish.yml
 
 jobs:
   build:
