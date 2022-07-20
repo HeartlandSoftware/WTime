@@ -302,6 +302,7 @@ jobs:
         cd build
         cmake ../ -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_POSITION_INDEPENDENT_CODE=ON
         cmake --build . --target libprotobuf
+        
     - name: Bundle Include Files
       if: matrix.os == 'ubuntu-20.04'
       shell: pwsh
