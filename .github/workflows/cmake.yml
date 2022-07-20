@@ -3,7 +3,7 @@ name: CMake
 on:
   push:
     branches:
-      - main
+      - master
     paths:
       - cxx/**
       - .github/workflows/cmake.yml
