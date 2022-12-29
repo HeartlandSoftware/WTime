@@ -58,4 +58,22 @@ public class WTimeSpanTest {
 		assertEquals(10, span.getSeconds());
 		assertEquals(500, span.getMilliSeconds());
 	}
+	
+	@Test
+	void testParse4() {
+	    WTimeSpan span = new WTimeSpan("120:00:00");
+	    
+	    assertEquals(5, span.getDays());
+	    assertEquals(0, span.getHours());
+	    assertEquals(0, span.getMinutes());
+	    assertEquals(0, span.getSeconds());
+	    assertEquals(0, span.getMilliSeconds());
+	}
+    
+    @Test
+    void testFormat1() {
+        WTimeSpan span = new WTimeSpan("120:00:00");
+        
+        assertEquals("5 days 00:00:00:00", span.toString(WTime.FORMAT_YEAR | WTime.FORMAT_DAY | WTime.FORMAT_INCLUDE_USECS));
+    }
 }

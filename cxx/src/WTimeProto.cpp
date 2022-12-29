@@ -241,7 +241,7 @@ HSS::Times::WTimeZone* HSS_Time::Serialization::TimeSerializer::serializeTimeZon
 
 void HSS_Time::Serialization::TimeSerializer::deserializeTimeZone(const HSS::Times::WTimeZone& zone, HSS_Time::WorldLocation& worldLocation, std::shared_ptr<validation::validation_object> valid, const std::string& name) {
 	if (zone.version() != 1) {
-		weak_assert(0);
+		weak_assert(false);
 		if (valid)
 			valid->add_child_validation("HSS.Times.WTimeZone", name, validation::error_level::SEVERE, validation::id::version_mismatch, std::to_string(zone.version()));
 		throw std::invalid_argument("HSS.Times.WTimeZone: Version is invalid");

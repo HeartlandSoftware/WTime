@@ -19,6 +19,7 @@
 
 #pragma once
 
+#define HSS_USE_CACHING
 
 namespace HSS_Time {
 	class WorldLocation;
@@ -39,9 +40,6 @@ namespace HSS_Time {
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
 #include <afx.h>
 #endif
-
-
-class Canada;
 
 
 namespace HSS_Time {
@@ -179,7 +177,8 @@ public:
 							// used for GMT->solar time math based on longitude only, but don't assume that solar noon means the sun is right over you!
 	INTNM::int16_t m_sun_rise_set(const WTime &local_day, WTime *Rise, WTime *Set, WTime *Noon) const;
 							// any time during the local "solar" day will glean the right times - suggestion is to use local noon time
-	Canada *canada;
+	INTNM::int16_t m_sun_rise_set(double latitude, double longitude, const WTime& local_day, WTime* Rise, WTime* Set, WTime* Noon) const;
+	// any time during the local "solar" day will glean the right times - suggestion is to use local noon time
 
 public:
 	WorldLocation();
@@ -207,7 +206,7 @@ public:
 	const struct TimeZoneInfo *GuessTimeZone(INTNM::int16_t set) const;									// 0 for std time zones, 1 for dst time zones, -1 for military time zones
 	const struct TimeZoneInfo *CurrentTimeZone(INTNM::int16_t set, bool* hidden = nullptr) const;		// 0 for std time zones, 1 for dst time zones, -1 for military time zones
 
-	bool InsideCanada(const double latitude, const double longitude);
+	bool InsideCanada(const double latitude, const double longitude) const;
 	bool InsideCanada() const;
 	bool InsideNewZealand() const;
 	bool InsideTasmania() const;
@@ -289,14 +288,14 @@ public:
     private:
 	struct sun_key {
 		INTNM::uint64_t	m_sun_cache_tm;
-		double		m_sun_cache_lat,
-				m_sun_cache_long;
+		double			m_sun_cache_lat,
+						m_sun_cache_long;
 	};
 	struct sun_val {
 		INTNM::uint64_t	m_sun_cache_rise,
-				m_sun_cache_set,
-				m_sun_cache_noon;
-		INTNM::int32_t		m_success;
+						m_sun_cache_set,
+						m_sun_cache_noon;
+		INTNM::int16_t	m_success, m_pad;
 	};
 #ifdef HSS_USE_CACHING
 	mutable ValueCacheTempl_MT<sun_key, sun_val>	m_sunCache;

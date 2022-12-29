@@ -20,10 +20,12 @@
 
 #ifdef HAVE_HSS_MATH
 #include "mathhss.h"
-#elif defined(INTEL_COMPILER)
+#else
+#if __has_include(<mathimf.h>)
 #include <mathimf.h>
 #else
 #include <cmath>
+#endif
 
 #ifdef _MSC_VER
 void sincos(double val, double* p_sin, double *p_cos)
@@ -1009,12 +1011,12 @@ INTNM::int16_t CSunriseSunsetCalc::calcSun(RISESET_IN_STRUCT &latLongForm, RISES
 
 	if (true)
 	{
-		if((latitude >= -90) && (latitude < -89.8))
+		if((latitude >= -90.0) && (latitude < -89.8))
 		{
 			latLongForm.Latitude = -89.8;
 			latitude = -89.8;
 		}
-		if ((latitude <= 90) && (latitude > 89.8))
+		if ((latitude <= 90.0) && (latitude > 89.8))
 		{
 			latLongForm.Latitude= 89.8;
 			latitude = 89.8;

@@ -20,14 +20,12 @@
 #include "worldlocation.h"
 #include "SunriseSunsetCalc.h"
 #include "str_printf.h"
+#include "Borders.h"
 
 #include <cmath>
 #include <vector>
 #include <boost/algorithm/string/predicate.hpp>
 #include "boost_bimap.h"
-
-extern bool insideCanadaDetail(class Canada **canada, const double latitude, const double longitude);
-extern void insideCanadaCleanup(class Canada *canada);
 
 using namespace HSS_Time;
 using namespace HSS_Time_Private;
@@ -529,14 +527,17 @@ bool WorldLocation::InsideCanada() const {
 }
 
 
-bool WorldLocation::InsideCanada(const double latitude, const double longitude) {
+bool WorldLocation::InsideCanada(const double latitude, const double longitude) const {
 	if (latitude < DEGREE_TO_RADIAN(41.0))		return false;
 	if (latitude > DEGREE_TO_RADIAN(83.0))		return false;
 	if (longitude < DEGREE_TO_RADIAN(-141.0))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-52.0))	return false;
 
-#if defined(_MSC_VER) || defined(_USE_CANADA)
-	return insideCanadaDetail(&canada, RADIAN_TO_DEGREE(latitude), RADIAN_TO_DEGREE(longitude));
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+    XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+    Borders borders;
+    if (borders.Canada())
+        return borders.Canada()->PointInArea(pt, 0.000001);
 #else
 	if (longitude < DEGREE_TO_RADIAN(-122.8)) {
 		if (latitude < DEGREE_TO_RADIAN(48.3))	return false;
@@ -607,12 +608,14 @@ bool WorldLocation::InsideAustraliaMainland() const {
 
 void WorldLocation::SetTimeZoneOffset(const TimeZoneInfo* timezone)
 {
-	_amtDST = timezone->m_dst;
-	__timezone = timezone->m_timezone;
-	if (_startDST.GetTotalMicroSeconds() != 0)
-		_startDST = WTimeSpan(0);
-	if (_amtDST.GetTotalMicroSeconds() != 0)
-		_endDST = WTimeSpan(366, 0, 0, 0);
+	if (timezone) {
+		_amtDST = timezone->m_dst;
+		__timezone = timezone->m_timezone;
+		if (_startDST.GetTotalMicroSeconds() != 0)
+			_startDST = WTimeSpan(0);
+		if (_amtDST.GetTotalMicroSeconds() != 0)
+			_endDST = WTimeSpan(366, 0, 0, 0);
+	}
 	_timezoneInfo = timezone;
 }
 
@@ -756,7 +759,6 @@ const ::TimeZoneInfo *WorldLocation::CurrentTimeZone(INTNM::int16_t set, bool* h
 		}
 		return nullptr;
 	}
-	return nullptr;
 }
 
 const ::TimeZoneInfo* WorldLocation::TimeZoneFromName(const std::string& name, INTNM::int16_t set, bool* hidden)
@@ -918,7 +920,7 @@ const TimeZoneInfo* WorldLocation::GetStandardTimeZone(const TimeZoneInfo* info)
 WorldLocation::WorldLocation()
 	: _timezoneInfo(nullptr)
 #ifdef HSS_USE_CACHING
-	, m_sunCache(2), m_solarCache(2)
+	, m_sunCache(4), m_solarCache(4)
 #endif
 {
 	_latitude = 1000.0;
@@ -927,27 +929,23 @@ WorldLocation::WorldLocation()
 	_startDST = WTimeSpan(0);
 	_endDST = WTimeSpan(0);
 	_amtDST = WTimeSpan(0, 1, 0, 0);
-
-	canada = nullptr;
 }
 
 
 WorldLocation::WorldLocation(const WorldLocation &wl)
 	: _timezoneInfo(nullptr)
 #ifdef HSS_USE_CACHING
-	, m_sunCache(2), m_solarCache(2)
+	, m_sunCache(4), m_solarCache(4)
 #endif
 {
 	*this = wl;
-
-	canada = nullptr;
 }
 
 
 WorldLocation::WorldLocation(double latitude, double longitude, bool guessTimezone)
 	: _timezoneInfo(nullptr)
 #ifdef HSS_USE_CACHING
-	, m_sunCache(2), m_solarCache(2)
+	, m_sunCache(4), m_solarCache(4)
 #endif
 {
 	_latitude = DEGREE_TO_RADIAN(latitude);
@@ -963,16 +961,10 @@ WorldLocation::WorldLocation(double latitude, double longitude, bool guessTimezo
 			_amtDST = _timezoneInfo->m_dst;
 		}
 	}
-
-	canada = nullptr;
 }
 
 
-WorldLocation::~WorldLocation() {
-#if defined(_MSC_VER) || defined(_USE_CANADA)
-	insideCanadaCleanup(canada);
-#endif
-}
+WorldLocation::~WorldLocation() { }
 
 
 WorldLocation &WorldLocation::operator=(const WorldLocation &wl) {
@@ -1016,8 +1008,8 @@ bool WorldLocation::operator!=(const WorldLocation &wl) const {
 WTimeSpan WorldLocation::m_solar_timezone(const WTime &solar_time) const {
 #ifdef HSS_USE_CACHING
 	struct sun_key sk;
-	sk.m_sun_cache_lat = m_latitude;
-	sk.m_sun_cache_long = m_longitude;
+	sk.m_sun_cache_lat = _latitude;
+	sk.m_sun_cache_long = _longitude;
 	sk.m_sun_cache_tm = solar_time.GetTime(0);
 	WTimeSpan retval;
 	if (m_solarCache.Retrieve(&sk, &retval))
@@ -1133,8 +1125,68 @@ CArchive& HSS_Time::operator<<(CArchive& os, const WorldLocation &wl) {
 INTNM::int16_t WorldLocation::m_sun_rise_set(const WTime &daytime, WTime *Rise, WTime *Set, WTime *Noon) const {
 #ifdef HSS_USE_CACHING
 	struct sun_key sk;
-	sk.m_sun_cache_lat = m_latitude;
-	sk.m_sun_cache_long = m_longitude;
+	sk.m_sun_cache_lat = _latitude;
+	sk.m_sun_cache_long = _longitude;
+	sk.m_sun_cache_tm = daytime.GetTime(0);
+	struct sun_val sv;
+	if (m_sunCache.Retrieve(&sk, &sv)) {
+		*Rise = WTime(sv.m_sun_cache_rise, Rise->GetTimeManager());
+		*Set = WTime(sv.m_sun_cache_set, Set->GetTimeManager());
+		*Noon = WTime(sv.m_sun_cache_noon, Noon->GetTimeManager());
+		return sv.m_success;
+	}
+#endif
+
+	INTNM::int32_t	day = daytime.GetDay(WTIME_FORMAT_AS_SOLAR),
+					year = daytime.GetYear(WTIME_FORMAT_AS_SOLAR),
+					month = daytime.GetMonth(WTIME_FORMAT_AS_SOLAR);
+
+	CSunriseSunsetCalc calculator;
+	RISESET_IN_STRUCT sInput;
+	sInput.Latitude = RADIAN_TO_DEGREE(_latitude);
+	sInput.Longitude = -RADIAN_TO_DEGREE(_longitude);
+	sInput.timezone = 0;
+	sInput.DaytimeSaving = false;
+	sInput.year = year;
+	sInput.month = month;
+	sInput.day = day;
+	RISESET_OUT_STRUCT sOut;
+	INTNM::int16_t success = calculator.calcSun(sInput,&sOut);
+
+	WTime riseTime(0ULL, Rise->GetTimeManager()),
+		  setTime(0ULL, Set->GetTimeManager()),
+		  noonTime(0ULL, Noon->GetTimeManager());
+	if (!(success & NO_SUNRISE))
+		riseTime = WTime(sOut.YearRise,sOut.MonthRise,sOut.DayRise,sOut.HourRise,sOut.MinRise,(INTNM::int32_t)sOut.SecRise,Rise->GetTimeManager());
+	*Rise = riseTime;
+	if (!(success & NO_SUNSET))
+		setTime = WTime(sOut.YearSet,sOut.MonthSet,sOut.DaySet,sOut.HourSet,sOut.MinSet,(INTNM::int32_t)sOut.SecSet,Set->GetTimeManager());
+	*Set = setTime;
+	noonTime = WTime(sInput.year,sInput.month,sInput.day, sOut.SolarNoonHour, sOut.SolarNoonMin, (INTNM::int32_t)sOut.SolarNoonSec,Noon->GetTimeManager());
+	*Noon = noonTime;
+		
+#ifdef HSS_USE_CACHING
+	sk.m_sun_cache_tm = daytime.GetTime(0);
+	sk.m_sun_cache_lat = _latitude;
+	sk.m_sun_cache_long = _longitude;
+	sv.m_sun_cache_rise = Rise->GetTotalSeconds();
+	sv.m_sun_cache_set = Set->GetTotalSeconds();
+	sv.m_sun_cache_noon = Noon->GetTotalSeconds();
+	sv.m_success = success;
+	m_sunCache.Store(&sk, &sv);
+#endif
+
+	return success;
+}
+
+
+
+INTNM::int16_t WorldLocation::m_sun_rise_set(double latitude, double longitude, const WTime& daytime, WTime* Rise, WTime* Set, WTime* Noon) const {
+
+#ifdef HSS_USE_CACHING
+	struct sun_key sk;
+	sk.m_sun_cache_lat = latitude;
+	sk.m_sun_cache_long = longitude;
 	sk.m_sun_cache_tm = daytime.GetTime(0);
 	struct sun_val sv;
 	if (m_sunCache.Retrieve(&sk, &sv)) {
@@ -1151,37 +1203,38 @@ INTNM::int16_t WorldLocation::m_sun_rise_set(const WTime &daytime, WTime *Rise, 
 
 	CSunriseSunsetCalc calculator;
 	RISESET_IN_STRUCT sInput;
-	sInput.Latitude = RADIAN_TO_DEGREE(_latitude);
-	sInput.Longitude = -RADIAN_TO_DEGREE(_longitude);
+	sInput.Latitude = RADIAN_TO_DEGREE(latitude);
+	sInput.Longitude = -RADIAN_TO_DEGREE(longitude);
 	sInput.timezone = 0;
 	sInput.DaytimeSaving = false;
 	sInput.year = year;
 	sInput.month = month;
 	sInput.day = day;
 	RISESET_OUT_STRUCT sOut;
-	INTNM::int16_t success = calculator.calcSun(sInput,&sOut);
+	INTNM::int16_t success = calculator.calcSun(sInput, &sOut);
 
 	WTime riseTime(0ULL, Rise->GetTimeManager()),
 		setTime(0ULL, Set->GetTimeManager()),
 		noonTime(0ULL, Noon->GetTimeManager());
 	if (!(success & NO_SUNRISE))
-		riseTime = WTime(sOut.YearRise,sOut.MonthRise,sOut.DayRise,sOut.HourRise,sOut.MinRise,(INTNM::int32_t)sOut.SecRise,Rise->GetTimeManager());
+		riseTime = WTime(sOut.YearRise, sOut.MonthRise, sOut.DayRise, sOut.HourRise, sOut.MinRise, (INTNM::int32_t)sOut.SecRise, Rise->GetTimeManager());
 	*Rise = riseTime;
 	if (!(success & NO_SUNSET))
-		setTime = WTime(sOut.YearSet,sOut.MonthSet,sOut.DaySet,sOut.HourSet,sOut.MinSet,(INTNM::int32_t)sOut.SecSet,Set->GetTimeManager());
+		setTime = WTime(sOut.YearSet, sOut.MonthSet, sOut.DaySet, sOut.HourSet, sOut.MinSet, (INTNM::int32_t)sOut.SecSet, Set->GetTimeManager());
 	*Set = setTime;
-	noonTime = WTime(sInput.year,sInput.month,sInput.day, sOut.SolarNoonHour, sOut.SolarNoonMin, (INTNM::int32_t)sOut.SolarNoonSec,Noon->GetTimeManager());
+	noonTime = WTime(sInput.year, sInput.month, sInput.day, sOut.SolarNoonHour, sOut.SolarNoonMin, (INTNM::int32_t)sOut.SolarNoonSec, Noon->GetTimeManager());
 	*Noon = noonTime;
-		
+
 #ifdef HSS_USE_CACHING
 	sk.m_sun_cache_tm = daytime.GetTime(0);
-	sk.m_sun_cache_lat = m_latitude;
-	sk.m_sun_cache_long = m_longitude;
+	sk.m_sun_cache_lat = latitude;
+	sk.m_sun_cache_long = longitude;
 	sv.m_sun_cache_rise = Rise->GetTotalSeconds();
 	sv.m_sun_cache_set = Set->GetTotalSeconds();
 	sv.m_sun_cache_noon = Noon->GetTotalSeconds();
 	sv.m_success = success;
 	m_sunCache.Store(&sk, &sv);
 #endif
+
 	return success;
 }

@@ -4,14 +4,11 @@ on:
   push:
     branches:
       - master
-    paths:
-      - cxx/**
-      - .github/workflows/cmake.yml
 
 env:
   BUILD_TYPE: Release
-  BOOST_VERSION: 1.76.0
-  PROTO_VERSION: 3.13.0
+  BOOST_VERSION: 1.81.0
+  PROTO_VERSION: 21.10
 
 jobs:
   build:
@@ -19,10 +16,14 @@ jobs:
       matrix:
         os:
           - ubuntu-20.04
+          - ubuntu-22.04
           - windows-2019
         include:
           - os: ubuntu-20.04
             os_version: 20.04
+            build_tool: gcc
+          - os: ubuntu-22.04
+            os_version: 22.04
             build_tool: gcc
           - os: windows-2019
             os_version: 2019
@@ -37,7 +38,7 @@ jobs:
     - uses: actions/checkout@v3
     
     - name: Download LowLevel include files
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HeartlandSoftware/HSS_LowLevel"
         latest: true
@@ -48,7 +49,7 @@ jobs:
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download ErrorCalc include files
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HeartlandSoftware/ErrorCalc"
         latest: true
@@ -59,7 +60,7 @@ jobs:
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Multithread include files
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HeartlandSoftware/HSS_Multithread"
         latest: true
@@ -70,7 +71,7 @@ jobs:
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Math include files
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HeartlandSoftware/HSS_Math"
         latest: true
@@ -81,7 +82,7 @@ jobs:
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Geography include files
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       with:
         repository: "HeartlandSoftware/HSS_Geography"
         latest: true
@@ -91,56 +92,102 @@ jobs:
         out-file-path: "cxx/HSS_Geography"
         token: ${{ secrets.HSS_PAT }}
 
+    - name: Download Math protobuf files
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "HeartlandSoftware/HSS_Math"
+        latest: true
+        fileName: "proto_def.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "proto/HSS_Math"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Geography protobuf files
+      uses: robinraju/release-downloader@v1.7
+      with:
+        repository: "HeartlandSoftware/HSS_Geography"
+        latest: true
+        fileName: "proto_def.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "proto/HSS_Geography"
+        token: ${{ secrets.HSS_PAT }}
+
     - name: Download LowLevel lib
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'windows-2019'
       with:
         repository: "HeartlandSoftware/HSS_LowLevel"
         latest: true
-        fileName: "LowLevel.lib"
+        fileName: "windows.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "cxx/dlibs"
+        out-file-path: "cxx/dlibs/HSS_LowLevel"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download LowLevel lib
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-20.04'
       with:
         repository: "HeartlandSoftware/HSS_LowLevel"
         latest: true
-        fileName: "libLowLevel.a"
+        fileName: "ubuntu20.04.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "cxx/dlibs"
+        out-file-path: "cxx/dlibs/HSS_LowLevel"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download LowLevel lib
+      uses: robinraju/release-downloader@v1.7
+      if: matrix.os == 'ubuntu-22.04'
+      with:
+        repository: "HeartlandSoftware/HSS_LowLevel"
+        latest: true
+        fileName: "ubuntu22.04.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "cxx/dlibs/HSS_LowLevel"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download ErrorCalc lib
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'windows-2019'
       with:
         repository: "HeartlandSoftware/ErrorCalc"
         latest: true
-        fileName: "ErrorCalc.lib"
+        fileName: "windows.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "cxx/dlibs"
+        out-file-path: "cxx/dlibs/ErrorCalc"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download ErrorCalc lib
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-20.04'
       with:
         repository: "HeartlandSoftware/ErrorCalc"
         latest: true
-        fileName: "libErrorCalc.a"
+        fileName: "ubuntu20.04.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "cxx/dlibs"
+        out-file-path: "cxx/dlibs/ErrorCalc"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download ErrorCalc lib
+      uses: robinraju/release-downloader@v1.7
+      if: matrix.os == 'ubuntu-22.04'
+      with:
+        repository: "HeartlandSoftware/ErrorCalc"
+        latest: true
+        fileName: "ubuntu22.04.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "cxx/dlibs/ErrorCalc"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Multithread lib
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'windows-2019'
       with:
         repository: "HeartlandSoftware/HSS_Multithread"
@@ -148,11 +195,11 @@ jobs:
         fileName: "lib-Windows-2019.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "cxx/dlibs"
+        out-file-path: "cxx/dlibs/HSS_Multithread"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Multithread lib
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-20.04'
       with:
         repository: "HeartlandSoftware/HSS_Multithread"
@@ -160,11 +207,23 @@ jobs:
         fileName: "lib-Ubuntu-20.04.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "cxx/dlibs"
+        out-file-path: "cxx/dlibs/HSS_Multithread"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Multithread lib
+      uses: robinraju/release-downloader@v1.7
+      if: matrix.os == 'ubuntu-22.04'
+      with:
+        repository: "HeartlandSoftware/HSS_Multithread"
+        latest: true
+        fileName: "lib-Ubuntu-22.04.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "cxx/dlibs/HSS_Multithread"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Math lib
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'windows-2019'
       with:
         repository: "HeartlandSoftware/HSS_Math"
@@ -172,11 +231,11 @@ jobs:
         fileName: "lib-Windows-2019.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "cxx/HSS_Math"
+        out-file-path: "cxx/dlibs/HSS_Math"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Math lib
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-20.04'
       with:
         repository: "HeartlandSoftware/HSS_Math"
@@ -184,11 +243,23 @@ jobs:
         fileName: "lib-Ubuntu-20.04.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "cxx/HSS_Math"
+        out-file-path: "cxx/dlibs/HSS_Math"
+        token: ${{ secrets.HSS_PAT }}
+
+    - name: Download Math lib
+      uses: robinraju/release-downloader@v1.7
+      if: matrix.os == 'ubuntu-22.04'
+      with:
+        repository: "HeartlandSoftware/HSS_Math"
+        latest: true
+        fileName: "lib-Ubuntu-22.04.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "cxx/dlibs/HSS_Math"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Geography lib
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'windows-2019'
       with:
         repository: "HeartlandSoftware/HSS_Geography"
@@ -196,11 +267,11 @@ jobs:
         fileName: "lib-Windows-2019.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "cxx/HSS_Geography"
+        out-file-path: "cxx/dlibs/HSS_Geography"
         token: ${{ secrets.HSS_PAT }}
 
     - name: Download Geography lib
-      uses: robinraju/release-downloader@v1.3
+      uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-20.04'
       with:
         repository: "HeartlandSoftware/HSS_Geography"
@@ -208,15 +279,25 @@ jobs:
         fileName: "lib-Ubuntu-20.04.zip"
         tarBall: false
         zipBall: false
-        out-file-path: "cxx/HSS_Geography"
+        out-file-path: "cxx/dlibs/HSS_Geography"
         token: ${{ secrets.HSS_PAT }}
 
-    - name: Download Geography source
-      uses: actions/checkout@v3
+    - name: Download Geography lib
+      uses: robinraju/release-downloader@v1.7
+      if: matrix.os == 'ubuntu-22.04'
       with:
         repository: "HeartlandSoftware/HSS_Geography"
+        latest: true
+        fileName: "lib-Ubuntu-22.04.zip"
+        tarBall: false
+        zipBall: false
+        out-file-path: "cxx/dlibs/HSS_Geography"
         token: ${{ secrets.HSS_PAT }}
-        path: "cxx/HSS_Geography/main"
+
+    - name: Bundle Protobuf Files
+      if: matrix.os == 'ubuntu-20.04'
+      shell: pwsh
+      run: Compress-Archive -Path proto -DestinationPath proto_def.zip
 
     - name: Unarchive downloaded include files
       shell: pwsh
@@ -227,29 +308,54 @@ jobs:
         Expand-Archive HSS_Multithread/includes.zip -DestinationPath HSS_Multithread
         Expand-Archive HSS_Math/includes.zip -DestinationPath HSS_Math
         Expand-Archive HSS_Geography/includes.zip -DestinationPath HSS_Geography
-        cp HSS_Geography/main/cpp/Canada.cpp HSS_Geography/include
+        Expand-Archive proto/HSS_Math/proto_def.zip -DestinationPath . -Force
+        Expand-Archive proto/HSS_Geography/proto_def.zip -DestinationPath . -Force
         
     - name: Unarchive downloaded Windows libraries
       if: matrix.os == 'windows-2019'
       shell: pwsh
       run: |
         cd cxx
-        Expand-Archive dlibs/lib-Windows-2019.zip -DestinationPath dlibs
-        Expand-Archive HSS_Math/lib-Windows-2019.zip -DestinationPath dlibs
-        Expand-Archive HSS_Geography/lib-Windows-2019.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_Multithread/lib-Windows-2019.zip -DestinationPath dlibs
+        Expand-Archive dlibs/ErrorCalc/windows.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_LowLevel/windows.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_Math/lib-Windows-2019.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_Geography/lib-Windows-2019.zip -DestinationPath dlibs
         
     - name: Unarchive downloaded Ubuntu libraries
       if: matrix.os == 'ubuntu-20.04'
       shell: pwsh
       run: |
         cd cxx
-        Expand-Archive dlibs/lib-Ubuntu-20.04.zip -DestinationPath dlibs
-        Expand-Archive HSS_Math/lib-Ubuntu-20.04.zip -DestinationPath dlibs
-        Expand-Archive HSS_Geography/lib-Ubuntu-20.04.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_Multithread/lib-Ubuntu-20.04.zip -DestinationPath dlibs
+        Expand-Archive dlibs/ErrorCalc/ubuntu20.04.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_LowLevel/ubuntu20.04.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_Math/lib-Ubuntu-20.04.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_Geography/lib-Ubuntu-20.04.zip -DestinationPath dlibs
         
-    # Retrieve the cache, uses cache@v2
+    - name: Unarchive downloaded Ubuntu libraries
+      if: matrix.os == 'ubuntu-22.04'
+      shell: pwsh
+      run: |
+        cd cxx
+        Expand-Archive dlibs/HSS_Multithread/lib-Ubuntu-22.04.zip -DestinationPath dlibs
+        Expand-Archive dlibs/ErrorCalc/ubuntu22.04.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_LowLevel/ubuntu22.04.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_Math/lib-Ubuntu-22.04.zip -DestinationPath dlibs
+        Expand-Archive dlibs/HSS_Geography/lib-Ubuntu-22.04.zip -DestinationPath dlibs
+        
+    - name: Set up JDK 8
+      uses: actions/setup-java@v2
+      if: matrix.os == 'ubuntu-22.04'
+      with:
+        java-version: '8'
+        distribution: 'temurin'
+        server-id: github
+        cache: 'maven'
+
+    # Retrieve the cache, uses cache@v3
     - name: Cache boost
-      uses: actions/cache@v2
+      uses: actions/cache@v3
       id: cache-boost
       with:
         # Set the default path as the path to cache
@@ -266,7 +372,7 @@ jobs:
         libraries: system chrono
 
     - name: Setup Ubuntu
-      if: matrix.os == 'ubuntu-20.04'
+      if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
       run: |
         sudo apt install libgtest-dev libgdal-dev
         
@@ -275,9 +381,9 @@ jobs:
       shell: pwsh
       run: |
         cd cxx
-        Invoke-WebRequest "https://www.zlib.net/zlib1212.zip" -OutFile zlib.zip
+        Invoke-WebRequest "https://www.zlib.net/zlib1213.zip" -OutFile zlib.zip
         Expand-Archive zlib.zip -DestinationPath zlib
-        mv zlib/zlib-1.2.12/* zlib
+        mv zlib/zlib-1.2.13/* zlib
         cd zlib
         mkdir build
         cd build
@@ -289,9 +395,9 @@ jobs:
       shell: pwsh
       run: |
         cd cxx
-        Invoke-WebRequest "https://github.com/protocolbuffers/protobuf/releases/download/v${{ env.PROTO_VERSION }}/protobuf-cpp-${{ env.PROTO_VERSION }}.zip" -OutFile protobuf.zip
+        Invoke-WebRequest "https://heartlandsoftwaresolutions.sharepoint.com/:u:/g/HSS_Releases/EUZ4knsEFP5FjNHHWR5dHc0BofAFyEPdLKRvzAgaTuDi1w?e=XW0Muc&download=1" -OutFile protobuf.zip
         Expand-Archive protobuf.zip -DestinationPath protobuf
-        mv protobuf/protobuf-${{ env.PROTO_VERSION }}/* protobuf
+        mv protobuf/protobuf-3.${{ env.PROTO_VERSION }}/* protobuf
         
     - name: Build protobuf
       if: matrix.os == 'windows-2019'
@@ -305,9 +411,12 @@ jobs:
         $zlibpath = Resolve-Path -path ../../../zlib/build/install
         cmake -Dprotobuf_WITH_ZLIB=ON -DZLIB_ROOT="$zlibpath" -Dprotobuf_BUILD_SHARED_LIBS=ON ../
         cmake --build . --config Release --target libprotobuf
+        cmake --build . --config Release --target protoc
+        Copy-Item $zlibpath/bin/* Release
+        Copy-Item $zlibpath/lib/* Release
         
     - name: Build protobuf
-      if: matrix.os == 'ubuntu-20.04'
+      if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
       shell: pwsh
       run: |
         cd cxx
@@ -317,7 +426,26 @@ jobs:
         cd build
         cmake ../ -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -DCMAKE_POSITION_INDEPENDENT_CODE=ON
         cmake --build . --target libprotobuf
+        cmake --build . --target protoc
         
+    - name: Build Proto definition files
+      if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
+      shell: pwsh
+      run: |
+        ./cxx/protobuf/cmake/build/protoc --java_out java/src/main/java --cpp_out=dllexport_decl=TIMES_API:proto --proto_path proto/ --proto_path cxx/protobuf/src wtime.proto
+        Move-Item proto/*.pb.cc -Destination cxx/src/generated -force
+        (Get-Content -path proto/wtime.pb.h -Raw) -replace '#include <string>',"#include <string>`n#include `"internal/times_internal.h`"" | Set-Content -Path proto/wtime.pb.h
+        Move-Item proto/*.pb.h -Destination cxx/include -force
+
+    - name: Build Proto definition files
+      if: matrix.os == 'windows-2019'
+      shell: pwsh
+      run: |
+        ./cxx/protobuf/cmake/build/Release/protoc --cpp_out=dllexport_decl=TIMES_API:proto --proto_path proto/ --proto_path cxx/protobuf/src wtime.proto
+        Move-Item proto/*.pb.cc -Destination cxx/src/generated -force
+        (Get-Content -path proto/wtime.pb.h -Raw) -replace '#include <string>',"#include <string>`n#include `"internal/times_internal.h`"" | Set-Content -Path proto/wtime.pb.h
+        Move-Item proto/*.pb.h -Destination cxx/include -force
+
     - name: Bundle Include Files
       if: matrix.os == 'ubuntu-20.04'
       shell: pwsh
@@ -328,15 +456,17 @@ jobs:
 
     - name: Upload Include Bundle
       if: matrix.os == 'ubuntu-20.04'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: release-libs
-        path: includes.zip
+        path: |
+          includes.zip
+          proto_def.zip
         retention-days: 1
         
     - name: Configure CMake Ubuntu
       id: configure-ubuntu
-      if: matrix.os == 'ubuntu-20.04'
+      if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
       run: |
         cd cxx
         mkdir build
@@ -346,17 +476,23 @@ jobs:
         cmake ../.. -DBOOST_INCLUDE_DIR=${{ steps.install-boost.outputs.root }} -DLOWLEVEL_INCLUDE_DIR=HSS_LowLevel/include -DTHIRD_PARTY_INCLUDE_DIR=HSS_LowLevel/third_party -DMULTITHREAD_INCLUDE_DIR=HSS_Multithread/include -DERROR_CALC_INCLUDE_DIR=ErrorCalc/include -DMATH_INCLUDE_DIR=HSS_Math/include -DGEOGRAPHY_INCLUDE_DIR=HSS_Geography/include -DPROTOBUF_INCLUDE_DIR=protobuf/src -DLOCAL_LIBRARY_DIR=dlibs -DPROTOBUF_LIBRARY_DIR=protobuf/cmake/build -DGDAL_INCLUDE_DIR=/usr/include/gdal -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
         APPLICATION_VERSION=$(grep CMAKE_PROJECT_VERSION: CMakeCache.txt | cut -d "=" -f2)
         APPLICATION_VERSION_MAJOR=$(grep CMAKE_PROJECT_VERSION_MAJOR: CMakeCache.txt | cut -d "=" -f2)
-        echo "::set-output name=release_version::$APPLICATION_VERSION"
-        echo "::set-output name=release_version_major::$APPLICATION_VERSION_MAJOR"
+        echo "release_version=$APPLICATION_VERSION" >> $GITHUB_OUTPUT
+        echo "release_version_major=$APPLICATION_VERSION_MAJOR" >> $GITHUB_OUTPUT
         
+    - name: Update Java Version
+      if: matrix.os == 'ubuntu-22.04'
+      run: |
+        cd java
+        mvn versions:set -DnewVersion=${{ steps.configure-ubuntu.outputs.release_version }}
+
     - name: Build Ubuntu
-      if: matrix.os == 'ubuntu-20.04'
+      if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
       run: |
         cd cxx/build/ubuntu
         cmake --build .
         
     - name: Test Ubuntu
-      if: matrix.os == 'ubuntu-20.04'
+      if: matrix.os == 'ubuntu-20.04' || matrix.os == 'ubuntu-22.04'
       run: |
         cd cxx/build/ubuntu
         cp ../../dlibs/*.so.* .
@@ -410,10 +546,26 @@ jobs:
         
     - name: Upload Ubuntu Library
       if: matrix.os == 'ubuntu-20.04'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: release-libs
         path: lib-Ubuntu-20.04.zip
+        retention-days: 1
+
+    - name: Archive Ubuntu Library
+      if: matrix.os == 'ubuntu-22.04'
+      shell: pwsh
+      run: |
+        cd cxx
+        Compress-Archive -DestinationPath lib-Ubuntu-22.04.zip -Path build\ubuntu\libWTime.so,build\ubuntu\libWTime.so.${{ steps.configure-ubuntu.outputs.release_version_major }},build\ubuntu\libWTime.so.${{ steps.configure-ubuntu.outputs.release_version }}
+        mv lib-Ubuntu-22.04.zip ..
+        
+    - name: Upload Ubuntu Library
+      if: matrix.os == 'ubuntu-22.04'
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-libs
+        path: lib-Ubuntu-22.04.zip
         retention-days: 1
 
     - name: Archive Windows Library
@@ -426,11 +578,33 @@ jobs:
         
     - name: Upload Windows Library
       if: matrix.os == 'windows-2019'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with:
         name: release-libs
         path: lib-Windows-2019.zip
         retention-days: 1
+
+    - name: Build Java
+      if: matrix.os == 'ubuntu-22.04'
+      run: |
+        cd java
+        mvn --batch-mode clean compile package
+      
+    - name: Upload Java Library
+      if: matrix.os == 'ubuntu-22.04'
+      uses: actions/upload-artifact@v3
+      with:
+        name: release-libs
+        path: java/target/WTime.jar
+        retention-days: 1
+
+    - name: Publish package
+      if: matrix.os == 'ubuntu-22.04'
+      run: |
+        cd java
+        mvn --batch-mode deploy
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   release:
     runs-on: ubuntu-latest
@@ -443,6 +617,12 @@ jobs:
     - uses: actions/checkout@v3
       with:
         fetch-depth: 0
+
+    - name: Get Previous Tag
+      id: previoustag
+      uses: WyriHaximus/github-action-get-previous-tag@v1
+      with:
+        fallback: 'c2.5.0.10'
 
     - name: Tag the repository
       run: |
@@ -459,16 +639,16 @@ jobs:
         tags: true
 
     - name: Download Libraries
-      uses: actions/download-artifact@v2
+      uses: actions/download-artifact@v3
       with:
         name: release-libs
 
     - name: Create Release Notes
       id: build-notes
-      uses: mikepenz/release-changelog-builder-action@v2.9.0
+      uses: mikepenz/release-changelog-builder-action@v3.5.0
       with:
         toTag: v${{ needs.build.outputs.release_version }}
-        fromTag: v2.3.9-9
+        fromTag: ${{ steps.previoustag.outputs.tag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -480,6 +660,8 @@ jobs:
         files: |
           lib-Windows-2019.zip
           lib-Ubuntu-20.04.zip
+          lib-Ubuntu-22.04.zip
           includes.zip
+          proto_def.zip
         tag_name: refs/tags/c${{ needs.build.outputs.release_version }}
         

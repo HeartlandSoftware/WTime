@@ -19,7 +19,7 @@
 
 #include "times_internal.h"
 
-#ifdef INTEL_COMPILER
+#if __has_include(<mathimf.h>)
 #include <mathimf.h>
 #else
 #include <cmath>
@@ -106,6 +106,7 @@ INTNM::int32_t c99_snprintf(char *outBuf, size_t size, const char *format, ...)
 
 
 WTimeSpan::WTimeSpan() {
+	m_timeSpan = 0;
 }
 
 
@@ -376,6 +377,9 @@ INTNM::int64_t WTimeSpan::GetTotalMicroSeconds() const				{ return m_timeSpan; }
 
 double WTimeSpan::GetDaysFraction() const							{ return ((double)m_timeSpan) / (24.0 * 60.0 * 60.0 * 1000000.0); }
 double WTimeSpan::GetSecondsFraction() const						{ return ((double)m_timeSpan) / 1000000.0; }
+double WTimeSpan::GetFractionOfSecond() const						{ return ((double)(m_timeSpan % (1000000LL))) / (1000000.0); }
+double WTimeSpan::GetFractionOfMinute() const						{ return ((double)(m_timeSpan % (60LL * 1000000LL))) / (60.0 * 1000000.0); }
+double WTimeSpan::GetFractionOfHour() const							{ return ((double)(m_timeSpan % (60LL * 60LL * 1000000LL))) / (60.0 * 60.0 * 1000000.0); }
 double WTimeSpan::GetFractionOfDay() const							{ return ((double)(m_timeSpan % (24LL * 60LL * 60LL * 1000000LL))) / (24.0 * 60.0 * 60.0 * 1000000.0); }
 INTNM::int32_t WTimeSpan::GetSecondsOfDay() const					{ return m_timeSpan % (24LL * 60LL * 60LL * 1000000LL); }
 
@@ -551,7 +555,7 @@ std::string WTimeSpan::ToString(INTNM::uint32_t flags) const {
 					hour = 0;
 				}
 			}
-			if (day != 0)
+			if ((day != 0) && (flags & WTIME_FORMAT_DAY))
 				hour = 0 - hour;		// if there there are days, then we don't need the sign on the hour
 			if (hour == 0)
 				special_case = true;		// if no days and no hours, but it's negative, then we have a special print case
@@ -982,12 +986,19 @@ WTime::WTime(const COleDateTime& timeSrc, const WTimeManager *tm, INTNM::uint32_
 
 WTime WTime::Now(const WTimeManager *tm, INTNM::uint32_t flags)
 {
-    std::time_t t = std::time(0);
-    std::tm* now = std::gmtime(&t);
-    auto seconds = now->tm_sec;
+    time_t t = std::time(0);
+	struct tm now;
+
+#ifdef _MSC_VER
+	gmtime_s(&now, &t);
+#else
+	gmtime_r(&t, &now);
+#endif
+
+	auto seconds = now.tm_sec;
     if (flags & WTIME_FORMAT_EXCLUDE_SECONDS)
         seconds = 0;
-    WTime temp(now->tm_year + 1900, now->tm_mon + 1, now->tm_mday, now->tm_hour, now->tm_min, seconds, tm);
+    WTime temp(now.tm_year + 1900, now.tm_mon + 1, now.tm_mday, now.tm_hour, now.tm_min, seconds, tm);
     return WTime(temp, flags, -1);
 }
 
@@ -1141,7 +1152,7 @@ INTNM::uint64_t WTime::adjusted_tm_math(INTNM::uint32_t mode) const {
 		else	time = m_time;
 
 		if ((mode & WTIME_FORMAT_WITHDST) && (m_tm->m_worldLocation.m_startDST() != m_tm->m_worldLocation.m_endDST())) {
-			WTime t(time, NULL, false);
+			WTime t(time, nullptr, false);
 			INTNM::uint64_t secs = t.GetSecondsIntoYear(0);
 			if (m_tm->m_worldLocation.m_startDST() < m_tm->m_worldLocation.m_endDST()) {
 				if (((INTNM::uint64_t)m_tm->m_worldLocation.m_startDST().GetTotalSeconds() <= secs) &&
@@ -1239,8 +1250,12 @@ INTNM::int32_t WTime::GetMinute(INTNM::uint32_t flags) const			{ if (m_time == (
 INTNM::int32_t WTime::GetSecond(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) / 1000000LL) % 60); };
 INTNM::int32_t WTime::GetMilliSeconds(INTNM::uint32_t flags) const		{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) / 1000LL) % 1000); };
 INTNM::int32_t WTime::GetMicroSeconds(INTNM::uint32_t flags) const		{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) % 1000000LL)); };
-double WTime::GetSecondsFraction(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return ((double)(adjusted_tm(flags) % 1000000LL)) / 1000000.0; };
+double WTime::GetSecondsFraction(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; return ((double)(adjusted_tm(flags) % 1000000LL)) / 1000000.0; };
 WTimeSpan WTime::GetTimeOfDay(INTNM::uint32_t flags) const				{ if (m_time == (INTNM::uint64_t)(-1)) return WTimeSpan(-1, false); INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL); return WTimeSpan(time, false); };
+double WTime::GetFractionOfSecond(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (1000000LL); return ((double)time) / (1000000.0); };
+double WTime::GetFractionOfMinute(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (60LL * 1000000LL); return ((double)time) / (60.0 * 1000000.0); };
+double WTime::GetFractionOfHour(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 1000000LL); return ((double)time) / (60.0 * 60.0 * 1000000.0); };
+double WTime::GetFractionOfDay(INTNM::uint32_t flags) const				{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL); return ((double)time) / (24.0 * 60.0 * 60.0 * 1000000.0); };
 INTNM::int32_t WTime::GetDayOfWeek(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1; INTNM::int64_t days = adjusted_tm(flags) / (24LL * 60LL * 60LL * 1000000LL) + 0; INTNM::int32_t ret = (INTNM::int32_t)(days % 7); return ret == 0 ? 7L : ret; };
 
 
@@ -1379,8 +1394,11 @@ const WTime& WTime::operator=(const WTime& timeSrc) {
 
 
 const WTime& WTime::SetTime(const WTime& timeSrc) {
-	if (&timeSrc != this)
+	if (&timeSrc != this) {
 		m_time = timeSrc.m_time;
+		if ((timeSrc.m_tm) && (!m_tm))
+			m_tm = timeSrc.m_tm;
+	}
 	return *this;
 }
 
@@ -1779,13 +1797,13 @@ bool WTime::ParseDateTime(const std::string &lpszDate, INTNM::uint32_t flags, Wo
 			month = v2;
 			year = v3;
 		} else if (((flags & 0x000000ff) == WTIME_FORMAT_STRING_YYYY_MM_DD) ||
-				((flags & 0x000000ff) == WTIME_FORMAT_STRING_YYYYhMMhDD) ||
-				((flags & 0x000000ff) == WTIME_FORMAT_STRING_YYYYhMMhDDT)) {
+				   ((flags & 0x000000ff) == WTIME_FORMAT_STRING_YYYYhMMhDD) ||
+				   ((flags & 0x000000ff) == WTIME_FORMAT_STRING_YYYYhMMhDDT)) {
 			day = v3;
 			month = v2;
 			year = v1;
 		} else if (((flags & 0x000000ff) == WTIME_FORMAT_STRING_MM_DD_YYYY) ||
-			        ((flags & 0x000000ff) == WTIME_FORMAT_STRING_MMhDDhYYYY)) {
+			       ((flags & 0x000000ff) == WTIME_FORMAT_STRING_MMhDDhYYYY)) {
 			day = v2;
 			month = v1;
 			year = v3;
