@@ -42,9 +42,6 @@ namespace HSS_Time {
 #endif
 
 
-class Canada;
-
-
 namespace HSS_Time {
 
 
@@ -182,7 +179,6 @@ public:
 							// any time during the local "solar" day will glean the right times - suggestion is to use local noon time
 	INTNM::int16_t m_sun_rise_set(double latitude, double longitude, const WTime& local_day, WTime* Rise, WTime* Set, WTime* Noon) const;
 	// any time during the local "solar" day will glean the right times - suggestion is to use local noon time
-	Canada *canada;
 
 public:
 	WorldLocation();
@@ -210,7 +206,7 @@ public:
 	const struct TimeZoneInfo *GuessTimeZone(INTNM::int16_t set) const;									// 0 for std time zones, 1 for dst time zones, -1 for military time zones
 	const struct TimeZoneInfo *CurrentTimeZone(INTNM::int16_t set, bool* hidden = nullptr) const;		// 0 for std time zones, 1 for dst time zones, -1 for military time zones
 
-	bool InsideCanada(const double latitude, const double longitude);
+	bool InsideCanada(const double latitude, const double longitude) const;
 	bool InsideCanada() const;
 	bool InsideNewZealand() const;
 	bool InsideTasmania() const;
