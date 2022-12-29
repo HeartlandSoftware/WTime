@@ -30,6 +30,9 @@ jobs:
             build_tool: msvc142
 
     runs-on: ${{ matrix.os }}
+    permissions:
+      contents: write
+      packages: write
 
     outputs:
       release_version: ${{ steps.configure-ubuntu.outputs.release_version }}
@@ -584,6 +587,11 @@ jobs:
         name: release-libs
         path: lib-Windows-2019.zip
         retention-days: 1
+
+    - name: Setup the Maven configuration file
+      uses: whelk-io/maven-settings-xml-action@v21
+      with:
+        servers: '[{ "id": "github", "username": "tredpath", "password": "${{ secrets.HSS_PAT }}" }]'
 
     - name: Build Java
       if: matrix.os == 'ubuntu-22.04'
