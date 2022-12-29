@@ -20,14 +20,12 @@
 #include "worldlocation.h"
 #include "SunriseSunsetCalc.h"
 #include "str_printf.h"
+#include "Borders.h"
 
 #include <cmath>
 #include <vector>
 #include <boost/algorithm/string/predicate.hpp>
 #include "boost_bimap.h"
-
-extern bool insideCanadaDetail(class Canada **canada, const double latitude, const double longitude);
-extern void insideCanadaCleanup(class Canada *canada);
 
 using namespace HSS_Time;
 using namespace HSS_Time_Private;
@@ -529,14 +527,17 @@ bool WorldLocation::InsideCanada() const {
 }
 
 
-bool WorldLocation::InsideCanada(const double latitude, const double longitude) {
+bool WorldLocation::InsideCanada(const double latitude, const double longitude) const {
 	if (latitude < DEGREE_TO_RADIAN(41.0))		return false;
 	if (latitude > DEGREE_TO_RADIAN(83.0))		return false;
 	if (longitude < DEGREE_TO_RADIAN(-141.0))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-52.0))	return false;
 
-#if defined(_MSC_VER) || defined(_USE_CANADA)
-	return insideCanadaDetail(&canada, RADIAN_TO_DEGREE(latitude), RADIAN_TO_DEGREE(longitude));
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+    XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+    Borders borders;
+    if (borders.Canada())
+        return borders.Canada()->PointInArea(pt, 0.000001);
 #else
 	if (longitude < DEGREE_TO_RADIAN(-122.8)) {
 		if (latitude < DEGREE_TO_RADIAN(48.3))	return false;
@@ -928,8 +929,6 @@ WorldLocation::WorldLocation()
 	_startDST = WTimeSpan(0);
 	_endDST = WTimeSpan(0);
 	_amtDST = WTimeSpan(0, 1, 0, 0);
-
-	canada = nullptr;
 }
 
 
@@ -940,8 +939,6 @@ WorldLocation::WorldLocation(const WorldLocation &wl)
 #endif
 {
 	*this = wl;
-
-	canada = nullptr;
 }
 
 
@@ -964,16 +961,10 @@ WorldLocation::WorldLocation(double latitude, double longitude, bool guessTimezo
 			_amtDST = _timezoneInfo->m_dst;
 		}
 	}
-
-	canada = nullptr;
 }
 
 
-WorldLocation::~WorldLocation() {
-#if defined(_MSC_VER) || defined(_USE_CANADA)
-	insideCanadaCleanup(canada);
-#endif
-}
+WorldLocation::~WorldLocation() { }
 
 
 WorldLocation &WorldLocation::operator=(const WorldLocation &wl) {
