@@ -308,6 +308,7 @@ jobs:
         Expand-Archive HSS_Multithread/includes.zip -DestinationPath HSS_Multithread
         Expand-Archive HSS_Math/includes.zip -DestinationPath HSS_Math
         Expand-Archive HSS_Geography/includes.zip -DestinationPath HSS_Geography
+        cd ..
         Expand-Archive proto/HSS_Math/proto_def.zip -DestinationPath . -Force
         Expand-Archive proto/HSS_Geography/proto_def.zip -DestinationPath . -Force
         
