@@ -20,10 +20,12 @@
 
 #ifdef HAVE_HSS_MATH
 #include "mathhss.h"
-#elif defined(INTEL_COMPILER)
+#else
+#if __has_include(<mathimf.h>)
 #include <mathimf.h>
 #else
 #include <cmath>
+#endif
 
 #ifdef _MSC_VER
 void sincos(double val, double* p_sin, double *p_cos)

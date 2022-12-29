@@ -19,7 +19,7 @@
 
 #include "times_internal.h"
 
-#ifdef INTEL_COMPILER
+#if __has_include(<mathimf.h>)
 #include <mathimf.h>
 #else
 #include <cmath>
