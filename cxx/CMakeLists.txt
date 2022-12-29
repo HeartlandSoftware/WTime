@@ -74,7 +74,6 @@ add_library(WTime SHARED
     src/TimezoneMapper.cpp
     src/worldlocation.cpp
     src/WTimeProto.cpp
-    src/Canada_Detail.cpp
     include/internal/SunriseSunsetCalc.h
     include/internal/times_internal.h
     include/internal/Times.h
