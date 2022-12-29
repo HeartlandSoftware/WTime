@@ -121,7 +121,7 @@ class TIMES_API WTimeSpan {
 #endif
 
 	WTimeSpan(const std::string &timeSrc, INTNM::int16_t *cnt = NULL);			// set the time from a char *, assumes hr:mn:sc, where hr can
-										// be signed.  We don't expect a day prepending this format!
+																				// be signed.  We don't expect a day prepending this format!
 
 	std::string ToString(INTNM::uint32_t flags) const;
 
@@ -151,6 +151,9 @@ class TIMES_API WTimeSpan {
 
 	double GetDaysFraction() const;
 	double GetSecondsFraction() const;
+	double GetFractionOfSecond() const;
+	double GetFractionOfMinute() const;
+	double GetFractionOfHour() const;
 	double GetFractionOfDay() const;
 	INTNM::int32_t GetSecondsOfDay() const;
 
@@ -297,6 +300,10 @@ public:
 	INTNM::int32_t GetMilliSeconds(INTNM::uint32_t flags) const;
 	INTNM::int32_t GetMicroSeconds(INTNM::uint32_t flags) const;
 	WTimeSpan GetTimeOfDay(INTNM::uint32_t flags) const;
+	double GetFractionOfSecond(INTNM::uint32_t flags) const;
+	double GetFractionOfMinute(INTNM::uint32_t flags) const;
+	double GetFractionOfHour(INTNM::uint32_t flags) const;
+	double GetFractionOfDay(INTNM::uint32_t flags) const;
 	INTNM::int32_t GetDayOfWeek(INTNM::uint32_t flags) const;
 
 					// 1=Sun, 2=Mon, 3=Tues, 4=Wed, 5=Thurs, 5=Fri, 7=Sat

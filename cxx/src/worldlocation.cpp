@@ -607,12 +607,14 @@ bool WorldLocation::InsideAustraliaMainland() const {
 
 void WorldLocation::SetTimeZoneOffset(const TimeZoneInfo* timezone)
 {
-	_amtDST = timezone->m_dst;
-	__timezone = timezone->m_timezone;
-	if (_startDST.GetTotalMicroSeconds() != 0)
-		_startDST = WTimeSpan(0);
-	if (_amtDST.GetTotalMicroSeconds() != 0)
-		_endDST = WTimeSpan(366, 0, 0, 0);
+	if (timezone) {
+		_amtDST = timezone->m_dst;
+		__timezone = timezone->m_timezone;
+		if (_startDST.GetTotalMicroSeconds() != 0)
+			_startDST = WTimeSpan(0);
+		if (_amtDST.GetTotalMicroSeconds() != 0)
+			_endDST = WTimeSpan(366, 0, 0, 0);
+	}
 	_timezoneInfo = timezone;
 }
 
@@ -756,7 +758,6 @@ const ::TimeZoneInfo *WorldLocation::CurrentTimeZone(INTNM::int16_t set, bool* h
 		}
 		return nullptr;
 	}
-	return nullptr;
 }
 
 const ::TimeZoneInfo* WorldLocation::TimeZoneFromName(const std::string& name, INTNM::int16_t set, bool* hidden)
