@@ -919,7 +919,7 @@ const TimeZoneInfo* WorldLocation::GetStandardTimeZone(const TimeZoneInfo* info)
 WorldLocation::WorldLocation()
 	: _timezoneInfo(nullptr)
 #ifdef HSS_USE_CACHING
-	, m_sunCache(2), m_solarCache(2)
+	, m_sunCache(4), m_solarCache(4)
 #endif
 {
 	_latitude = 1000.0;
@@ -936,7 +936,7 @@ WorldLocation::WorldLocation()
 WorldLocation::WorldLocation(const WorldLocation &wl)
 	: _timezoneInfo(nullptr)
 #ifdef HSS_USE_CACHING
-	, m_sunCache(2), m_solarCache(2)
+	, m_sunCache(4), m_solarCache(4)
 #endif
 {
 	*this = wl;
@@ -948,7 +948,7 @@ WorldLocation::WorldLocation(const WorldLocation &wl)
 WorldLocation::WorldLocation(double latitude, double longitude, bool guessTimezone)
 	: _timezoneInfo(nullptr)
 #ifdef HSS_USE_CACHING
-	, m_sunCache(2), m_solarCache(2)
+	, m_sunCache(4), m_solarCache(4)
 #endif
 {
 	_latitude = DEGREE_TO_RADIAN(latitude);
@@ -1017,8 +1017,8 @@ bool WorldLocation::operator!=(const WorldLocation &wl) const {
 WTimeSpan WorldLocation::m_solar_timezone(const WTime &solar_time) const {
 #ifdef HSS_USE_CACHING
 	struct sun_key sk;
-	sk.m_sun_cache_lat = m_latitude;
-	sk.m_sun_cache_long = m_longitude;
+	sk.m_sun_cache_lat = _latitude;
+	sk.m_sun_cache_long = _longitude;
 	sk.m_sun_cache_tm = solar_time.GetTime(0);
 	WTimeSpan retval;
 	if (m_solarCache.Retrieve(&sk, &retval))
@@ -1134,8 +1134,68 @@ CArchive& HSS_Time::operator<<(CArchive& os, const WorldLocation &wl) {
 INTNM::int16_t WorldLocation::m_sun_rise_set(const WTime &daytime, WTime *Rise, WTime *Set, WTime *Noon) const {
 #ifdef HSS_USE_CACHING
 	struct sun_key sk;
-	sk.m_sun_cache_lat = m_latitude;
-	sk.m_sun_cache_long = m_longitude;
+	sk.m_sun_cache_lat = _latitude;
+	sk.m_sun_cache_long = _longitude;
+	sk.m_sun_cache_tm = daytime.GetTime(0);
+	struct sun_val sv;
+	if (m_sunCache.Retrieve(&sk, &sv)) {
+		*Rise = WTime(sv.m_sun_cache_rise, Rise->GetTimeManager());
+		*Set = WTime(sv.m_sun_cache_set, Set->GetTimeManager());
+		*Noon = WTime(sv.m_sun_cache_noon, Noon->GetTimeManager());
+		return sv.m_success;
+	}
+#endif
+
+	INTNM::int32_t	day = daytime.GetDay(WTIME_FORMAT_AS_SOLAR),
+					year = daytime.GetYear(WTIME_FORMAT_AS_SOLAR),
+					month = daytime.GetMonth(WTIME_FORMAT_AS_SOLAR);
+
+	CSunriseSunsetCalc calculator;
+	RISESET_IN_STRUCT sInput;
+	sInput.Latitude = RADIAN_TO_DEGREE(_latitude);
+	sInput.Longitude = -RADIAN_TO_DEGREE(_longitude);
+	sInput.timezone = 0;
+	sInput.DaytimeSaving = false;
+	sInput.year = year;
+	sInput.month = month;
+	sInput.day = day;
+	RISESET_OUT_STRUCT sOut;
+	INTNM::int16_t success = calculator.calcSun(sInput,&sOut);
+
+	WTime riseTime(0ULL, Rise->GetTimeManager()),
+		  setTime(0ULL, Set->GetTimeManager()),
+		  noonTime(0ULL, Noon->GetTimeManager());
+	if (!(success & NO_SUNRISE))
+		riseTime = WTime(sOut.YearRise,sOut.MonthRise,sOut.DayRise,sOut.HourRise,sOut.MinRise,(INTNM::int32_t)sOut.SecRise,Rise->GetTimeManager());
+	*Rise = riseTime;
+	if (!(success & NO_SUNSET))
+		setTime = WTime(sOut.YearSet,sOut.MonthSet,sOut.DaySet,sOut.HourSet,sOut.MinSet,(INTNM::int32_t)sOut.SecSet,Set->GetTimeManager());
+	*Set = setTime;
+	noonTime = WTime(sInput.year,sInput.month,sInput.day, sOut.SolarNoonHour, sOut.SolarNoonMin, (INTNM::int32_t)sOut.SolarNoonSec,Noon->GetTimeManager());
+	*Noon = noonTime;
+		
+#ifdef HSS_USE_CACHING
+	sk.m_sun_cache_tm = daytime.GetTime(0);
+	sk.m_sun_cache_lat = _latitude;
+	sk.m_sun_cache_long = _longitude;
+	sv.m_sun_cache_rise = Rise->GetTotalSeconds();
+	sv.m_sun_cache_set = Set->GetTotalSeconds();
+	sv.m_sun_cache_noon = Noon->GetTotalSeconds();
+	sv.m_success = success;
+	m_sunCache.Store(&sk, &sv);
+#endif
+
+	return success;
+}
+
+
+
+INTNM::int16_t WorldLocation::m_sun_rise_set(double latitude, double longitude, const WTime& daytime, WTime* Rise, WTime* Set, WTime* Noon) const {
+
+#ifdef HSS_USE_CACHING
+	struct sun_key sk;
+	sk.m_sun_cache_lat = latitude;
+	sk.m_sun_cache_long = longitude;
 	sk.m_sun_cache_tm = daytime.GetTime(0);
 	struct sun_val sv;
 	if (m_sunCache.Retrieve(&sk, &sv)) {
@@ -1152,37 +1212,38 @@ INTNM::int16_t WorldLocation::m_sun_rise_set(const WTime &daytime, WTime *Rise, 
 
 	CSunriseSunsetCalc calculator;
 	RISESET_IN_STRUCT sInput;
-	sInput.Latitude = RADIAN_TO_DEGREE(_latitude);
-	sInput.Longitude = -RADIAN_TO_DEGREE(_longitude);
+	sInput.Latitude = RADIAN_TO_DEGREE(latitude);
+	sInput.Longitude = -RADIAN_TO_DEGREE(longitude);
 	sInput.timezone = 0;
 	sInput.DaytimeSaving = false;
 	sInput.year = year;
 	sInput.month = month;
 	sInput.day = day;
 	RISESET_OUT_STRUCT sOut;
-	INTNM::int16_t success = calculator.calcSun(sInput,&sOut);
+	INTNM::int16_t success = calculator.calcSun(sInput, &sOut);
 
 	WTime riseTime(0ULL, Rise->GetTimeManager()),
 		setTime(0ULL, Set->GetTimeManager()),
 		noonTime(0ULL, Noon->GetTimeManager());
 	if (!(success & NO_SUNRISE))
-		riseTime = WTime(sOut.YearRise,sOut.MonthRise,sOut.DayRise,sOut.HourRise,sOut.MinRise,(INTNM::int32_t)sOut.SecRise,Rise->GetTimeManager());
+		riseTime = WTime(sOut.YearRise, sOut.MonthRise, sOut.DayRise, sOut.HourRise, sOut.MinRise, (INTNM::int32_t)sOut.SecRise, Rise->GetTimeManager());
 	*Rise = riseTime;
 	if (!(success & NO_SUNSET))
-		setTime = WTime(sOut.YearSet,sOut.MonthSet,sOut.DaySet,sOut.HourSet,sOut.MinSet,(INTNM::int32_t)sOut.SecSet,Set->GetTimeManager());
+		setTime = WTime(sOut.YearSet, sOut.MonthSet, sOut.DaySet, sOut.HourSet, sOut.MinSet, (INTNM::int32_t)sOut.SecSet, Set->GetTimeManager());
 	*Set = setTime;
-	noonTime = WTime(sInput.year,sInput.month,sInput.day, sOut.SolarNoonHour, sOut.SolarNoonMin, (INTNM::int32_t)sOut.SolarNoonSec,Noon->GetTimeManager());
+	noonTime = WTime(sInput.year, sInput.month, sInput.day, sOut.SolarNoonHour, sOut.SolarNoonMin, (INTNM::int32_t)sOut.SolarNoonSec, Noon->GetTimeManager());
 	*Noon = noonTime;
-		
+
 #ifdef HSS_USE_CACHING
 	sk.m_sun_cache_tm = daytime.GetTime(0);
-	sk.m_sun_cache_lat = m_latitude;
-	sk.m_sun_cache_long = m_longitude;
+	sk.m_sun_cache_lat = latitude;
+	sk.m_sun_cache_long = longitude;
 	sv.m_sun_cache_rise = Rise->GetTotalSeconds();
 	sv.m_sun_cache_set = Set->GetTotalSeconds();
 	sv.m_sun_cache_noon = Noon->GetTotalSeconds();
 	sv.m_success = success;
 	m_sunCache.Store(&sk, &sv);
 #endif
+
 	return success;
 }
