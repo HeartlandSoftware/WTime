@@ -986,12 +986,19 @@ WTime::WTime(const COleDateTime& timeSrc, const WTimeManager *tm, INTNM::uint32_
 
 WTime WTime::Now(const WTimeManager *tm, INTNM::uint32_t flags)
 {
-    std::time_t t = std::time(0);
-    std::tm* now = std::gmtime(&t);
-    auto seconds = now->tm_sec;
+    time_t t = std::time(0);
+	struct tm now;
+
+#ifdef _MSC_VER
+	gmtime_s(&now, &t);
+#else
+	gmtime_r(&t, &now);
+#endif
+
+	auto seconds = now.tm_sec;
     if (flags & WTIME_FORMAT_EXCLUDE_SECONDS)
         seconds = 0;
-    WTime temp(now->tm_year + 1900, now->tm_mon + 1, now->tm_mday, now->tm_hour, now->tm_min, seconds, tm);
+    WTime temp(now.tm_year + 1900, now.tm_mon + 1, now.tm_mday, now.tm_hour, now.tm_min, seconds, tm);
     return WTime(temp, flags, -1);
 }
 
