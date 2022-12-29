@@ -126,38 +126,38 @@ class TIMES_API WTimeSpan {
 	std::string ToString(INTNM::uint32_t flags) const;
 
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
-	bool __FASTCALL ParseTime(const CString &time);
+	bool ParseTime(const CString &time);
 #endif
-	bool __FASTCALL ParseTime(const TCHAR *lpszTime);
-	bool __FASTCALL ParseTime(const std::string &time);
+	bool ParseTime(const TCHAR *lpszTime);
+	bool ParseTime(const std::string &time);
 
-	void __FASTCALL SetTotalSeconds(INTNM::int64_t secs);
+	void SetTotalSeconds(INTNM::int64_t secs);
 	
 // Operations
-	INTNM::int64_t __FASTCALL GetYears() const;
+	INTNM::int64_t GetYears() const;
 		// can't do GetMonths() 'cause we need to know if it's a leap year or not
-	INTNM::int64_t __FASTCALL GetWeeks() const;
-	INTNM::int64_t __FASTCALL GetDays() const;
-	INTNM::int64_t __FASTCALL GetTotalHours() const;
-	INTNM::int32_t __FASTCALL GetHours() const;
-	INTNM::int64_t __FASTCALL GetTotalMinutes() const;
-	INTNM::int32_t __FASTCALL GetMinutes() const;
-	INTNM::int64_t __FASTCALL GetTotalSeconds() const;
-	INTNM::int32_t __FASTCALL GetSeconds() const;
-	INTNM::int32_t __FASTCALL GetMilliSeconds() const;
-	INTNM::int32_t __FASTCALL GetTotalMilliSeconds() const;
-	INTNM::int32_t __FASTCALL GetMicroSeconds() const;
-	INTNM::int64_t __FASTCALL GetTotalMicroSeconds() const;
+	INTNM::int64_t GetWeeks() const;
+	INTNM::int64_t GetDays() const;
+	INTNM::int64_t GetTotalHours() const;
+	INTNM::int32_t GetHours() const;
+	INTNM::int64_t GetTotalMinutes() const;
+	INTNM::int32_t GetMinutes() const;
+	INTNM::int64_t GetTotalSeconds() const;
+	INTNM::int32_t GetSeconds() const;
+	INTNM::int32_t GetMilliSeconds() const;
+	INTNM::int32_t GetTotalMilliSeconds() const;
+	INTNM::int32_t GetMicroSeconds() const;
+	INTNM::int64_t GetTotalMicroSeconds() const;
 
-	double __FASTCALL GetDaysFraction() const;
-	double __FASTCALL GetSecondsFraction() const;
-	double __FASTCALL GetFractionOfDay() const;
-	INTNM::int32_t __FASTCALL GetSecondsOfDay() const;
+	double GetDaysFraction() const;
+	double GetSecondsFraction() const;
+	double GetFractionOfDay() const;
+	INTNM::int32_t GetSecondsOfDay() const;
 
-	void __FASTCALL PurgeToSecond();
-	void __FASTCALL PurgeToMinute();
-	void __FASTCALL PurgeToHour();
-	void __FASTCALL PurgeToDay();
+	void PurgeToSecond();
+	void PurgeToMinute();
+	void PurgeToHour();
+	void PurgeToDay();
 
 	// time math
 	const WTimeSpan& operator=(const WTimeSpan &timeSrc);
@@ -201,19 +201,19 @@ class TIMES_API WTimeManager {
     public:
 	explicit WTimeManager(const WorldLocation &worldLocation);
 
-	static WTimeSpan __FASTCALL TimeForIndex(INTNM::int32_t index);
-	static INTNM::int32_t __FASTCALL IterationIndex(const WTimeSpan &time);  
+	static WTimeSpan TimeForIndex(INTNM::int32_t index);
+	static INTNM::int32_t IterationIndex(const WTimeSpan &time);  
 	
     			// ***** general functions which are useful to the outside world
-	static bool __FASTCALL isLeapYear(INTNM::int16_t year);
+	static bool isLeapYear(INTNM::int16_t year);
 					// is the given year a leap year?
-    static INTNM::int16_t __FASTCALL daysInMonth(INTNM::int16_t month, INTNM::int16_t year);
+    static INTNM::int16_t daysInMonth(INTNM::int16_t month, INTNM::int16_t year);
 					// given a month [1..12] and a year, how many days in that month?
-	static INTNM::int16_t __FASTCALL GetJulianCount(INTNM::int16_t year);
+	static INTNM::int16_t GetJulianCount(INTNM::int16_t year);
 					// returns number of days in the year
-	static INTNM::int16_t __FASTCALL ToJulian(INTNM::int16_t year, INTNM::int16_t month, INTNM::int16_t day);
+	static INTNM::int16_t ToJulian(INTNM::int16_t year, INTNM::int16_t month, INTNM::int16_t day);
 					// converts month+day to julian (origin 0) for the provided year
-	static void __FASTCALL FromJulian(INTNM::int16_t julian, INTNM::int16_t *year, INTNM::int16_t *month, INTNM::int16_t *day);
+	static void FromJulian(INTNM::int16_t julian, INTNM::int16_t *year, INTNM::int16_t *month, INTNM::int16_t *day);
 					// years since 1900, month is 1..12,
 					// day is 1..[], returns 0..365 (origin 0)   
 
@@ -287,30 +287,30 @@ public:
 
 	bool IsValid() const;
 	
-	INTNM::int32_t __FASTCALL GetYear(INTNM::uint32_t flags) const;
-	INTNM::int32_t __FASTCALL GetMonth(INTNM::uint32_t flags) const;       // month of year (1 = Jan)
-	INTNM::int32_t __FASTCALL GetDay(INTNM::uint32_t flags) const;         // day of month
- 	INTNM::int32_t __FASTCALL GetHour(INTNM::uint32_t flags) const;
-	INTNM::int32_t __FASTCALL GetMinute(INTNM::uint32_t flags) const;
-	INTNM::int32_t __FASTCALL GetSecond(INTNM::uint32_t flags) const;
-	double __FASTCALL GetSecondsFraction(INTNM::uint32_t flags) const;
-	INTNM::int32_t __FASTCALL GetMilliSeconds(INTNM::uint32_t flags) const;
-	INTNM::int32_t __FASTCALL GetMicroSeconds(INTNM::uint32_t flags) const;
-	WTimeSpan __FASTCALL GetTimeOfDay(INTNM::uint32_t flags) const;
-	INTNM::int32_t __FASTCALL GetDayOfWeek(INTNM::uint32_t flags) const;
+	INTNM::int32_t GetYear(INTNM::uint32_t flags) const;
+	INTNM::int32_t GetMonth(INTNM::uint32_t flags) const;       // month of year (1 = Jan)
+	INTNM::int32_t GetDay(INTNM::uint32_t flags) const;         // day of month
+ 	INTNM::int32_t GetHour(INTNM::uint32_t flags) const;
+	INTNM::int32_t GetMinute(INTNM::uint32_t flags) const;
+	INTNM::int32_t GetSecond(INTNM::uint32_t flags) const;
+	double GetSecondsFraction(INTNM::uint32_t flags) const;
+	INTNM::int32_t GetMilliSeconds(INTNM::uint32_t flags) const;
+	INTNM::int32_t GetMicroSeconds(INTNM::uint32_t flags) const;
+	WTimeSpan GetTimeOfDay(INTNM::uint32_t flags) const;
+	INTNM::int32_t GetDayOfWeek(INTNM::uint32_t flags) const;
 
 					// 1=Sun, 2=Mon, 3=Tues, 4=Wed, 5=Thurs, 5=Fri, 7=Sat
-	INTNM::int32_t __FASTCALL GetDayOfYear(INTNM::uint32_t flags) const;	// Julian date - so Jan 1 = 1
-	double __FASTCALL GetDayFractionOfYear(INTNM::uint32_t flags) const; // same as GetDayOfyear() but with the fractional portion of the year too
-	INTNM::uint64_t __FASTCALL GetSecondsIntoYear(INTNM::uint32_t flags) const;
+	INTNM::int32_t GetDayOfYear(INTNM::uint32_t flags) const;	// Julian date - so Jan 1 = 1
+	double GetDayFractionOfYear(INTNM::uint32_t flags) const; // same as GetDayOfyear() but with the fractional portion of the year too
+	INTNM::uint64_t GetSecondsIntoYear(INTNM::uint32_t flags) const;
 	WTimeSpan GetWTimeSpanIntoYear(INTNM::uint32_t flags) const;
-	bool __FASTCALL IsLeapYear(INTNM::uint32_t flags) const;
+	bool IsLeapYear(INTNM::uint32_t flags) const;
 
- 	void __FASTCALL PurgeToSecond(INTNM::uint32_t flags);
-	void __FASTCALL PurgeToMinute(INTNM::uint32_t flags);
-	void __FASTCALL PurgeToHour(INTNM::uint32_t flags);
-	void __FASTCALL PurgeToDay(INTNM::uint32_t flags);
-	void __FASTCALL PurgeToYear(INTNM::uint32_t flags);
+ 	void PurgeToSecond(INTNM::uint32_t flags);
+	void PurgeToMinute(INTNM::uint32_t flags);
+	void PurgeToHour(INTNM::uint32_t flags);
+	void PurgeToDay(INTNM::uint32_t flags);
+	void PurgeToYear(INTNM::uint32_t flags);
 
 // Operations
 	// time math
@@ -343,7 +343,7 @@ public:
 	friend TIMES_API CArchive& AFXAPI operator<<(CArchive& ar, const WTime &time);
 	friend TIMES_API CArchive& AFXAPI operator>>(CArchive& ar, WTime &rtime);
 
-	COleDateTime __FASTCALL AsCOleDateTime(INTNM::uint32_t flags) const;
+	COleDateTime AsCOleDateTime(INTNM::uint32_t flags) const;
 #endif
 
 	static INTNM::uint64_t updateSerializedULONGLONG(INTNM::uint64_t toUpdate);

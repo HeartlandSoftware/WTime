@@ -107,15 +107,6 @@ typedef char TCHAR;
 #define INTEL_COMPILER 1
 #endif
 
-#ifndef __FASTCALL
-#ifdef _MSC_VER
-#define __FASTCALL __stdcall
-#else
-#define __FASTCALL 
-#endif
-#endif
-
-
 #if defined(_MSC_VER) || defined(__CYGWIN__)
 #  define TIMES_STATIC 0
 #  ifdef TIMES_EXPORT
