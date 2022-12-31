@@ -104,7 +104,7 @@ if (MSVC)
 target_compile_definitions(WTime PRIVATE
     DATE_BUILD_DLL
     TIMES_EXPORT
-    ZD_EXPORT
+    "ZD_EXPORT=__declspec(dllexport)"
 )
 else ()
 target_compile_definitions(WTime PRIVATE
