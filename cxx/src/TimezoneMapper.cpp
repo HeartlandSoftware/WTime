@@ -82,8 +82,10 @@ const HSS_Time::TimeZoneInfo* TimezoneMapper::fromName(const char *name, INTNM::
 	date::sys_info infos, infod, tmp;
 
 	std::string tz_name;
+#ifdef _WIN32
 	if (tzdb::native_to_standard_timezone_name(name, tz_name))
 		name = tz_name.c_str();
+#endif
 	auto tz = date::locate_zone(name);
 	if (tz) {
 		infos = tz->get_info(date::sys_days{ 2022_y / jan / 2 });
