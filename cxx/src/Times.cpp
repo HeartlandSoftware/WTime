@@ -512,7 +512,7 @@ std::string WTimeSpan::ToString(INTNM::uint32_t flags) const {
 						str += ".";
 						std::string temp = "";
 						std::string::size_type zeroIdx = 5;
-						for (size_t i = zeroIdx; i >= 0; i--)
+						for (INTNM::int32_t i = zeroIdx; i >= 0; i--)
 						{
 							INTNM::int32_t digit = usecs % 10;
 							temp = ((char)(digit + '0')) + temp;
