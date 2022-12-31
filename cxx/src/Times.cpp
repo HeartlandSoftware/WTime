@@ -820,8 +820,7 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 {
 #ifdef _MSC_VER
 	DYNAMIC_TIME_ZONE_INFORMATION dtzi{};
-	if (GetDynamicTimeZoneInformation(&dtzi) != TIME_ZONE_ID_INVALID)
-	{
+	if (GetDynamicTimeZoneInformation(&dtzi) != TIME_ZONE_ID_INVALID) {
 		auto len = wcslen(dtzi.TimeZoneKeyName);
 		char buffer[128];
 		memset(buffer, 0, 128);
@@ -829,8 +828,7 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 		auto zone = WorldLocation::TimeZoneFromName(buffer, dtzi.DaylightBias);
 
 		bool isDST = false;
-		if (dtzi.DaylightBias != 0)
-		{
+		if (dtzi.DaylightBias != 0) {
 			time_t now;
 			time(&now);
 			tm tnow;
@@ -849,18 +847,15 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 				isDST = (tnow.tm_mon > dtzi.DaylightDate.wMonth) || (tnow.tm_mon < dtzi.StandardDate.wMonth);
 		}
 
-		if (zone)
-		{
+		if (zone) {
 			if (isDST)
 				zone = WorldLocation::GetDaylightSavingsTimeZone(zone);
 			location.SetTimeZoneOffset(zone);
 		}
-		else
-		{
+		else {
 			location.m_timezone(HSS_Time::WTimeSpan((dtzi.Bias + dtzi.StandardBias) * 60));
 			//it is currently DST
-			if (isDST)
-			{
+			if (isDST) {
 				location.m_amtDST(HSS_Time::WTimeSpan(dtzi.DaylightBias * 60));
 				location.m_startDST(HSS_Time::WTimeSpan(0));
 				location.m_endDST(HSS_Time::WTimeSpan(366, 0, 0, 0));
@@ -950,7 +945,7 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 	}
 
 	if (timezoneRegion.size()) {
-		auto zone = WorldLocation::TimeZoneFromName(timezoneRegion);
+		auto zone = WorldLocation::TimeZoneFromName(timezoneRegion, -2);
 		if (zone)
 			location.SetTimeZoneOffset(zone);
 	}
