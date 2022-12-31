@@ -119,6 +119,7 @@ target_include_directories(WTime PUBLIC
     ${GDAL_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/library
 )
 
 target_include_directories(WTimeTest PUBLIC
@@ -135,6 +136,7 @@ target_include_directories(WTimeTest PUBLIC
     ${GTEST_INCLUDE_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/library
 )
 
 set_target_properties(WTime PROPERTIES VERSION ${CMAKE_PROJECT_VERSION})
