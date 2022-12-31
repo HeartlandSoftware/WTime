@@ -106,6 +106,22 @@ target_compile_definitions(WTime PRIVATE
     TIMES_EXPORT
     "ZD_EXPORT=__declspec(dllexport)"
 )
+set_source_files_properties(
+    src/open/out_v1/timezone21.c
+    src/open/tzdb-2021e-src/africa.c
+    src/open/tzdb-2021e-src/antarctica.c
+    src/open/tzdb-2021e-src/asia.c
+    src/open/tzdb-2021e-src/australasia.c
+    src/open/tzdb-2021e-src/backward.c
+    src/open/tzdb-2021e-src/etcetera.c
+    src/open/tzdb-2021e-src/europe.c
+    src/open/tzdb-2021e-src/leapseconds.c
+    src/open/tzdb-2021e-src/northamerica.c
+    src/open/tzdb-2021e-src/southamerica.c
+    src/open/tzdb-2021e-src/version.c
+    src/open/tzdb-2021e-src/windowsZones.c
+    PROPERTIES LANGUAGE CXX
+)
 else ()
 target_compile_definitions(WTime PRIVATE
     DATE_BUILD_DLL
