@@ -100,7 +100,10 @@ add_library(WTime SHARED
     include/WTime.h
     include/wtime.pb.h
 )
-target_compile_options(WTime PRIVATE "-DTIMES_EXPORT -DDATE_BUILD_DLL")
+target_compile_definitions(WTime PRIVATE
+    DATE_BUILD_DLL
+    TIMES_EXPORT
+)
 
 add_executable(WTimeTest
     test/gtest.cpp
