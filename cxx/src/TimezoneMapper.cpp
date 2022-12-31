@@ -32,8 +32,7 @@
 #endif
 
 // from ZoneDetect
-#include "zonedetect.c"
-#include "open/out_v1/timezone21.c"
+#include "open/out_v1/timezone21.h"
 #include "open/tzdb-2021e-src/africa.h"
 #include "open/tzdb-2021e-src/antarctica.h"
 #include "open/tzdb-2021e-src/asia.h"

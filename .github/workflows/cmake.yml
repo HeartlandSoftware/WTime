@@ -339,8 +339,10 @@ jobs:
         Copy-Item ../open/ZoneDetect/library/zonedetect.c src
         New-Item src/open/tzdb-2021e-src -ItemType Directory -ea 0
         Copy-Item timezones/country/* src/open/tzdb-2021e-src
+        New-Item include/open/out_v1 -ItemType Directory -ea 0
+        Copy-Item timezones/out_v1/*.h include/open/out_v1
         New-Item src/open/out_v1 -ItemType Directory -ea 0
-        Copy-Item timezones/out_v1/* src/open/out_v1
+        Copy-Item timezones/out_v1/*.c src/open/out_v1
 
     - name: Unarchive downloaded Windows libraries
       if: matrix.os == 'windows-2019'

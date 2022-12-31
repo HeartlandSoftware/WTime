@@ -75,6 +75,8 @@ add_library(WTime SHARED
     src/worldlocation.cpp
     src/WTimeProto.cpp
     src/tz/tz.cpp
+    src/zonedetect.c
+    src/open/out_v1/timezone21.c
     src/open/tzdb-2021e-src/africa.c
     src/open/tzdb-2021e-src/antarctica.c
     src/open/tzdb-2021e-src/asia.c
