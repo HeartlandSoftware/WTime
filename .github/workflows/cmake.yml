@@ -322,15 +322,14 @@ jobs:
     - name: Unarchive downloaded include files
       shell: pwsh
       run: |
+        Expand-Archive proto/HSS_Math/proto_def.zip -DestinationPath . -Force
+        Expand-Archive proto/HSS_Geography/proto_def.zip -DestinationPath . -Force
         cd cxx
         Expand-Archive ErrorCalc/includes.zip -DestinationPath ErrorCalc
         Expand-Archive HSS_LowLevel/includes.zip -DestinationPath HSS_LowLevel
         Expand-Archive HSS_Multithread/includes.zip -DestinationPath HSS_Multithread
         Expand-Archive HSS_Math/includes.zip -DestinationPath HSS_Math
         Expand-Archive HSS_Geography/includes.zip -DestinationPath HSS_Geography
-        cd ..
-        Expand-Archive proto/HSS_Math/proto_def.zip -DestinationPath . -Force
-        Expand-Archive proto/HSS_Geography/proto_def.zip -DestinationPath . -Force
         mkdir include/open/date/include/date
         Copy-Item ../open/date/include/date/*.h include/open/date/include/date
         mkdir include/library
