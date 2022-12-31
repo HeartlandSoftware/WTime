@@ -148,6 +148,7 @@ target_include_directories(WTime PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
     ${CMAKE_CURRENT_SOURCE_DIR}/include/library
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/open/out_v1
     ${CMAKE_CURRENT_SOURCE_DIR}/include/open/date/include
 )
 
@@ -166,6 +167,7 @@ target_include_directories(WTimeTest PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     ${CMAKE_CURRENT_SOURCE_DIR}/include/internal
     ${CMAKE_CURRENT_SOURCE_DIR}/include/library
+    ${CMAKE_CURRENT_SOURCE_DIR}/include/open/out_v1
     ${CMAKE_CURRENT_SOURCE_DIR}/include/open/date/include
 )
 
