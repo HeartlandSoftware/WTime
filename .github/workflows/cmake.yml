@@ -316,7 +316,7 @@ jobs:
       shell: pwsh
       run: |
         cd cxx
-        Invoke-WebRequest "https://heartlandsoftwaresolutions.sharepoint.com/:u:/g/HSS_Releases/EWb0xB1hLDZMoUf1xKwI1z0Be3lKWLsHg7PH6HJGC3xmrg?e=RDUvPI&download=1" -OutFile timezones.zip
+        Invoke-WebRequest "https://heartlandsoftwaresolutions.sharepoint.com/:u:/g/HSS_Releases/Ef53CoBK3MFAlzYm4Lw7VOMBZ62KRxLsSGYPz4_XamvvWw?e=b8zdy0&download=1" -OutFile timezones.zip
         Expand-Archive timezones.zip -DestinationPath timezones
         
     - name: Unarchive downloaded include files
