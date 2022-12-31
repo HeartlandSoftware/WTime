@@ -330,16 +330,16 @@ jobs:
         Expand-Archive HSS_Multithread/includes.zip -DestinationPath HSS_Multithread
         Expand-Archive HSS_Math/includes.zip -DestinationPath HSS_Math
         Expand-Archive HSS_Geography/includes.zip -DestinationPath HSS_Geography
-        mkdir include/open/date/include/date
+        New-Item include/open/date/include/date -ItemType Directory -ea 0
         Copy-Item ../open/date/include/date/*.h include/open/date/include/date
-        mkdir include/library
+        New-Item include/library -ItemType Directory -ea 0
         Copy-Item ../open/ZoneDetect/library/zonedetect.h include/library
-        mkdir src/tz
+        New-Item src/tz -ItemType Directory -ea 0
         Copy-Item ../open/date/src/tz.cpp src/tz
         Copy-Item ../open/ZoneDetect/library/zonedetect.c src
-        mkdir src/open/tzdb-2021e-src
+        New-Item src/open/tzdb-2021e-src -ItemType Directory -ea 0
         Copy-Item timezones/country/* src/open/tzdb-2021e-src
-        mkdir src/open/out_v1
+        New-Item src/open/out_v1 -ItemType Directory -ea 0
         Copy-Item timezones/out_v1/* src/open/out_v1
 
     - name: Unarchive downloaded Windows libraries
