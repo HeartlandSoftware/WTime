@@ -876,17 +876,14 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 		bool found = true;
 		struct stat sb;
 		constexpr auto timezone = "/etc/localtime";
-		if (lstat(timezone, &sb) == 0 && S_ISLNK(sb.st_mode) && sb.st_size > 0)
-		{
+		if (lstat(timezone, &sb) == 0 && S_ISLNK(sb.st_mode) && sb.st_size > 0) {
 			static const bool useRealpath = checkValidFile(timezone);
 			char rp[PATH_MAX + 1] = {};
-			if (useRealpath)
-			{
+			if (useRealpath) {
 				if (realpath(timezone, rp) == nullptr)
 					found = false;//error
 			}
-			else
-			{
+			else {
 				if (readlink(timezone, rp, sizeof(rp) - 1) <= 0)
 					found = false;//error
 			}
@@ -899,15 +896,12 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 
 	//for OSs that store time info in a file like "/usr/share/zoneinfo/America/Winnipeg"
 	//using the symlink "/etc/TZ"
-	if (!complete)
-	{
+	if (!complete) {
 		struct stat sb;
 		constexpr auto timezone = "/etc/TZ";
-		if (lstat(timezone, &sb) == 0 && S_ISLNK(sb.st_mode) && sb.st_size > 0)
-		{
+		if (lstat(timezone, &sb) == 0 && S_ISLNK(sb.st_mode) && sb.st_size > 0) {
 			char rp[PATH_MAX + 1] = {};
-			if (readlink(timezone, rp, sizeof(rp) - 1) > 0)
-			{
+			if (readlink(timezone, rp, sizeof(rp) - 1) > 0) {
 				timezoneRegion = std::string(rp);
 
 				const std::size_t pos = timezoneRegion.find(cachedFindTimezonePath());
@@ -919,11 +913,9 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 	}
 
 	//for OSs where the timezone is the first line of "/etc/timezone"
-	if (!complete)
-	{
+	if (!complete) {
 		std::ifstream file("/etc/timezone");
-		if (file.is_open())
-		{
+		if (file.is_open()) {
 			std::getline(file, timezoneRegion);
 			if (!timezoneRegion.empty())
 				complete = true;
@@ -931,11 +923,9 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 	}
 
 	//for OSs where the timezone is the first line of "/var/db/zoneinfo"
-	if (!complete)
-	{
+	if (!complete) {
 		std::ifstream file("/var/db/zoneinfo");
-		if (file.is_open())
-		{
+		if (file.is_open()) {
 			std::getline(file, timezoneRegion);
 			if (!timezoneRegion.empty())
 				complete = true;
@@ -944,16 +934,13 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 
 	//for OSs where the timezone is in "/etc/sysconfig/clock"
 	//and stored as 'ZONE="America/Winnipeg"'
-	if (!complete)
-	{
+	if (!complete) {
 		std::ifstream file("/etc/sysconfig/clock");
 		std::string result;
-		while (file)
-		{
+		while (file) {
 			std::getline(file, result);
 			auto p = result.find("ZONE=\"");
-			if (p != std::string::npos)
-			{
+			if (p != std::string::npos) {
 				result.erase(p, p + 6);
 				result.erase(result.rfind('"'));
 				complete = true;
@@ -962,9 +949,8 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 		}
 	}
 
-	if (timezoneRegion.size())
-	{
-		auto zone = WorldLocation::TimeZoneFromRegionName(timezoneRegion);
+	if (timezoneRegion.size()) {
+		auto zone = WorldLocation::TimeZoneFromName(timezoneRegion);
 		if (zone)
 			location.SetTimeZoneOffset(zone);
 	}
