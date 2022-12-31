@@ -23,6 +23,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <cstring>
 #ifdef HAVE_CSTDLIB
 #include <cstdlib>
 #elif defined(HAVE_STDLIB_H)
