@@ -39,6 +39,16 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
+      with:
+        repository: HeartlandSoftware/date
+        path: open/date
+        token: ${{ secrets.HSS_PAT }}
+    - uses: actions/checkout@v3
+      with:
+        repository: BertoldVdb/ZoneDetect
+        path: open/ZoneDetect
+        token: ${{ secrets.HSS_PAT }}
     
     - name: Download LowLevel include files
       uses: robinraju/release-downloader@v1.7
@@ -302,6 +312,13 @@ jobs:
       shell: pwsh
       run: Compress-Archive -Path proto -DestinationPath proto_def.zip
 
+    - name: Download prebuilt timezone code
+      shell: pwsh
+      run: |
+        cd cxx
+        Invoke-WebRequest "https://heartlandsoftwaresolutions.sharepoint.com/:u:/g/HSS_Releases/EWb0xB1hLDZMoUf1xKwI1z0Be3lKWLsHg7PH6HJGC3xmrg?e=RDUvPI&download=1" -OutFile timezones.zip
+        Expand-Archive timezones.zip -DestinationPath timezones
+        
     - name: Unarchive downloaded include files
       shell: pwsh
       run: |
@@ -314,7 +331,18 @@ jobs:
         cd ..
         Expand-Archive proto/HSS_Math/proto_def.zip -DestinationPath . -Force
         Expand-Archive proto/HSS_Geography/proto_def.zip -DestinationPath . -Force
-        
+        mkdir include/open/date/include/date
+        Copy-Item ../open/date/include/date/*.h include/open/date/include/date
+        mkdir include/library
+        Copy-Item ../open/ZoneDetect/library/zonedetect.h include/library
+        mkdir src/tz
+        Copy-Item ../open/date/src/tz.cpp src/tz
+        Copy-Item ../open/ZoneDetect/library/zonedetect.c src
+        mkdir src/open/tzdb-2021e-src
+        Copy-Item timezones/country/* src/open/tzdb-2021e-src
+        mkdir src/open/out_v1
+        Copy-Item timezones/out_v1/* src/open/out_v1
+
     - name: Unarchive downloaded Windows libraries
       if: matrix.os == 'windows-2019'
       shell: pwsh
@@ -513,8 +541,8 @@ jobs:
         cd msvc
         cmake ../ -Dgtest_force_shared_crt=ON
         cmake --build . --config Release
-        echo "::set-output name=google_test_include_dir::googletest/googletest/include"
-        echo "::set-output name=google_test_library_dir::googletest/msvc/lib/Release"
+        echo "google_test_include_dir=googletest/googletest/include" >> $env:GITHUB_OUTPUT
+        echo "google_test_library_dir=googletest/msvc/lib/Release" >> $env:GITHUB_OUTPUT
         
     - name: Download GDAL
       if: matrix.os == 'windows-2019'

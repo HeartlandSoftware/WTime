@@ -16,6 +16,7 @@
  * limitations under the License.
  */
 
+#include "TimeZoneMapper.h"
 #include "times_internal.h"
 #include "worldlocation.h"
 #include "SunriseSunsetCalc.h"
@@ -26,6 +27,7 @@
 #include <vector>
 #include <boost/algorithm/string/predicate.hpp>
 #include "boost_bimap.h"
+
 
 using namespace HSS_Time;
 using namespace HSS_Time_Private;
@@ -88,140 +90,6 @@ const TimeZoneInfo WorldLocation::m_std_timezones[] = {
 };
 
 
-const TimeZoneInfo WorldLocation::m_std_extra_timezones[] = {
-	{ WTimeSpan(0, -5, 0, 0),	WTimeSpan(0),			"ACT",	"Acre Time",						MAKE_ID(STD_TIMEZONE_ID, 28) },
-	{ WTimeSpan(0, +8, 45, 0),	WTimeSpan(0),			"ACWST","Guam Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 29) },
-	{ WTimeSpan(0, +4, 30, 0),	WTimeSpan(0),			"AFT",	"Afghanistan Time",					MAKE_ID(STD_TIMEZONE_ID, 30) },
-	{ WTimeSpan(0, +6, 00, 0),	WTimeSpan(0),			"ALMT",	"Alma-Ata Time",					MAKE_ID(STD_TIMEZONE_ID, 31) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0),			"AMT",	"Amazon Time",						MAKE_ID(STD_TIMEZONE_ID, 32) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0),			"AMT",	"Armenia Time",						MAKE_ID(STD_TIMEZONE_ID, 33) },
-	{ WTimeSpan(0, +12, 00, 0),	WTimeSpan(0),			"ANAT",	"Anadyr Time",						MAKE_ID(STD_TIMEZONE_ID, 34) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0),			"AQTT",	"Aqtobe Time",						MAKE_ID(STD_TIMEZONE_ID, 35) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0),			"ART",	"Argentina Time",					MAKE_ID(STD_TIMEZONE_ID, 36) },
-	{ WTimeSpan(0, +3, 00, 0),	WTimeSpan(0),			"AST",	"Arabia Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 37) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0),			"AZT",	"Azerbaijan Time",					MAKE_ID(STD_TIMEZONE_ID, 38) },
-	{ WTimeSpan(0, -12, 00, 0),	WTimeSpan(0),			"AoE",	"Anywhere on Earth",				MAKE_ID(STD_TIMEZONE_ID, 39) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"BNT",	"Brunei Darussalam Time",			MAKE_ID(STD_TIMEZONE_ID, 40) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0),			"BOT",	"Bolivia Time",						MAKE_ID(STD_TIMEZONE_ID, 41) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0),			"BRT",	"Bras\u00EDlia Time",				MAKE_ID(STD_TIMEZONE_ID, 42) },
-	{ WTimeSpan(0, +6, 00, 0),	WTimeSpan(0),			"BST",	"Bangladesh Standard Time",			MAKE_ID(STD_TIMEZONE_ID, 43) },
-	{ WTimeSpan(0, +6, 00, 0),	WTimeSpan(0),			"BTT",	"Guam Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 44) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"CAST",	"Casey Time",						MAKE_ID(STD_TIMEZONE_ID, 45) },
-	{ WTimeSpan(0, +2, 00, 0),	WTimeSpan(0),			"CAT",	"Central Africa Time",				MAKE_ID(STD_TIMEZONE_ID, 46) },
-	{ WTimeSpan(0, +6, 30, 0),	WTimeSpan(0),			"CCT",	"Cocos Islands Time",				MAKE_ID(STD_TIMEZONE_ID, 47) },
-	{ WTimeSpan(0, +12, 45, 0),	WTimeSpan(0),			"CHAST","Chatham Island Standard Time",		MAKE_ID(STD_TIMEZONE_ID, 48) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"CHOT",	"Choibalsan Time",					MAKE_ID(STD_TIMEZONE_ID, 49) },
-	{ WTimeSpan(0, +10, 00, 0),	WTimeSpan(0),			"CHUT",	"Chuuk Time",						MAKE_ID(STD_TIMEZONE_ID, 50) },
-	{ WTimeSpan(0, -10, 00, 0),	WTimeSpan(0),			"CKT",	"Cook Island Time",					MAKE_ID(STD_TIMEZONE_ID, 51) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0),			"CLT",	"Chile Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 52) },
-	{ WTimeSpan(0, -5, 00, 0),	WTimeSpan(0),			"COT",	"Colombia Time",					MAKE_ID(STD_TIMEZONE_ID, 53) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"CST",	"China Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 54) },
-	{ WTimeSpan(0, -5, 00, 0),	WTimeSpan(0),			"CST",	"Cuba Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 55) },
-	{ WTimeSpan(0, -1, 00, 0),	WTimeSpan(0),			"CVT",	"Cape Verde Time",					MAKE_ID(STD_TIMEZONE_ID, 56) },
-	{ WTimeSpan(0, +10, 00, 0),	WTimeSpan(0),			"ChST",	"Chamorro Standard Time",			MAKE_ID(STD_TIMEZONE_ID, 57) },
-	{ WTimeSpan(0, +7, 00, 0),	WTimeSpan(0),			"DAVT",	"Davis Time",						MAKE_ID(STD_TIMEZONE_ID, 58) },
-	{ WTimeSpan(0, -6, 00, 0),	WTimeSpan(0),			"EAST",	"Easter Island Standard Time",		MAKE_ID(STD_TIMEZONE_ID, 59) },
-	{ WTimeSpan(0, +3, 00, 0),	WTimeSpan(0),			"EAT",	"Eastern Africa Time",				MAKE_ID(STD_TIMEZONE_ID, 60) },
-	{ WTimeSpan(0, -5, 00, 0),	WTimeSpan(0),			"ECT",	"Ecuador Time",						MAKE_ID(STD_TIMEZONE_ID, 61) },
-	{ WTimeSpan(0, -1, 00, 0),	WTimeSpan(0),			"EGT",	"East Greenland Time",				MAKE_ID(STD_TIMEZONE_ID, 62) },
-	{ WTimeSpan(0, +3, 00, 0),	WTimeSpan(0),			"FET",	"Further-Eastern European Time",	MAKE_ID(STD_TIMEZONE_ID, 63) },
-	{ WTimeSpan(0, +12, 00, 0),	WTimeSpan(0),			"FJT",	"Fiji Time",						MAKE_ID(STD_TIMEZONE_ID, 64) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0),			"FKT",	"Falkland Island Time",				MAKE_ID(STD_TIMEZONE_ID, 65) },
-	{ WTimeSpan(0, -2, 00, 0),	WTimeSpan(0),			"FNT",	"Fernando de Noronha Time",			MAKE_ID(STD_TIMEZONE_ID, 66) },
-	{ WTimeSpan(0, -6, 00, 0),	WTimeSpan(0),			"GALT",	"Galapagos Time",					MAKE_ID(STD_TIMEZONE_ID, 67) },
-	{ WTimeSpan(0, -9, 00, 0),	WTimeSpan(0),			"GAMT",	"Gambier Time",						MAKE_ID(STD_TIMEZONE_ID, 68) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0),			"GET",	"Georgia Standard Time",			MAKE_ID(STD_TIMEZONE_ID, 69) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0),			"GFT",	"French Guiana Time",				MAKE_ID(STD_TIMEZONE_ID, 70) },
-	{ WTimeSpan(0, +12, 00, 0),	WTimeSpan(0),			"GILT",	"Gilbert Island Time",				MAKE_ID(STD_TIMEZONE_ID, 71) },
-	{ WTimeSpan(0, +0, 00, 0),	WTimeSpan(0),			"GMT",	"Greenwich Mean Time",				MAKE_ID(STD_TIMEZONE_ID, 72) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0),			"GST",	"Gulf Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 73) },
-	{ WTimeSpan(0, -2, 00, 0),	WTimeSpan(0),			"GST",	"South Georgia Time",				MAKE_ID(STD_TIMEZONE_ID, 74) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0),			"GYT",	"Guyana Time",						MAKE_ID(STD_TIMEZONE_ID, 75) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"HKT",	"Hong Kong Time",					MAKE_ID(STD_TIMEZONE_ID, 76) },
-	{ WTimeSpan(0, +7, 00, 0),	WTimeSpan(0),			"HOVT",	"Hovd Time",						MAKE_ID(STD_TIMEZONE_ID, 77) },
-	{ WTimeSpan(0, +7, 00, 0),	WTimeSpan(0),			"ICT",	"Indochina Time",					MAKE_ID(STD_TIMEZONE_ID, 78) },
-	{ WTimeSpan(0, +6, 00, 0),	WTimeSpan(0),			"IOT",	"Indian Chagos Time",				MAKE_ID(STD_TIMEZONE_ID, 79) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"IRKT",	"Irkutsk Time",						MAKE_ID(STD_TIMEZONE_ID, 80) },
-	{ WTimeSpan(0, +3, 30, 0),	WTimeSpan(0),			"IRST",	"Iran Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 81) },
-	{ WTimeSpan(0, +1, 00, 0),	WTimeSpan(0),			"IST",	"Irish Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 82) },
-	{ WTimeSpan(0, +2, 00, 0),	WTimeSpan(0),			"IST",	"Israel Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 83) },
-	{ WTimeSpan(0, +6, 00, 0),	WTimeSpan(0),			"KGT",	"Kyrgyzstan Time",					MAKE_ID(STD_TIMEZONE_ID, 84) },
-	{ WTimeSpan(0, +11, 00, 0),	WTimeSpan(0),			"KOST",	"Kosrae Time",						MAKE_ID(STD_TIMEZONE_ID, 85) },
-	{ WTimeSpan(0, +7, 00, 0),	WTimeSpan(0),			"KRAT",	"Krasnoyarsk Time",					MAKE_ID(STD_TIMEZONE_ID, 86) },
-	{ WTimeSpan(0, +9, 00, 0),	WTimeSpan(0),			"KST",	"Korea Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 87) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0),			"KUYT",	"Kuybyshev Time",					MAKE_ID(STD_TIMEZONE_ID, 88) },
-	{ WTimeSpan(0, +10, 30, 0),	WTimeSpan(0),			"LHST",	"Lord Howe Standard Time",			MAKE_ID(STD_TIMEZONE_ID, 89) },
-	{ WTimeSpan(0, +14, 00, 0),	WTimeSpan(0),			"LINT",	"Line Islands Time",				MAKE_ID(STD_TIMEZONE_ID, 90) },
-	{ WTimeSpan(0, +10, 00, 0),	WTimeSpan(0),			"MAGT",	"Magadan Time",						MAKE_ID(STD_TIMEZONE_ID, 91) },
-	{ WTimeSpan(0, -9, -30, 0),	WTimeSpan(0),			"MART",	"Marquesas Time",					MAKE_ID(STD_TIMEZONE_ID, 92) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0),			"MAWT",	"Mawson Time",						MAKE_ID(STD_TIMEZONE_ID, 93) },
-	{ WTimeSpan(0, +12, 00, 0),	WTimeSpan(0),			"MHT",	"Marshall Islands Time",			MAKE_ID(STD_TIMEZONE_ID, 94) },
-	{ WTimeSpan(0, +6, 30, 0),	WTimeSpan(0),			"MMT",	"Myanmar Time",						MAKE_ID(STD_TIMEZONE_ID, 95) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0),			"MUT",	"Mauritius Time",					MAKE_ID(STD_TIMEZONE_ID, 96) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0),			"MVT",	"Maldives Time",					MAKE_ID(STD_TIMEZONE_ID, 97) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"MYT",	"Malaysia Time",					MAKE_ID(STD_TIMEZONE_ID, 98) },
-	{ WTimeSpan(0, +11, 00, 0),	WTimeSpan(0),			"NCT",	"New Caledonia Time",				MAKE_ID(STD_TIMEZONE_ID, 99) },
-	{ WTimeSpan(0, +6, 00, 0),	WTimeSpan(0),			"NOVT",	"Novosibirsk Time",					MAKE_ID(STD_TIMEZONE_ID, 100) },
-	{ WTimeSpan(0, +5, 45, 0),	WTimeSpan(0),			"NPT",	"Nepal Time",						MAKE_ID(STD_TIMEZONE_ID, 101) },
-	{ WTimeSpan(0, +12, 00, 0),	WTimeSpan(0),			"NRT",	"Nauru Time",						MAKE_ID(STD_TIMEZONE_ID, 102) },
-	{ WTimeSpan(0, -11, 00, 0),	WTimeSpan(0),			"NUT",	"Niue Time",						MAKE_ID(STD_TIMEZONE_ID, 103) },
-	{ WTimeSpan(0, +6, 00, 0),	WTimeSpan(0),			"OMST",	"Omsk Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 104) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0),			"ORAT",	"Oral Time",						MAKE_ID(STD_TIMEZONE_ID, 105) },
-	{ WTimeSpan(0, -5, 00, 0),	WTimeSpan(0),			"PET",	"Peru Time",						MAKE_ID(STD_TIMEZONE_ID, 106) },
-	{ WTimeSpan(0, +12, 00, 0),	WTimeSpan(0),			"PETT",	"Kamchatka Time",					MAKE_ID(STD_TIMEZONE_ID, 107) },
-	{ WTimeSpan(0, +10, 00, 0),	WTimeSpan(0),			"PGT",	"Papua New Guinea Time",			MAKE_ID(STD_TIMEZONE_ID, 108) },
-	{ WTimeSpan(0, +13, 00, 0),	WTimeSpan(0),			"PHOT",	"Phoenix Island Time",				MAKE_ID(STD_TIMEZONE_ID, 109) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"PHT",	"Philippine Time",					MAKE_ID(STD_TIMEZONE_ID, 110) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0),			"PKT",	"Pakistan Standard Time",			MAKE_ID(STD_TIMEZONE_ID, 111) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0),			"PMST",	"Pierre & Miquelon Standard Time",	MAKE_ID(STD_TIMEZONE_ID, 112) },
-	{ WTimeSpan(0, +11, 00, 0),	WTimeSpan(0),			"PONT",	"Pohnpei Standard Time",			MAKE_ID(STD_TIMEZONE_ID, 113) },
-	{ WTimeSpan(0, -8, 00, 0),	WTimeSpan(0),			"PST",	"Pitcairn Standard Time",			MAKE_ID(STD_TIMEZONE_ID, 114) },
-	{ WTimeSpan(0, +9, 00, 0),	WTimeSpan(0),			"PWT",	"Palau Time",						MAKE_ID(STD_TIMEZONE_ID, 115) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0),			"PYT",	"Paraguay Time",					MAKE_ID(STD_TIMEZONE_ID, 116) },
-	{ WTimeSpan(0, +6, 00, 0),	WTimeSpan(0),			"QYZT",	"Qyzylorda Time",					MAKE_ID(STD_TIMEZONE_ID, 117) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0),			"RET",	"Reunion Time",						MAKE_ID(STD_TIMEZONE_ID, 118) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0),			"ROTT",	"Rothera Time",						MAKE_ID(STD_TIMEZONE_ID, 119) },
-	{ WTimeSpan(0, +10, 00, 0),	WTimeSpan(0),			"SAKT",	"Sakhalin Time",					MAKE_ID(STD_TIMEZONE_ID, 120) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0),			"SAMT",	"Samara Time",						MAKE_ID(STD_TIMEZONE_ID, 121) },
-	{ WTimeSpan(0, +2, 00, 0),	WTimeSpan(0),			"SAST",	"South Africa Standard Time",		MAKE_ID(STD_TIMEZONE_ID, 122) },
-	{ WTimeSpan(0, +11, 00, 0),	WTimeSpan(0),			"SBT",	"Solomon Islands Time",				MAKE_ID(STD_TIMEZONE_ID, 123) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0),			"SCT",	"Seychelles Time",					MAKE_ID(STD_TIMEZONE_ID, 124) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"SGT",	"Singapore Time",					MAKE_ID(STD_TIMEZONE_ID, 125) },
-	{ WTimeSpan(0, +11, 00, 0),	WTimeSpan(0),			"SRET",	"Srednekolymsk Time",				MAKE_ID(STD_TIMEZONE_ID, 126) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0),			"SRT",	"Suriname Time",					MAKE_ID(STD_TIMEZONE_ID, 127) },
-	{ WTimeSpan(0, -11, 00, 0),	WTimeSpan(0),			"SST",	"Samoa Standard Time",				MAKE_ID(STD_TIMEZONE_ID, 128) },
-	{ WTimeSpan(0, +3, 00, 0),	WTimeSpan(0),			"SYOT",	"Syowa Time",						MAKE_ID(STD_TIMEZONE_ID, 129) },
-	{ WTimeSpan(0, -10, 00, 0),	WTimeSpan(0),			"TAHT",	"Tahiti Time",						MAKE_ID(STD_TIMEZONE_ID, 130) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0),			"TFT",	"French Southern and Antarctic Time",MAKE_ID(STD_TIMEZONE_ID, 131) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0),			"TJT",	"Tajikistan Time",					MAKE_ID(STD_TIMEZONE_ID, 132) },
-	{ WTimeSpan(0, +13, 00, 0),	WTimeSpan(0),			"TKT",	"Tokelau Time",						MAKE_ID(STD_TIMEZONE_ID, 133) },
-	{ WTimeSpan(0, +9, 00, 0),	WTimeSpan(0),			"TLT",	"East Timor Time",					MAKE_ID(STD_TIMEZONE_ID, 134) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0),			"TMT",	"Turkmenistan Time",				MAKE_ID(STD_TIMEZONE_ID, 135) },
-	{ WTimeSpan(0, +13, 00, 0),	WTimeSpan(0),			"TOT",	"Tonga Time",						MAKE_ID(STD_TIMEZONE_ID, 136) },
-	{ WTimeSpan(0, +12, 00, 0),	WTimeSpan(0),			"TVT",	"Tuvalu Time",						MAKE_ID(STD_TIMEZONE_ID, 137) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"ULAT",	"Ulaanbaatar Time",					MAKE_ID(STD_TIMEZONE_ID, 138) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0),			"UYT",	"Uruguay Time",						MAKE_ID(STD_TIMEZONE_ID, 139) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0),			"UZT",	"Uzbekistan Time",					MAKE_ID(STD_TIMEZONE_ID, 140) },
-	{ WTimeSpan(0, -4, -30, 0),	WTimeSpan(0),			"VET",	"Venezuelan Standard Time",			MAKE_ID(STD_TIMEZONE_ID, 141) },
-	{ WTimeSpan(0, +10, 00, 0),	WTimeSpan(0),			"VLAT",	"Vladivostok Time",					MAKE_ID(STD_TIMEZONE_ID, 142) },
-	{ WTimeSpan(0, +6, 00, 0),	WTimeSpan(0),			"VOST",	"Vostok Time",						MAKE_ID(STD_TIMEZONE_ID, 143) },
-	{ WTimeSpan(0, +11, 00, 0),	WTimeSpan(0),			"VUT",	"Vanuatu Time",						MAKE_ID(STD_TIMEZONE_ID, 144) },
-	{ WTimeSpan(0, +12, 00, 0),	WTimeSpan(0),			"WAKT",	"Wake Time",						MAKE_ID(STD_TIMEZONE_ID, 145) },
-	{ WTimeSpan(0, +0, 00, 0),	WTimeSpan(0),			"WET",	"Western European Time",			MAKE_ID(STD_TIMEZONE_ID, 146) },
-	{ WTimeSpan(0, +12, 00, 0),	WTimeSpan(0),			"WFT",	"Wallis and Futuna Time",			MAKE_ID(STD_TIMEZONE_ID, 147) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0),			"WGT",	"West Greenland Time",				MAKE_ID(STD_TIMEZONE_ID, 148) },
-	{ WTimeSpan(0, +7, 00, 0),	WTimeSpan(0),			"WIB",	"Western Indonesian Time",			MAKE_ID(STD_TIMEZONE_ID, 149) },
-	{ WTimeSpan(0, +9, 00, 0),	WTimeSpan(0),			"WIT",	"Eastern Indonesian Time",			MAKE_ID(STD_TIMEZONE_ID, 150) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0),			"WITA",	"Central Indonesian Time",			MAKE_ID(STD_TIMEZONE_ID, 151) },
-	{ WTimeSpan(0, +13, 00, 0),	WTimeSpan(0),			"WST",	"West Samoa Time",					MAKE_ID(STD_TIMEZONE_ID, 152) },
-	{ WTimeSpan(0, +0, 00, 0),	WTimeSpan(0),			"WT",	"Western Sahara Standard Time",		MAKE_ID(STD_TIMEZONE_ID, 153) },
-	{ WTimeSpan(0, +9, 00, 0),	WTimeSpan(0),			"YAKT",	"Yakutsk Time",						MAKE_ID(STD_TIMEZONE_ID, 154) },
-	{ WTimeSpan(0, +10, 00, 0),	WTimeSpan(0),			"YAPT",	"Yap Time",							MAKE_ID(STD_TIMEZONE_ID, 155) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0),			"YEKT",	"Yekaterinburg Time",				MAKE_ID(STD_TIMEZONE_ID, 156) },
-	{ WTimeSpan(0, 0, 0, 0),	WTimeSpan(0),			NULL,	NULL,								0 }
-};
-
-
 const ::TimeZoneInfo WorldLocation::m_dst_timezones[] = {
 	{ WTimeSpan(0, 9, 30, 0),	WTimeSpan(0, 1, 0, 0),	"ACDT",	"Australian Central Daylight Time", MAKE_ID(DST_TIMEZONE_ID, 0) },
 	{ WTimeSpan(0, -4, 0, 0),	WTimeSpan(0, 1, 0, 0),	"ADT",	"Atlantic Daylight Time",			MAKE_ID(DST_TIMEZONE_ID, 1) },
@@ -241,43 +109,6 @@ const ::TimeZoneInfo WorldLocation::m_dst_timezones[] = {
 	{ WTimeSpan(0, 12, 0, 0),	WTimeSpan(0, 1, 0, 0),	"NZDT",	"New Zealand Daylight Time",		MAKE_ID(DST_TIMEZONE_ID, 15) },	// 15
 	{ WTimeSpan(0, -8, 0, 0),	WTimeSpan(0, 1, 0, 0),	"PDT",	"Pacific Daylight Time",			MAKE_ID(DST_TIMEZONE_ID, 16) },
 	{ WTimeSpan(0, 0, 0, 0),	WTimeSpan(0, 1, 0, 0),	"WEDT",	"Western European Daylight Time",	MAKE_ID(DST_TIMEZONE_ID, 17) },
-	{ WTimeSpan(0, 0, 0, 0),	WTimeSpan(0),			NULL,	NULL,								0 }
-};
-
-
-const ::TimeZoneInfo WorldLocation::m_dst_extra_timezones[] = {
-	{ WTimeSpan(0, +3, 00, 0),	WTimeSpan(0, 1, 0, 0),	"ADT",	"Arabia Daylight Time",				MAKE_ID(DST_TIMEZONE_ID, 18) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0, 1, 0, 0),	"AMST",	"Amazon Summer Time",				MAKE_ID(DST_TIMEZONE_ID, 19) },
-	{ WTimeSpan(0, -1, 00, 0),	WTimeSpan(0, 1, 0, 0),	"AZOST","Azores Summer Time",				MAKE_ID(DST_TIMEZONE_ID, 20) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0, 1, 0, 0),	"AZST",	"Azerbaijan Summer Time",			MAKE_ID(DST_TIMEZONE_ID, 21) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0, 1, 0, 0),	"BRST",	"Bras\u00EDlia Summer Time ",		MAKE_ID(DST_TIMEZONE_ID, 22) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0, 1, 0, 0),	"CDT",	"Cuba Daylight Time",				MAKE_ID(DST_TIMEZONE_ID, 23) },
-	{ WTimeSpan(0, +12, 45, 0),	WTimeSpan(0, 1, 0, 0),	"CHADT","Chatham Island Daylight Time",		MAKE_ID(DST_TIMEZONE_ID, 24) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0, 1, 0, 0),	"CLST",	"Chile Summer Time",				MAKE_ID(DST_TIMEZONE_ID, 25) },
-	{ WTimeSpan(0, -6, 00, 0),	WTimeSpan(0, 1, 0, 0),	"EASST","Easter Island Summer Time",		MAKE_ID(DST_TIMEZONE_ID, 26) },
-	{ WTimeSpan(0, -1, 00, 0),	WTimeSpan(0, 1, 0, 0),	"EGST",	"Eastern Greenland Summer Time",	MAKE_ID(DST_TIMEZONE_ID, 27) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0, 1, 0, 0),	"FKST",	"Falkland Islands Summer Time",		MAKE_ID(DST_TIMEZONE_ID, 28) },
-	{ WTimeSpan(0, +2, 00, 0),	WTimeSpan(0, 1, 0, 0),	"IDT",	"Israel Daylight Time",				MAKE_ID(DST_TIMEZONE_ID, 29) },
-	{ WTimeSpan(0, +3, 30, 0),	WTimeSpan(0, 1, 0, 0),	"IRDT",	"Iran Daylight Time",				MAKE_ID(DST_TIMEZONE_ID, 30) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0, 1, 0, 0),	"IRKST","Irkutsk Summer Time",				MAKE_ID(DST_TIMEZONE_ID, 31) },
-	{ WTimeSpan(0, +7, 00, 0),	WTimeSpan(0, 1, 0, 0),	"KRAST","Krasnoyarsk Summer Time",			MAKE_ID(DST_TIMEZONE_ID, 32) },
-	{ WTimeSpan(0, +10, 00, 0),	WTimeSpan(0, 1, 0, 0),	"LHDT",	"Lord Howe Daylight Time",			MAKE_ID(DST_TIMEZONE_ID, 33) },
-	{ WTimeSpan(0, +11, 00, 0),	WTimeSpan(0, 1, 0, 0),	"MAGST","Magadan Summer Time",				MAKE_ID(DST_TIMEZONE_ID, 34) },
-	{ WTimeSpan(0, +6, 00, 0),	WTimeSpan(0, 1, 0, 0),	"NOVST","Novosibirsk Summer Time",			MAKE_ID(DST_TIMEZONE_ID, 35) },
-	{ WTimeSpan(0, +8, 00, 0),	WTimeSpan(0, 1, 0, 0),	"OMSST","Omsk Summer Time",					MAKE_ID(DST_TIMEZONE_ID, 36) },
-	{ WTimeSpan(0, +13, 00, 0),	WTimeSpan(0, 1, 0, 0),	"PETST","Kamchatka Summer Time",			MAKE_ID(DST_TIMEZONE_ID, 37) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0, 1, 0, 0),	"PMDT",	"Pierre & Miquelon Daylight Time",	MAKE_ID(DST_TIMEZONE_ID, 38) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0, 1, 0, 0),	"UYST",	"Uruguay Summer Time",				MAKE_ID(DST_TIMEZONE_ID, 39) },
-	{ WTimeSpan(0, +10, 00, 0),	WTimeSpan(0, 1, 0, 0),	"VLAST","Vladivostok Summer Time",			MAKE_ID(DST_TIMEZONE_ID, 40) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0, 1, 0, 0),	"WARST","Western Argentine Summer Time",	MAKE_ID(DST_TIMEZONE_ID, 41) },
-	{ WTimeSpan(0, +1, 00, 0),	WTimeSpan(0, 1, 0, 0),	"WAST",	"West Africa Summer Time",			MAKE_ID(DST_TIMEZONE_ID, 42) },
-	{ WTimeSpan(0, -3, 00, 0),	WTimeSpan(0, 1, 0, 0),	"WGST",	"Western Greenland Summer Time",	MAKE_ID(DST_TIMEZONE_ID, 43) },
-	{ WTimeSpan(0, 0, 00, 0),	WTimeSpan(0, 1, 0, 0),	"WST",	"Western Sahara Summer Time",		MAKE_ID(DST_TIMEZONE_ID, 44) },
-	{ WTimeSpan(0, +9, 00, 0),	WTimeSpan(0, 1, 0, 0),	"YAKST","Yakutsk Summer Time",				MAKE_ID(DST_TIMEZONE_ID, 45) },
-	{ WTimeSpan(0, +5, 00, 0),	WTimeSpan(0, 1, 0, 0),	"YEKST","Yekaterinburg Summer Time",		MAKE_ID(DST_TIMEZONE_ID, 46) },
-	{ WTimeSpan(0, +12, 00, 0),	WTimeSpan(0, 1, 0, 0),	"FJST",	"Fiji Summer Time",					MAKE_ID(DST_TIMEZONE_ID, 47) },
-	{ WTimeSpan(0, -4, 00, 0),	WTimeSpan(0, 1, 0, 0),	"PYST",	"Paraguay Summer Time",				MAKE_ID(DST_TIMEZONE_ID, 48) },
-	{ WTimeSpan(0, +4, 00, 0),	WTimeSpan(0, 1, 0, 0),	"AMST",	"Armenia Summer Time",				MAKE_ID(DST_TIMEZONE_ID, 49) },
 	{ WTimeSpan(0, 0, 0, 0),	WTimeSpan(0),			NULL,	NULL,								0 }
 };
 
@@ -312,216 +143,6 @@ const ::TimeZoneInfo WorldLocation::m_mil_timezones[] = {
 };
 
 
-struct WindowsTimezoneData
-{
-	const std::string WindowsName;
-	const std::uint32_t HssId;
-};
-
-struct RegionZone
-{
-	const std::string Name;
-	const std::uint32_t HssId;
-};
-
-//https://raw.githubusercontent.com/unicode-org/cldr/master/common/supplemental/windowsZones.xml
-const std::vector<WindowsTimezoneData> WindowsMap =
-{
-	{ "Dateline Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 12) },
-	{ "UTC-11", MAKE_ID(MIL_TIMEZONE_ID, 23) },
-	{ "Aleutian Standard Time", MAKE_ID(STD_TIMEZONE_ID, 10) },
-	{ "Hawaiian Standard Time", MAKE_ID(STD_TIMEZONE_ID, 10) },
-	{ "Marquesas Standard Time", MAKE_ID(STD_TIMEZONE_ID, 92) },
-	{ "Alaskan Standard Time", MAKE_ID(STD_TIMEZONE_ID, 2) },
-	{ "UTC-09", MAKE_ID(MIL_TIMEZONE_ID, 21) },
-	{ "Pacific Standard Time (Mexico)", MAKE_ID(STD_TIMEZONE_ID, 92) },
-	{ "UTC-08", MAKE_ID(MIL_TIMEZONE_ID, 20) },
-	{ "Pacific Standard Time", MAKE_ID(STD_TIMEZONE_ID, 16) },
-	{ "US Mountain Standard Time", MAKE_ID(STD_TIMEZONE_ID, 12) },
-	{ "Mountain Standard Time (Mexico)", MAKE_ID(STD_TIMEZONE_ID, 12) },
-	{ "Mountain Standard Time", MAKE_ID(STD_TIMEZONE_ID, 12) },
-	{ "Central America Standard Time", MAKE_ID(STD_TIMEZONE_ID, 6) },
-	{ "Central Standard Time (Mexico)", MAKE_ID(STD_TIMEZONE_ID, 6) },
-	{ "Central Standard Time", MAKE_ID(STD_TIMEZONE_ID, 6) },
-	{ "Canada Central Standard Time", MAKE_ID(STD_TIMEZONE_ID, 6) },
-	{ "Easter Island Standard Time", MAKE_ID(STD_TIMEZONE_ID, 59) },
-	{ "SA Pacific Standard Time", MAKE_ID(STD_TIMEZONE_ID, 53) },
-	{ "US Eastern Standard Time", MAKE_ID(STD_TIMEZONE_ID, 9) },
-	{ "Eastern Standard Time (Mexico)", MAKE_ID(STD_TIMEZONE_ID, 9) },
-	{ "Eastern Standard Time", MAKE_ID(STD_TIMEZONE_ID, 9) },
-	{ "Haiti Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 17) },
-	{ "Cuba Standard Time", MAKE_ID(STD_TIMEZONE_ID, 55) },
-	{ "Turks And Caicos Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 17) },
-	{ "Paraguay Standard Time", MAKE_ID(STD_TIMEZONE_ID, 116) },
-	{ "Atlantic Standard Time", MAKE_ID(STD_TIMEZONE_ID, 3) },
-	{ "Venezuela Standard Time", MAKE_ID(STD_TIMEZONE_ID, 141) },
-	{ "Central Brazilian Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 16) },
-	{ "SA Western Standard Time", MAKE_ID(STD_TIMEZONE_ID, 75) },
-	{ "Pacific SA Standard Time", MAKE_ID(STD_TIMEZONE_ID, 52) },
-	{ "Newfoundland Standard Time", MAKE_ID(STD_TIMEZONE_ID, 14) },
-	{ "Tocantins Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 15) },
-	{ "E. South America Standard Time", MAKE_ID(STD_TIMEZONE_ID, 42) },
-	{ "SA Eastern Standard Time", MAKE_ID(STD_TIMEZONE_ID, 119) },
-	{ "Argentina Standard Time", MAKE_ID(STD_TIMEZONE_ID, 36) },
-	{ "Greenland Standard Time", MAKE_ID(STD_TIMEZONE_ID, 148) },
-	{ "Montevideo Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 15) },
-	{ "Magallanes Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 15) },
-	{ "Saint Pierre Standard Time", MAKE_ID(STD_TIMEZONE_ID, 112) },
-	{ "Bahia Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 15) },
-	{ "UTC-02", MAKE_ID(MIL_TIMEZONE_ID, 14) },
-	{ "Azores Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 14) },
-	{ "Cape Verde Standard Time", MAKE_ID(STD_TIMEZONE_ID, 56) },
-	{ "UTC", MAKE_ID(STD_TIMEZONE_ID, 17) },
-	{ "GMT Standard Time", MAKE_ID(STD_TIMEZONE_ID, 72) },
-	{ "Greenwich Standard Time", MAKE_ID(STD_TIMEZONE_ID, 72) },
-	{ "Sao Tome Standard Time", MAKE_ID(STD_TIMEZONE_ID, 17) },
-	{ "Morocco Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 1) },
-	{ "W. Europe Standard Time", MAKE_ID(STD_TIMEZONE_ID, 5) },
-	{ "Central Europe Standard Time", MAKE_ID(STD_TIMEZONE_ID, 5) },
-	{ "Central European Standard Time", MAKE_ID(STD_TIMEZONE_ID, 5) },
-	{ "Romance Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 1) },
-	{ "W. Central Africa Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 1) },
-	{ "Jordan Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 2) },
-	{ "GTB Standard Time", MAKE_ID(STD_TIMEZONE_ID, 8) },
-	{ "E. Europe Standard Time", MAKE_ID(STD_TIMEZONE_ID, 8) },
-	{ "Middle East Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 2) },
-	{ "Egypt Standard Time", MAKE_ID(STD_TIMEZONE_ID, 46) },
-	{ "Syria Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 2) },
-	{ "West Bank Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 2) },
-	{ "South Africa Standard Time", MAKE_ID(STD_TIMEZONE_ID, 122) },
-	{ "FLE Standard Time", MAKE_ID(STD_TIMEZONE_ID, 8) },
-	{ "Israel Standard Time", MAKE_ID(STD_TIMEZONE_ID, 83) },
-	{ "Kaliningrad Standard Time", MAKE_ID(STD_TIMEZONE_ID, 18) },
-	{ "Sudan Standard Time", MAKE_ID(STD_TIMEZONE_ID, 46) },
-	{ "Libya Standard Time", MAKE_ID(STD_TIMEZONE_ID, 46) },
-	{ "Namibia Standard Time", MAKE_ID(STD_TIMEZONE_ID, 46) },
-	{ "Arabic Standard Time", MAKE_ID(STD_TIMEZONE_ID, 37) },
-	{ "Arab Standard Time", MAKE_ID(STD_TIMEZONE_ID, 37) },
-	{ "Turkey Standard Time", MAKE_ID(STD_TIMEZONE_ID, 63) },
-	{ "Belarus Standard Time", MAKE_ID(STD_TIMEZONE_ID, 63) },
-	{ "Russian Standard Time", MAKE_ID(STD_TIMEZONE_ID, 11) },
-	{ "E. Africa Standard Time", MAKE_ID(STD_TIMEZONE_ID, 60) },
-	{ "Iran Standard Time", MAKE_ID(STD_TIMEZONE_ID, 81) },
-	{ "Arabian Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 4) },
-	{ "Astrakhan Standard Time", MAKE_ID(STD_TIMEZONE_ID, 20) },
-	{ "Russia Time Zone 3", MAKE_ID(STD_TIMEZONE_ID, 20) },
-	{ "Azerbaijan Standard Time", MAKE_ID(STD_TIMEZONE_ID, 38) },
-	{ "Mauritius Standard Time", MAKE_ID(STD_TIMEZONE_ID, 96) },
-	{ "Saratov Standard Time", MAKE_ID(STD_TIMEZONE_ID, 20) },
-	{ "Georgian Standard Time", MAKE_ID(STD_TIMEZONE_ID, 69) },
-	{ "Volgograd Standard Time", MAKE_ID(STD_TIMEZONE_ID, 20) },
-	{ "Caucasus Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 4) },
-	{ "Afghanistan Standard Time", MAKE_ID(STD_TIMEZONE_ID, 30) },
-	{ "West Asia Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 5) },
-	{ "Ekaterinburg Standard Time", MAKE_ID(STD_TIMEZONE_ID, 156) },
-	{ "Pakistan Standard Time", MAKE_ID(STD_TIMEZONE_ID, 111) },
-	{ "Qyzylorda Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 5) },
-	{ "India Standard Time", MAKE_ID(STD_TIMEZONE_ID, 24) },
-	{ "Sri Lanka Standard Time", MAKE_ID(STD_TIMEZONE_ID, 24) },
-	{ "Nepal Standard Time", MAKE_ID(STD_TIMEZONE_ID, 101) },
-	{ "Central Asia Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 6) },
-	{ "Bangladesh Standard Time", MAKE_ID(STD_TIMEZONE_ID, 43) },
-	{ "Omsk Standard Time", MAKE_ID(STD_TIMEZONE_ID, 104) },
-	{ "Myanmar Standard Time", MAKE_ID(STD_TIMEZONE_ID, 95) },
-	{ "SE Asia Standard Time", MAKE_ID(STD_TIMEZONE_ID, 7) },
-	{ "Altai Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 7) },
-	{ "W. Mongolia Standard Time", MAKE_ID(STD_TIMEZONE_ID, 77) },
-	{ "North Asia Standard Time", MAKE_ID(STD_TIMEZONE_ID, 86) },
-	{ "N. Central Asia Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 7) },
-	{ "Tomsk Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 7) },
-	{ "China Standard Time", MAKE_ID(STD_TIMEZONE_ID, 54) },
-	{ "North Asia East Standard Time", MAKE_ID(STD_TIMEZONE_ID, 80) },
-	{ "Singapore Standard Time", MAKE_ID(STD_TIMEZONE_ID, 125) },
-	{ "W. Australia Standard Time", MAKE_ID(STD_TIMEZONE_ID, 4) },
-	{ "Taipei Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 8) },
-	{ "Ulaanbaatar Standard Time", MAKE_ID(STD_TIMEZONE_ID, 138) },
-	{ "Aus Central W. Standard Time", MAKE_ID(STD_TIMEZONE_ID, 29) },
-	{ "Transbaikal Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 9) },
-	{ "Tokyo Standard Time", MAKE_ID(STD_TIMEZONE_ID, 26) },
-	{ "North Korea Standard Time", MAKE_ID(STD_TIMEZONE_ID, 87) },
-	{ "Korea Standard Time", MAKE_ID(STD_TIMEZONE_ID, 87) },
-	{ "Yakutsk Standard Time", MAKE_ID(STD_TIMEZONE_ID, 154) },
-	{ "Cen. Australia Standard Time", MAKE_ID(STD_TIMEZONE_ID, 0) },
-	{ "AUS Central Standard Time", MAKE_ID(STD_TIMEZONE_ID, 0) },
-	{ "E. Australia Standard Time", MAKE_ID(STD_TIMEZONE_ID, 1) },
-	{ "AUS Eastern Standard Time", MAKE_ID(STD_TIMEZONE_ID, 1) },
-	{ "West Pacific Standard Time", MAKE_ID(STD_TIMEZONE_ID, 27) },
-	{ "Tasmania Standard Time", MAKE_ID(STD_TIMEZONE_ID, 1) },
-	{ "Vladivostok Standard Time", MAKE_ID(STD_TIMEZONE_ID, 142) },
-	{ "Lord Howe Standard Time", MAKE_ID(STD_TIMEZONE_ID, 89) },
-	{ "Bougainville Standard Time", MAKE_ID(STD_TIMEZONE_ID, 123) },
-	{ "Russia Time Zone 10", MAKE_ID(STD_TIMEZONE_ID, 126) },
-	{ "Magadan Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 11) },
-	{ "Norfolk Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 11) },
-	{ "Sakhalin Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 11) },
-	{ "Central Pacific Standard Time", MAKE_ID(MIL_TIMEZONE_ID, 11) },
-	{ "Russia Time Zone 11", MAKE_ID(MIL_TIMEZONE_ID, 11) },
-	{ "New Zealand Standard Time", MAKE_ID(STD_TIMEZONE_ID, 15) },
-	{ "UTC+12", MAKE_ID(MIL_TIMEZONE_ID, 12) },
-	{ "Fiji Standard Time", MAKE_ID(STD_TIMEZONE_ID, 64) },
-	{ "Chatham Islands Standard Time", MAKE_ID(STD_TIMEZONE_ID, 48) },
-	{ "UTC+13", MAKE_ID(STD_TIMEZONE_ID, 109) },
-	{ "Tonga Standard Time", MAKE_ID(STD_TIMEZONE_ID, 136) },
-	{ "Samoa Standard Time", MAKE_ID(STD_TIMEZONE_ID, 152) },
-	{ "Line Islands Standard Time", MAKE_ID(STD_TIMEZONE_ID, 90) }
-};
-
-
-//https://data.iana.org/time-zones/releases/
-const std::vector<RegionZone> RegionMap =
-{
-#include "RegionMap.inl"
-};
-
-
-
-boost::bimap<std::uint32_t, std::uint32_t> daylightStandardMap =
-makeBimap<std::uint32_t, std::uint32_t>({
-	{ MAKE_ID(STD_TIMEZONE_ID, 0), MAKE_ID(DST_TIMEZONE_ID, 0) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 3), MAKE_ID(DST_TIMEZONE_ID, 1) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 1), MAKE_ID(DST_TIMEZONE_ID, 2) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 2), MAKE_ID(DST_TIMEZONE_ID, 3) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 4), MAKE_ID(DST_TIMEZONE_ID, 4) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 6), MAKE_ID(DST_TIMEZONE_ID, 6) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 5), MAKE_ID(DST_TIMEZONE_ID, 7) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 9), MAKE_ID(DST_TIMEZONE_ID, 8) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 8), MAKE_ID(DST_TIMEZONE_ID, 9) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 10), MAKE_ID(DST_TIMEZONE_ID, 10) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 12), MAKE_ID(DST_TIMEZONE_ID, 12) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 11), MAKE_ID(DST_TIMEZONE_ID, 13) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 14), MAKE_ID(DST_TIMEZONE_ID, 14) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 15), MAKE_ID(DST_TIMEZONE_ID, 15) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 16), MAKE_ID(DST_TIMEZONE_ID, 16) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 146), MAKE_ID(DST_TIMEZONE_ID, 17) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 37), MAKE_ID(DST_TIMEZONE_ID, 18) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 32), MAKE_ID(DST_TIMEZONE_ID, 19) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 22), MAKE_ID(DST_TIMEZONE_ID, 20) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 38), MAKE_ID(DST_TIMEZONE_ID, 21) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 42), MAKE_ID(DST_TIMEZONE_ID, 22) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 48), MAKE_ID(DST_TIMEZONE_ID, 24) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 52), MAKE_ID(DST_TIMEZONE_ID, 25) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 59), MAKE_ID(DST_TIMEZONE_ID, 26) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 62), MAKE_ID(DST_TIMEZONE_ID, 27) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 65), MAKE_ID(DST_TIMEZONE_ID, 28) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 83), MAKE_ID(DST_TIMEZONE_ID, 29) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 81), MAKE_ID(DST_TIMEZONE_ID, 30) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 80), MAKE_ID(DST_TIMEZONE_ID, 31) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 86), MAKE_ID(DST_TIMEZONE_ID, 32) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 89), MAKE_ID(DST_TIMEZONE_ID, 33) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 100), MAKE_ID(DST_TIMEZONE_ID, 35) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 112), MAKE_ID(DST_TIMEZONE_ID, 38) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 139), MAKE_ID(DST_TIMEZONE_ID, 39) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 142), MAKE_ID(DST_TIMEZONE_ID, 40) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 148), MAKE_ID(DST_TIMEZONE_ID, 43) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 153), MAKE_ID(DST_TIMEZONE_ID, 44) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 154), MAKE_ID(DST_TIMEZONE_ID, 45) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 156), MAKE_ID(DST_TIMEZONE_ID, 46) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 64), MAKE_ID(DST_TIMEZONE_ID, 47) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 116), MAKE_ID(DST_TIMEZONE_ID, 48) },
-	{ MAKE_ID(STD_TIMEZONE_ID, 33), MAKE_ID(DST_TIMEZONE_ID, 49) }
-	});
-
-
 bool WorldLocation::InsideCanada() const {
 	return ((WorldLocation *)this)->InsideCanada(_latitude, _longitude);
 }
@@ -534,10 +155,11 @@ bool WorldLocation::InsideCanada(const double latitude, const double longitude) 
 	if (longitude > DEGREE_TO_RADIAN(-52.0))	return false;
 
 #if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
-    XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
-    Borders borders;
-    if (borders.Canada())
-        return borders.Canada()->PointInArea(pt, 0.000001);
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.Canada())
+		return borders.Canada()->PointInArea(pt, 0.000001);
+	return false;
 #else
 	if (longitude < DEGREE_TO_RADIAN(-122.8)) {
 		if (latitude < DEGREE_TO_RADIAN(48.3))	return false;
@@ -568,30 +190,360 @@ bool WorldLocation::InsideCanada(const double latitude, const double longitude) 
 }
 
 
-bool WorldLocation::InsideNewZealand() const {
-	if ((_longitude > DEGREE_TO_RADIAN(172.5)) && (_longitude < DEGREE_TO_RADIAN(178.6))) {
-		if ((_latitude > DEGREE_TO_RADIAN(-41.75)) && (_latitude < DEGREE_TO_RADIAN(-34.3))) {	// general extents of New Zealand's north island
+bool WorldLocation::InsideAlaska() const {
+	return ((WorldLocation*)this)->InsideAlaska(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideAlaska(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(51.219861999999999))		return false;
+	if (latitude > DEGREE_TO_RADIAN(71.352560999999994))		return false;
+
+	double __longitude = longitude;
+	if (__longitude > 0.0)
+		__longitude -= TwoPi;
+	if (__longitude < DEGREE_TO_RADIAN(-187.53833299999999))	return false;
+	if (__longitude > DEGREE_TO_RADIAN(-129.97416699999999))	return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.AK())
+		return borders.AK()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideWashington() const {
+	return ((WorldLocation*)this)->InsideWashington(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideWashington(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(45.543540999999998))		return false; 
+	if (latitude > DEGREE_TO_RADIAN(49.002493999999999))		return false; 
+	if (longitude < DEGREE_TO_RADIAN(-124.73317400000001))	return false; 
+	if (longitude > DEGREE_TO_RADIAN(-116.91598900000000))		return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.WA())
+		return borders.WA()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideOregon() const {
+	return ((WorldLocation*)this)->InsideOregon(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideOregon(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(41.991793999999999))	return false;
+	if (latitude > DEGREE_TO_RADIAN(46.271003999999998))	return false;
+	if (longitude < DEGREE_TO_RADIAN(-124.55244100000000))	return false;
+	if (longitude > DEGREE_TO_RADIAN(-116.46350400000000))	return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.OR())
+		return borders.OR()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideIdaho() const {
+	return ((WorldLocation*)this)->InsideIdaho(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideIdaho(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(41.988056999999998))		return false;
+	if (latitude > DEGREE_TO_RADIAN(49.001145999999999))		return false;
+	if (longitude < DEGREE_TO_RADIAN(-117.24302700000000))		return false;
+	if (longitude > DEGREE_TO_RADIAN(-111.04356400000000))		return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.ID())
+		return borders.ID()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideMontana() const {
+	return ((WorldLocation*)this)->InsideMontana(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideMontana(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(44.357990999999998))	return false;
+	if (latitude > DEGREE_TO_RADIAN(49.0))					return false;
+	if (longitude < DEGREE_TO_RADIAN(-116.04989399999999))	return false;
+	if (longitude > DEGREE_TO_RADIAN(-104.03913799999999))	return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.MT())
+		return borders.MT()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideNorthDakota() const {
+	return ((WorldLocation*)this)->InsideNorthDakota(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideNorthDakota(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(45.935054000000001))	return false;
+	if (latitude > DEGREE_TO_RADIAN(49.0))					return false;
+	if (longitude < DEGREE_TO_RADIAN(-104.04890000000000))	return false;
+	if (longitude > DEGREE_TO_RADIAN(-96.554507000000001))	return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.ND())
+		return borders.ND()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideMinnesota() const {
+	return ((WorldLocation*)this)->InsideMinnesota(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideMinnesota(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(43.499355999999999))	return false;
+	if (latitude > DEGREE_TO_RADIAN(49.384357999999999))	return false;
+	if (longitude < DEGREE_TO_RADIAN(-97.239209000000002))	return false;
+	if (longitude > DEGREE_TO_RADIAN(-89.489226000000002))	return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.MN())
+		return borders.MN()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideYukon() const {
+	return ((WorldLocation*)this)->InsideYukon(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideYukon(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(60.0))	return false;
+	if (latitude > DEGREE_TO_RADIAN(69.647455275000098))	return false;
+	if (_longitude < DEGREE_TO_RADIAN(-141.01807315799999))	return false;
+	if (_longitude > DEGREE_TO_RADIAN(-123.78932483600001))	return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.YT())
+		return borders.YT()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideAlberta() const {
+	return ((WorldLocation*)this)->InsideAlberta(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideAlberta(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(49.0))		return false;
+	if (latitude > DEGREE_TO_RADIAN(60.0))		return false;
+	if (longitude < DEGREE_TO_RADIAN(-120.0))	return false;
+	if (longitude > DEGREE_TO_RADIAN(-110.0))	return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.AB())
+		return borders.AB()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideSaskatchewan() const {
+	return ((WorldLocation*)this)->InsideSaskatchewan(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideSaskatchewan(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(49.0))					return false;
+	if (latitude > DEGREE_TO_RADIAN(60.0))					return false;
+	if (longitude < DEGREE_TO_RADIAN(-110.0))				return false;
+	if (longitude > DEGREE_TO_RADIAN(-101.36230470900000))	return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.SK())
+		return borders.SK()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideManitoba() const {
+	return ((WorldLocation*)this)->InsideManitoba(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideManitoba(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(49.0))						return false;
+	if (latitude > DEGREE_TO_RADIAN(60.0))						return false;
+	if (longitude < DEGREE_TO_RADIAN(-102.0))					return false;
+	if (longitude > DEGREE_TO_RADIAN(-88.986493339999896))		return false; 
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.MB())
+		return borders.MB()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideNewBrunswick() const {
+	return ((WorldLocation*)this)->InsideNewBrunswick(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideNewBrunswick(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(44.570312889000000))	return false;
+	if (latitude > DEGREE_TO_RADIAN(48.089339133000102))	return false;
+	if (longitude < DEGREE_TO_RADIAN(-69.053278519999907))	return false;
+	if (longitude > DEGREE_TO_RADIAN(-63.772017501999898))	return false;
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.NB())
+		return borders.NB()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsidePEI() const {
+	return ((WorldLocation*)this)->InsidePEI(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsidePEI(const double latitude, const double longitude) const {
+	if (latitude < DEGREE_TO_RADIAN(45.948259503000102))		return false;
+	if (latitude > DEGREE_TO_RADIAN(47.061222030000103))		return false;
+	if (longitude < DEGREE_TO_RADIAN(-64.413458053999904))		return false;
+	if (longitude > DEGREE_TO_RADIAN(-61.970709676999903))		return false;
+	
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.PEI())
+		return borders.PEI()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	return true;
+#endif
+}
+
+
+bool WorldLocation::InsideNewZealand(const double latitude, const double longitude) const {
+
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.NewZealand())
+		return borders.NewZealand()->PointInArea(pt, 0.000001);
+	return false;
+#else
+	if ((longitude > DEGREE_TO_RADIAN(172.5)) && (longitude < DEGREE_TO_RADIAN(178.6))) {
+		if ((latitude > DEGREE_TO_RADIAN(-41.75)) && (latitude < DEGREE_TO_RADIAN(-34.3))) {	// general extents of New Zealand's north island
 			return true;
 		}
 	}
 
-	if ((_longitude > DEGREE_TO_RADIAN(166.3)) && (_longitude < DEGREE_TO_RADIAN(174.5))) {
-		if ((_latitude > DEGREE_TO_RADIAN(-47.35)) && (_latitude < DEGREE_TO_RADIAN(40.4))) {	// general extents of New Zealand's south island
+	if ((longitude > DEGREE_TO_RADIAN(166.3)) && (longitude < DEGREE_TO_RADIAN(174.5))) {
+		if ((latitude > DEGREE_TO_RADIAN(-47.35)) && (latitude < DEGREE_TO_RADIAN(-40.4))) {	// general extents of New Zealand's south island
 			return true;
 		}
 	}
 	return false;
+#endif
 }
 
 
-bool WorldLocation::InsideTasmania() const {
+bool WorldLocation::InsideNewZealand() const {
+	return InsideNewZealand(_latitude, _longitude);
+}
+
+
+bool WorldLocation::InsideTasmania(const double latitude, const double longitude) const {
 	if ((_longitude > DEGREE_TO_RADIAN(143.5)) && (_longitude < DEGREE_TO_RADIAN(149.0))) {
 		if ((_latitude > DEGREE_TO_RADIAN(-44.0)) && (_latitude < DEGREE_TO_RADIAN(-39.5))) {	// general extents of Tasmania
 			return true;
 		}
 	}
 
+#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
+	Borders borders;
+	if (borders.Tasmania())
+		return borders.Tasmania()->PointInArea(pt, 0.000001);
 	return false;
+#else
+	return false;
+#endif
+}
+
+
+bool WorldLocation::InsideTasmania() const {
+	return InsideNewZealand(_latitude, _longitude);
 }
 
 
@@ -629,6 +581,42 @@ bool WorldLocation::SetTimeZoneOffset(std::uint32_t id)
 		return true;
 	}
 	return false;
+}
+
+
+bool WorldLocation::UpdateTimeZone() {
+	if (_timezoneInfo) {
+		if (strchr(_timezoneInfo->m_name, '/'))
+			return true;
+	}
+	bool valid;
+	const TimeZoneInfo* tzi = WorldLocation::TimeZoneFromLatLon(_latitude, _longitude, dstExists(), &valid);
+	if ((tzi->m_timezone == m_timezone()) && (tzi->m_dst == m_amtDST())) {
+		_timezoneInfo = tzi;
+		return true;
+	}
+	return false;
+}
+
+
+const TimeZoneInfo* WorldLocation::DowngradeTimeZone() const {
+	if (!_timezoneInfo) {
+		const TimeZoneInfo* tzi = GuessTimeZone(dstExists());
+		return tzi;
+	}
+	if (_timezoneInfo->m_id & 0x70000)
+		return _timezoneInfo;
+	const TimeZoneInfo* tz;
+	if (dstExists())
+		tz = m_dst_timezones;
+	else
+		tz = m_std_timezones;
+	while (tz->m_name) {
+		if (tz->m_timezone == _timezoneInfo->m_timezone)
+			return tz;
+		tz++;
+	}
+	return nullptr;
 }
 
 
@@ -716,18 +704,15 @@ const ::TimeZoneInfo *WorldLocation::CurrentTimeZone(INTNM::int16_t set, bool* h
 	else
 	{
 		const ::TimeZoneInfo* tz;
-		const ::TimeZoneInfo* tzSecondary = nullptr;
 		if (set == -1)
 			tz = m_mil_timezones;
 		else if (_startDST == _endDST)
 		{
 			tz = m_std_timezones;
-			tzSecondary = m_std_extra_timezones;
 		}
 		else
 		{
 			tz = m_dst_timezones;
-			tzSecondary = m_dst_extra_timezones;
 		}
 
 		while (tz->m_code)
@@ -742,70 +727,44 @@ const ::TimeZoneInfo *WorldLocation::CurrentTimeZone(INTNM::int16_t set, bool* h
 				*hidden = false;
 			return tz;
 		}
-		else if (tzSecondary)
-		{
-			while (tzSecondary->m_code)
-			{
-				if (tzSecondary->m_timezone == __timezone)
-					break;
-				tzSecondary++;
-			}
-			if (tzSecondary->m_code)
-			{
-				if (hidden)
-					*hidden = true;
-				return tzSecondary;
-			}
-		}
 		return nullptr;
 	}
 }
 
+
 const ::TimeZoneInfo* WorldLocation::TimeZoneFromName(const std::string& name, INTNM::int16_t set, bool* hidden)
 {
-	const ::TimeZoneInfo *tz;
-	const ::TimeZoneInfo* tzSecondary = nullptr;
-	if (set == -1)
-		tz = m_mil_timezones;
-	else if (set)
-	{
-		tz = m_dst_timezones;
-		tzSecondary = m_dst_extra_timezones;
-	}
-	else
-	{
-		tz = m_std_timezones;
-		tzSecondary = m_std_extra_timezones;
-	}
+	if (name.find_first_of('/') == -1) {
+		if (set != -2) {
+			const ::TimeZoneInfo* tz;
+			if (set == -1)
+				tz = m_mil_timezones;
+			else if (set)
+			{
+				tz = m_dst_timezones;
+			}
+			else
+			{
+				tz = m_std_timezones;
+			}
 
-	while (tz->m_code)
-	{
-		if (boost::iequals(tz->m_code, name) || boost::iequals(tz->m_name, name))
-			break;
-		tz++;
-	}
-	if (tz->m_code)
-	{
-		if (hidden)
-			*hidden = false;
-		return tz;
-	}
-	else if (tzSecondary)
-	{
-		while (tzSecondary->m_code)
-		{
-			if (boost::iequals(tzSecondary->m_code, name) || boost::iequals(tzSecondary->m_name, name))
-				break;
-			tzSecondary++;
-		}
-		if (tzSecondary->m_code)
-		{
-			if (hidden)
-				*hidden = true;
-			return tzSecondary;
+			while (tz->m_code)
+			{
+				if (boost::iequals(tz->m_code, name) || boost::iequals(tz->m_name, name))
+					break;
+				tz++;
+			}
+			if (tz->m_code)
+			{
+				if (hidden)
+					*hidden = false;
+				return tz;
+			}
 		}
 	}
-	return nullptr;
+	const ::TimeZoneInfo* tz;
+	tz = TimezoneMapper::fromName(name.c_str(), set);
+	return tz;
 }
 
 
@@ -824,17 +783,6 @@ const ::TimeZoneInfo* WorldLocation::TimeZoneFromId(std::uint32_t id, bool* hidd
 			}
 			tz++;
 		}
-		tz = m_std_extra_timezones;
-		while (tz->m_name)
-		{
-			if (tz->m_id == id)
-			{
-				if (hidden)
-					*hidden = true;
-				return tz;
-			}
-			tz++;
-		}
 	}
 	else if (IS_DST(id))
 	{
@@ -845,17 +793,6 @@ const ::TimeZoneInfo* WorldLocation::TimeZoneFromId(std::uint32_t id, bool* hidd
 			{
 				if (hidden)
 					*hidden = false;
-				return tz;
-			}
-			tz++;
-		}
-		tz = m_dst_extra_timezones;
-		while (tz->m_name)
-		{
-			if (tz->m_id == id)
-			{
-				if (hidden)
-					*hidden = true;
 				return tz;
 			}
 			tz++;
@@ -875,44 +812,24 @@ const ::TimeZoneInfo* WorldLocation::TimeZoneFromId(std::uint32_t id, bool* hidd
 			tz++;
 		}
 	}
-	return nullptr;
-}
-
-
-const ::TimeZoneInfo* WorldLocation::TimeZoneFromWindowsName(const std::string& name)
-{
-	for (auto windows : WindowsMap)
-	{
-		if (boost::equals(windows.WindowsName, name))
-			return TimeZoneFromId(windows.HssId);
-	}
-	return nullptr;
-}
-
-
-const ::TimeZoneInfo* WorldLocation::TimeZoneFromRegionName(const std::string& regionName)
-{
-	for (auto region : RegionMap)
-	{
-		if (boost::iequals(region.Name, regionName))
-			return TimeZoneFromId(region.HssId);
-	}
-	return nullptr;
+	return TimezoneMapper::fromId(id, -2);
 }
 
 
 const TimeZoneInfo* WorldLocation::GetDaylightSavingsTimeZone(const TimeZoneInfo* info)
 {
-	if (bimapContainsLeft(daylightStandardMap, info->m_id))
-		return TimeZoneFromId(daylightStandardMap.left.at(info->m_id));
+	if (info->m_dst.GetTotalMilliSeconds())
+		return info;
+	info = TimezoneMapper::fromName(info->m_name, 1);
 	return info;
 }
 
 
 const TimeZoneInfo* WorldLocation::GetStandardTimeZone(const TimeZoneInfo* info)
 {
-	if (bimapContainsRight(daylightStandardMap, info->m_id))
-		return TimeZoneFromId(daylightStandardMap.right.at(info->m_id));
+	if (!info->m_dst.GetTotalMilliSeconds())
+		return info;
+	info = TimezoneMapper::fromName(info->m_name, 0);
 	return info;
 }
 
@@ -964,7 +881,8 @@ WorldLocation::WorldLocation(double latitude, double longitude, bool guessTimezo
 }
 
 
-WorldLocation::~WorldLocation() { }
+WorldLocation::~WorldLocation() {
+}
 
 
 WorldLocation &WorldLocation::operator=(const WorldLocation &wl) {
@@ -1123,6 +1041,7 @@ CArchive& HSS_Time::operator<<(CArchive& os, const WorldLocation &wl) {
 
 
 INTNM::int16_t WorldLocation::m_sun_rise_set(const WTime &daytime, WTime *Rise, WTime *Set, WTime *Noon) const {
+
 #ifdef HSS_USE_CACHING
 	struct sun_key sk;
 	sk.m_sun_cache_lat = _latitude;
@@ -1178,7 +1097,6 @@ INTNM::int16_t WorldLocation::m_sun_rise_set(const WTime &daytime, WTime *Rise, 
 
 	return success;
 }
-
 
 
 INTNM::int16_t WorldLocation::m_sun_rise_set(double latitude, double longitude, const WTime& daytime, WTime* Rise, WTime* Set, WTime* Noon) const {
@@ -1238,3 +1156,22 @@ INTNM::int16_t WorldLocation::m_sun_rise_set(double latitude, double longitude, 
 
 	return success;
 }
+
+
+WorldLocation WorldLocation::FromLatLon(const double lat, const double lon, INTNM::int16_t set, bool* valid) {
+	const ::TimeZoneInfo* info = TimezoneMapper::getTz(RADIAN_TO_DEGREE(lat), RADIAN_TO_DEGREE(lon), set, valid);
+	WorldLocation wld;
+	wld._amtDST = info->m_dst;
+	wld.__timezone = info->m_timezone;
+	wld._latitude = lat;
+	wld._longitude = lon;
+	if (wld._amtDST.GetTotalHours() > 0)
+		wld._endDST = WTimeSpan(366, 0, 0, 0);
+	return wld;
+}
+
+
+const ::TimeZoneInfo* WorldLocation::TimeZoneFromLatLon(const double lat, const double lon, INTNM::int16_t set, bool* valid) {
+	return TimezoneMapper::getTz(RADIAN_TO_DEGREE(lat), RADIAN_TO_DEGREE(lon), set, valid);
+}
+
