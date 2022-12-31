@@ -50,7 +50,7 @@ struct TIMES_API TableStruct_wtime_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[4]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[5]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -68,6 +68,9 @@ TIMES_API extern WTimeSpanDefaultTypeInternal _WTimeSpan_default_instance_;
 class WTimeZone;
 class WTimeZoneDefaultTypeInternal;
 TIMES_API extern WTimeZoneDefaultTypeInternal _WTimeZone_default_instance_;
+class WTimeZone_TZTimeZone;
+class WTimeZone_TZTimeZoneDefaultTypeInternal;
+TIMES_API extern WTimeZone_TZTimeZoneDefaultTypeInternal _WTimeZone_TZTimeZone_default_instance_;
 class WTimeZone_WTZDetails;
 class WTimeZone_WTZDetailsDefaultTypeInternal;
 TIMES_API extern WTimeZone_WTZDetailsDefaultTypeInternal _WTimeZone_WTZDetails_default_instance_;
@@ -77,6 +80,7 @@ PROTOBUF_NAMESPACE_OPEN
 template<> TIMES_API ::HSS::Times::WTime* Arena::CreateMaybeMessage<::HSS::Times::WTime>(Arena*);
 template<> TIMES_API ::HSS::Times::WTimeSpan* Arena::CreateMaybeMessage<::HSS::Times::WTimeSpan>(Arena*);
 template<> TIMES_API ::HSS::Times::WTimeZone* Arena::CreateMaybeMessage<::HSS::Times::WTimeZone>(Arena*);
+template<> TIMES_API ::HSS::Times::WTimeZone_TZTimeZone* Arena::CreateMaybeMessage<::HSS::Times::WTimeZone_TZTimeZone>(Arena*);
 template<> TIMES_API ::HSS::Times::WTimeZone_WTZDetails* Arena::CreateMaybeMessage<::HSS::Times::WTimeZone_WTZDetails>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace HSS {
@@ -254,23 +258,23 @@ class TIMES_API WTime PROTOBUF_FINAL :
       PROTOBUF_NAMESPACE_ID::StringValue* timezone);
   PROTOBUF_NAMESPACE_ID::StringValue* unsafe_arena_release_timezone();
 
-  // .google.protobuf.Int32Value timezone_id = 4;
-  bool has_timezone_id() const;
+  // .google.protobuf.Int32Value timezone_id = 4 [deprecated = true];
+  PROTOBUF_DEPRECATED bool has_timezone_id() const;
   private:
   bool _internal_has_timezone_id() const;
   public:
-  void clear_timezone_id();
-  const PROTOBUF_NAMESPACE_ID::Int32Value& timezone_id() const;
-  PROTOBUF_NAMESPACE_ID::Int32Value* release_timezone_id();
-  PROTOBUF_NAMESPACE_ID::Int32Value* mutable_timezone_id();
-  void set_allocated_timezone_id(PROTOBUF_NAMESPACE_ID::Int32Value* timezone_id);
+  PROTOBUF_DEPRECATED void clear_timezone_id();
+  PROTOBUF_DEPRECATED const PROTOBUF_NAMESPACE_ID::Int32Value& timezone_id() const;
+  PROTOBUF_DEPRECATED PROTOBUF_NAMESPACE_ID::Int32Value* release_timezone_id();
+  PROTOBUF_DEPRECATED PROTOBUF_NAMESPACE_ID::Int32Value* mutable_timezone_id();
+  PROTOBUF_DEPRECATED void set_allocated_timezone_id(PROTOBUF_NAMESPACE_ID::Int32Value* timezone_id);
   private:
   const PROTOBUF_NAMESPACE_ID::Int32Value& _internal_timezone_id() const;
   PROTOBUF_NAMESPACE_ID::Int32Value* _internal_mutable_timezone_id();
   public:
-  void unsafe_arena_set_allocated_timezone_id(
+  PROTOBUF_DEPRECATED void unsafe_arena_set_allocated_timezone_id(
       PROTOBUF_NAMESPACE_ID::Int32Value* timezone_id);
-  PROTOBUF_NAMESPACE_ID::Int32Value* unsafe_arena_release_timezone_id();
+  PROTOBUF_DEPRECATED PROTOBUF_NAMESPACE_ID::Int32Value* unsafe_arena_release_timezone_id();
 
   // @@protoc_insertion_point(class_scope:HSS.Times.WTime)
  private:
@@ -638,6 +642,166 @@ class TIMES_API WTimeZone_WTZDetails PROTOBUF_FINAL :
 };
 // -------------------------------------------------------------------
 
+class TIMES_API WTimeZone_TZTimeZone PROTOBUF_FINAL :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:HSS.Times.WTimeZone.TZTimeZone) */ {
+ public:
+  inline WTimeZone_TZTimeZone() : WTimeZone_TZTimeZone(nullptr) {}
+  virtual ~WTimeZone_TZTimeZone();
+
+  WTimeZone_TZTimeZone(const WTimeZone_TZTimeZone& from);
+  WTimeZone_TZTimeZone(WTimeZone_TZTimeZone&& from) noexcept
+    : WTimeZone_TZTimeZone() {
+    *this = ::std::move(from);
+  }
+
+  inline WTimeZone_TZTimeZone& operator=(const WTimeZone_TZTimeZone& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline WTimeZone_TZTimeZone& operator=(WTimeZone_TZTimeZone&& from) noexcept {
+    if (GetArena() == from.GetArena()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const WTimeZone_TZTimeZone& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const WTimeZone_TZTimeZone* internal_default_instance() {
+    return reinterpret_cast<const WTimeZone_TZTimeZone*>(
+               &_WTimeZone_TZTimeZone_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    3;
+
+  friend void swap(WTimeZone_TZTimeZone& a, WTimeZone_TZTimeZone& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(WTimeZone_TZTimeZone* other) {
+    if (other == this) return;
+    if (GetArena() == other->GetArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(WTimeZone_TZTimeZone* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetArena() == other->GetArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline WTimeZone_TZTimeZone* New() const final {
+    return CreateMaybeMessage<WTimeZone_TZTimeZone>(nullptr);
+  }
+
+  WTimeZone_TZTimeZone* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<WTimeZone_TZTimeZone>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const WTimeZone_TZTimeZone& from);
+  void MergeFrom(const WTimeZone_TZTimeZone& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(WTimeZone_TZTimeZone* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "HSS.Times.WTimeZone.TZTimeZone";
+  }
+  protected:
+  explicit WTimeZone_TZTimeZone(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_wtime_2eproto);
+    return ::descriptor_table_wtime_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kNameFieldNumber = 1,
+    kDaylightFieldNumber = 2,
+  };
+  // string name = 1;
+  void clear_name();
+  const std::string& name() const;
+  void set_name(const std::string& value);
+  void set_name(std::string&& value);
+  void set_name(const char* value);
+  void set_name(const char* value, size_t size);
+  std::string* mutable_name();
+  std::string* release_name();
+  void set_allocated_name(std::string* name);
+  private:
+  const std::string& _internal_name() const;
+  void _internal_set_name(const std::string& value);
+  std::string* _internal_mutable_name();
+  public:
+
+  // bool daylight = 2;
+  bool has_daylight() const;
+  private:
+  bool _internal_has_daylight() const;
+  public:
+  void clear_daylight();
+  bool daylight() const;
+  void set_daylight(bool value);
+  private:
+  bool _internal_daylight() const;
+  void _internal_set_daylight(bool value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:HSS.Times.WTimeZone.TZTimeZone)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr name_;
+  bool daylight_;
+  friend struct ::TableStruct_wtime_2eproto;
+};
+// -------------------------------------------------------------------
+
 class TIMES_API WTimeZone PROTOBUF_FINAL :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:HSS.Times.WTimeZone) */ {
  public:
@@ -677,6 +841,7 @@ class TIMES_API WTimeZone PROTOBUF_FINAL :
   enum MsgCase {
     kTimezoneIndex = 2,
     kTimezoneDetails = 3,
+    kTztimezone = 4,
     MSG_NOT_SET = 0,
   };
 
@@ -686,7 +851,7 @@ class TIMES_API WTimeZone PROTOBUF_FINAL :
                &_WTimeZone_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    3;
+    4;
 
   friend void swap(WTimeZone& a, WTimeZone& b) {
     a.Swap(&b);
@@ -755,6 +920,7 @@ class TIMES_API WTimeZone PROTOBUF_FINAL :
   // nested types ----------------------------------------------------
 
   typedef WTimeZone_WTZDetails WTZDetails;
+  typedef WTimeZone_TZTimeZone TZTimeZone;
 
   // accessors -------------------------------------------------------
 
@@ -762,6 +928,7 @@ class TIMES_API WTimeZone PROTOBUF_FINAL :
     kVersionFieldNumber = 1,
     kTimezoneIndexFieldNumber = 2,
     kTimezoneDetailsFieldNumber = 3,
+    kTztimezoneFieldNumber = 4,
   };
   // int32 version = 1;
   void clear_version();
@@ -784,23 +951,41 @@ class TIMES_API WTimeZone PROTOBUF_FINAL :
   void _internal_set_timezoneindex(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // .HSS.Times.WTimeZone.WTZDetails timezoneDetails = 3;
-  bool has_timezonedetails() const;
+  // .HSS.Times.WTimeZone.WTZDetails timezoneDetails = 3 [deprecated = true];
+  PROTOBUF_DEPRECATED bool has_timezonedetails() const;
   private:
   bool _internal_has_timezonedetails() const;
   public:
-  void clear_timezonedetails();
-  const ::HSS::Times::WTimeZone_WTZDetails& timezonedetails() const;
-  ::HSS::Times::WTimeZone_WTZDetails* release_timezonedetails();
-  ::HSS::Times::WTimeZone_WTZDetails* mutable_timezonedetails();
-  void set_allocated_timezonedetails(::HSS::Times::WTimeZone_WTZDetails* timezonedetails);
+  PROTOBUF_DEPRECATED void clear_timezonedetails();
+  PROTOBUF_DEPRECATED const ::HSS::Times::WTimeZone_WTZDetails& timezonedetails() const;
+  PROTOBUF_DEPRECATED ::HSS::Times::WTimeZone_WTZDetails* release_timezonedetails();
+  PROTOBUF_DEPRECATED ::HSS::Times::WTimeZone_WTZDetails* mutable_timezonedetails();
+  PROTOBUF_DEPRECATED void set_allocated_timezonedetails(::HSS::Times::WTimeZone_WTZDetails* timezonedetails);
   private:
   const ::HSS::Times::WTimeZone_WTZDetails& _internal_timezonedetails() const;
   ::HSS::Times::WTimeZone_WTZDetails* _internal_mutable_timezonedetails();
   public:
-  void unsafe_arena_set_allocated_timezonedetails(
+  PROTOBUF_DEPRECATED void unsafe_arena_set_allocated_timezonedetails(
       ::HSS::Times::WTimeZone_WTZDetails* timezonedetails);
-  ::HSS::Times::WTimeZone_WTZDetails* unsafe_arena_release_timezonedetails();
+  PROTOBUF_DEPRECATED ::HSS::Times::WTimeZone_WTZDetails* unsafe_arena_release_timezonedetails();
+
+  // .HSS.Times.WTimeZone.TZTimeZone tztimezone = 4;
+  bool has_tztimezone() const;
+  private:
+  bool _internal_has_tztimezone() const;
+  public:
+  void clear_tztimezone();
+  const ::HSS::Times::WTimeZone_TZTimeZone& tztimezone() const;
+  ::HSS::Times::WTimeZone_TZTimeZone* release_tztimezone();
+  ::HSS::Times::WTimeZone_TZTimeZone* mutable_tztimezone();
+  void set_allocated_tztimezone(::HSS::Times::WTimeZone_TZTimeZone* tztimezone);
+  private:
+  const ::HSS::Times::WTimeZone_TZTimeZone& _internal_tztimezone() const;
+  ::HSS::Times::WTimeZone_TZTimeZone* _internal_mutable_tztimezone();
+  public:
+  void unsafe_arena_set_allocated_tztimezone(
+      ::HSS::Times::WTimeZone_TZTimeZone* tztimezone);
+  ::HSS::Times::WTimeZone_TZTimeZone* unsafe_arena_release_tztimezone();
 
   void clear_msg();
   MsgCase msg_case() const;
@@ -809,6 +994,7 @@ class TIMES_API WTimeZone PROTOBUF_FINAL :
   class _Internal;
   void set_has_timezoneindex();
   void set_has_timezonedetails();
+  void set_has_tztimezone();
 
   inline bool has_msg() const;
   inline void clear_has_msg();
@@ -821,6 +1007,7 @@ class TIMES_API WTimeZone PROTOBUF_FINAL :
     MsgUnion() {}
     ::PROTOBUF_NAMESPACE_ID::int32 timezoneindex_;
     ::HSS::Times::WTimeZone_WTZDetails* timezonedetails_;
+    ::HSS::Times::WTimeZone_TZTimeZone* tztimezone_;
   } msg_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::uint32 _oneof_case_[1];
@@ -1054,7 +1241,7 @@ inline void WTime::set_allocated_timezone(PROTOBUF_NAMESPACE_ID::StringValue* ti
   // @@protoc_insertion_point(field_set_allocated:HSS.Times.WTime.timezone)
 }
 
-// .google.protobuf.Int32Value timezone_id = 4;
+// .google.protobuf.Int32Value timezone_id = 4 [deprecated = true];
 inline bool WTime::_internal_has_timezone_id() const {
   return this != internal_default_instance() && timezone_id_ != nullptr;
 }
@@ -1535,6 +1722,100 @@ inline void WTimeZone_WTZDetails::set_allocated_amtdst(::HSS::Times::WTimeSpan* 
 
 // -------------------------------------------------------------------
 
+// WTimeZone_TZTimeZone
+
+// string name = 1;
+inline void WTimeZone_TZTimeZone::clear_name() {
+  name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline const std::string& WTimeZone_TZTimeZone::name() const {
+  // @@protoc_insertion_point(field_get:HSS.Times.WTimeZone.TZTimeZone.name)
+  return _internal_name();
+}
+inline void WTimeZone_TZTimeZone::set_name(const std::string& value) {
+  _internal_set_name(value);
+  // @@protoc_insertion_point(field_set:HSS.Times.WTimeZone.TZTimeZone.name)
+}
+inline std::string* WTimeZone_TZTimeZone::mutable_name() {
+  // @@protoc_insertion_point(field_mutable:HSS.Times.WTimeZone.TZTimeZone.name)
+  return _internal_mutable_name();
+}
+inline const std::string& WTimeZone_TZTimeZone::_internal_name() const {
+  return name_.Get();
+}
+inline void WTimeZone_TZTimeZone::_internal_set_name(const std::string& value) {
+  
+  name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value, GetArena());
+}
+inline void WTimeZone_TZTimeZone::set_name(std::string&& value) {
+  
+  name_.Set(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value), GetArena());
+  // @@protoc_insertion_point(field_set_rvalue:HSS.Times.WTimeZone.TZTimeZone.name)
+}
+inline void WTimeZone_TZTimeZone::set_name(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  
+  name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value),
+              GetArena());
+  // @@protoc_insertion_point(field_set_char:HSS.Times.WTimeZone.TZTimeZone.name)
+}
+inline void WTimeZone_TZTimeZone::set_name(const char* value,
+    size_t size) {
+  
+  name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(
+      reinterpret_cast<const char*>(value), size), GetArena());
+  // @@protoc_insertion_point(field_set_pointer:HSS.Times.WTimeZone.TZTimeZone.name)
+}
+inline std::string* WTimeZone_TZTimeZone::_internal_mutable_name() {
+  
+  return name_.Mutable(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline std::string* WTimeZone_TZTimeZone::release_name() {
+  // @@protoc_insertion_point(field_release:HSS.Times.WTimeZone.TZTimeZone.name)
+  return name_.Release(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+}
+inline void WTimeZone_TZTimeZone::set_allocated_name(std::string* name) {
+  if (name != nullptr) {
+    
+  } else {
+    
+  }
+  name_.SetAllocated(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), name,
+      GetArena());
+  // @@protoc_insertion_point(field_set_allocated:HSS.Times.WTimeZone.TZTimeZone.name)
+}
+
+// bool daylight = 2;
+inline bool WTimeZone_TZTimeZone::_internal_has_daylight() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool WTimeZone_TZTimeZone::has_daylight() const {
+  return _internal_has_daylight();
+}
+inline void WTimeZone_TZTimeZone::clear_daylight() {
+  daylight_ = false;
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline bool WTimeZone_TZTimeZone::_internal_daylight() const {
+  return daylight_;
+}
+inline bool WTimeZone_TZTimeZone::daylight() const {
+  // @@protoc_insertion_point(field_get:HSS.Times.WTimeZone.TZTimeZone.daylight)
+  return _internal_daylight();
+}
+inline void WTimeZone_TZTimeZone::_internal_set_daylight(bool value) {
+  _has_bits_[0] |= 0x00000001u;
+  daylight_ = value;
+}
+inline void WTimeZone_TZTimeZone::set_daylight(bool value) {
+  _internal_set_daylight(value);
+  // @@protoc_insertion_point(field_set:HSS.Times.WTimeZone.TZTimeZone.daylight)
+}
+
+// -------------------------------------------------------------------
+
 // WTimeZone
 
 // int32 version = 1;
@@ -1592,7 +1873,7 @@ inline void WTimeZone::set_timezoneindex(::PROTOBUF_NAMESPACE_ID::int32 value) {
   // @@protoc_insertion_point(field_set:HSS.Times.WTimeZone.timezoneIndex)
 }
 
-// .HSS.Times.WTimeZone.WTZDetails timezoneDetails = 3;
+// .HSS.Times.WTimeZone.WTZDetails timezoneDetails = 3 [deprecated = true];
 inline bool WTimeZone::_internal_has_timezonedetails() const {
   return msg_case() == kTimezoneDetails;
 }
@@ -1665,6 +1946,79 @@ inline ::HSS::Times::WTimeZone_WTZDetails* WTimeZone::mutable_timezonedetails() 
   return _internal_mutable_timezonedetails();
 }
 
+// .HSS.Times.WTimeZone.TZTimeZone tztimezone = 4;
+inline bool WTimeZone::_internal_has_tztimezone() const {
+  return msg_case() == kTztimezone;
+}
+inline bool WTimeZone::has_tztimezone() const {
+  return _internal_has_tztimezone();
+}
+inline void WTimeZone::set_has_tztimezone() {
+  _oneof_case_[0] = kTztimezone;
+}
+inline void WTimeZone::clear_tztimezone() {
+  if (_internal_has_tztimezone()) {
+    if (GetArena() == nullptr) {
+      delete msg_.tztimezone_;
+    }
+    clear_has_msg();
+  }
+}
+inline ::HSS::Times::WTimeZone_TZTimeZone* WTimeZone::release_tztimezone() {
+  // @@protoc_insertion_point(field_release:HSS.Times.WTimeZone.tztimezone)
+  if (_internal_has_tztimezone()) {
+    clear_has_msg();
+      ::HSS::Times::WTimeZone_TZTimeZone* temp = msg_.tztimezone_;
+    if (GetArena() != nullptr) {
+      temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
+    }
+    msg_.tztimezone_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline const ::HSS::Times::WTimeZone_TZTimeZone& WTimeZone::_internal_tztimezone() const {
+  return _internal_has_tztimezone()
+      ? *msg_.tztimezone_
+      : *reinterpret_cast< ::HSS::Times::WTimeZone_TZTimeZone*>(&::HSS::Times::_WTimeZone_TZTimeZone_default_instance_);
+}
+inline const ::HSS::Times::WTimeZone_TZTimeZone& WTimeZone::tztimezone() const {
+  // @@protoc_insertion_point(field_get:HSS.Times.WTimeZone.tztimezone)
+  return _internal_tztimezone();
+}
+inline ::HSS::Times::WTimeZone_TZTimeZone* WTimeZone::unsafe_arena_release_tztimezone() {
+  // @@protoc_insertion_point(field_unsafe_arena_release:HSS.Times.WTimeZone.tztimezone)
+  if (_internal_has_tztimezone()) {
+    clear_has_msg();
+    ::HSS::Times::WTimeZone_TZTimeZone* temp = msg_.tztimezone_;
+    msg_.tztimezone_ = nullptr;
+    return temp;
+  } else {
+    return nullptr;
+  }
+}
+inline void WTimeZone::unsafe_arena_set_allocated_tztimezone(::HSS::Times::WTimeZone_TZTimeZone* tztimezone) {
+  clear_msg();
+  if (tztimezone) {
+    set_has_tztimezone();
+    msg_.tztimezone_ = tztimezone;
+  }
+  // @@protoc_insertion_point(field_unsafe_arena_set_allocated:HSS.Times.WTimeZone.tztimezone)
+}
+inline ::HSS::Times::WTimeZone_TZTimeZone* WTimeZone::_internal_mutable_tztimezone() {
+  if (!_internal_has_tztimezone()) {
+    clear_msg();
+    set_has_tztimezone();
+    msg_.tztimezone_ = CreateMaybeMessage< ::HSS::Times::WTimeZone_TZTimeZone >(GetArena());
+  }
+  return msg_.tztimezone_;
+}
+inline ::HSS::Times::WTimeZone_TZTimeZone* WTimeZone::mutable_tztimezone() {
+  // @@protoc_insertion_point(field_mutable:HSS.Times.WTimeZone.tztimezone)
+  return _internal_mutable_tztimezone();
+}
+
 inline bool WTimeZone::has_msg() const {
   return msg_case() != MSG_NOT_SET;
 }
@@ -1677,6 +2031,8 @@ inline WTimeZone::MsgCase WTimeZone::msg_case() const {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

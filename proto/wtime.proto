@@ -40,7 +40,8 @@ message WTime {
     /**
      * Daylight savings time information. Can be a predfined string value
      * to indicate whether DST should be applied or not ('LDT', 'D', 'LST', or 'S')
-     * or it can be an explicit DST offset value (ex. +1, -1, 0:30, -0.5).
+     * or it can be an explicit DST offset value (ex. +1, -1, 0:30, -0.5).  For TZ
+     * timezones, just use a binary indicator, not the offset value.
      */
     google.protobuf.StringValue daylight = 2;
     /**
@@ -49,12 +50,13 @@ message WTime {
      * (ex. MST) or an explicit time offset (ex. -7). If an explicit time
      * offset is used it should not include the DST offset (ex. MDT would
      * be represented with a timezone of -7 and a daylight of 1).
+     * Note migrating away from abbrevations to what TZ supports.
      */
     google.protobuf.StringValue timezone = 3;
     /**
      * An ID for a predefined set of timezone details.
      */
-    google.protobuf.Int32Value timezone_id = 4;
+    google.protobuf.Int32Value timezone_id = 4 [deprecated = true];
 }
 
 message WTimeSpan {
@@ -65,8 +67,9 @@ message WTimeZone {
     int32 version = 1;
 
     oneof msg {
-        int32 timezoneIndex = 2;
-        WTZDetails timezoneDetails = 3;
+        int32 timezoneIndex = 2 [deprecated = true];
+        WTZDetails timezoneDetails = 3 [deprecated = true];
+        TZTimeZone tztimezone = 4;
 	};
 
     message WTZDetails {
@@ -75,4 +78,9 @@ message WTimeZone {
         WTimeSpan endDST = 3;       /* when DST ends, since Jan 1 */
         WTimeSpan amtDST = 4;       /* offset from standard time to daylight savings time */
 	}
+
+    message TZTimeZone {
+        string name = 1;            /* a name recognized to TZ */
+        optional bool daylight = 2; /* whether to force on DST */
+    }
 }

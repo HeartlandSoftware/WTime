@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.13)
 if (MSVC)
 set (CMAKE_SYSTEM_VERSION 10.0.22000.0)
 endif (MSVC)
-project (Math VERSION 2.5.0.11 DESCRIPTION "HSS Math Library")
+project (Math VERSION 2.5.0.12 DESCRIPTION "HSS Math Library")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
@@ -74,16 +74,31 @@ add_library(WTime SHARED
     src/TimezoneMapper.cpp
     src/worldlocation.cpp
     src/WTimeProto.cpp
+    src/tz/tz.cpp
+    src/open/tzdb-2021e-src/africa.c
+    src/open/tzdb-2021e-src/antarctica.c
+    src/open/tzdb-2021e-src/asia.c
+    src/open/tzdb-2021e-src/australasia.c
+    src/open/tzdb-2021e-src/backward.c
+    src/open/tzdb-2021e-src/etcetera.c
+    src/open/tzdb-2021e-src/europe.c
+    src/open/tzdb-2021e-src/leapseconds.c
+    src/open/tzdb-2021e-src/northamerica.c
+    src/open/tzdb-2021e-src/southamerica.c
+    src/open/tzdb-2021e-src/version.c
+    src/open/tzdb-2021e-src/windowsZones.c
+    include/internal/RegionMap.inl
     include/internal/SunriseSunsetCalc.h
-    include/internal/times_internal.h
     include/internal/Times.h
+    include/internal/times_internal.h
     include/internal/worldlocation.h
     include/internal/WTimeProto.h
     include/config.h
+    include/TimeZoneMapper.h
     include/WTime.h
     include/wtime.pb.h
 )
-target_compile_options(WTime PRIVATE "-DTIMES_EXPORT")
+target_compile_options(WTime PRIVATE "-DTIMES_EXPORT -DDATE_BUILD_DLL")
 
 add_executable(WTimeTest
     test/gtest.cpp

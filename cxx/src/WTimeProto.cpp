@@ -21,7 +21,7 @@
 #include "str_printf.h"
 #include "worldlocation.h"
 
-HSS::Times::WTime* HSS_Time::Serialization::TimeSerializer::serializeTime(const WTime& time)
+HSS::Times::WTime* HSS_Time::Serialization::TimeSerializer::serializeTime(const WTime& time, const std::uint32_t version)
 {
 	auto ret = new HSS::Times::WTime();
 	ret->set_time(time.ToString(WTIME_FORMAT_STRING_ISO8601));
@@ -36,14 +36,26 @@ HSS::Times::WTime* HSS_Time::Serialization::TimeSerializer::serializeTime(const 
 		{
 			auto zone = time.GetTimeManager()->m_worldLocation.CurrentTimeZone(0);
 			if (zone) {
-				timezone->set_value(zone->m_code);
-				auto id = new google::protobuf::Int32Value();
-				id->set_value(zone->m_id);
-				ret->set_allocated_timezone_id(id);
+				if (version == 1) {
+					zone = time.GetTimeManager()->m_worldLocation.DowngradeTimeZone();
+					timezone->set_value(zone->m_code);
+					ret->set_allocated_timezone(timezone);
+					auto id = new google::protobuf::Int32Value();
+					id->set_value(zone->m_id);
+					ret->set_allocated_timezone_id(id);
+				}
+				else {
+					timezone->set_value(zone->m_name);
+					ret->set_allocated_timezone(timezone);
+					auto daylight = new google::protobuf::StringValue();
+					daylight->set_value(time.GetTimeManager()->m_worldLocation.dstExists() ? "true" : "false");
+					ret->set_allocated_daylight(daylight);
+				}
 			}
 			else
 			{
 				timezone->set_value(time.GetTimeManager()->m_worldLocation.m_timezone().ToString(WTIME_FORMAT_EXCLUDE_SECONDS));
+				ret->set_allocated_timezone(timezone);
 				if (time.GetTimeManager()->m_worldLocation.m_endDST() != time.GetTimeManager()->m_worldLocation.m_startDST() &&
 					time.GetTimeManager()->m_worldLocation.m_amtDST().GetTotalSeconds() > 0)
 				{
@@ -53,7 +65,6 @@ HSS::Times::WTime* HSS_Time::Serialization::TimeSerializer::serializeTime(const 
 				}
 			}
 		}
-		ret->set_allocated_timezone(timezone);
 	}
 	return ret;
 }
@@ -110,10 +121,15 @@ auto HSS_Time::Serialization::TimeSerializer::deserializeTime(const HSS::Times::
 			}
 			else
 			{
-				if (boost::iequals(time.daylight().value(), "LDT") || boost::iequals(time.daylight().value(), "D"))
+				if (boost::iequals(time.daylight().value(), "LDT") || boost::iequals(time.daylight().value(), "D") || boost::iequals(time.daylight().value(), "true"))
 				{
 					daylightFlag = 1;
 					daylight = 3600;
+				}
+				if (boost::iequals(time.daylight().value(), "LST") || boost::iequals(time.daylight().value(), "S") || boost::iequals(time.daylight().value(), "false"))
+				{
+					daylightFlag = 0;
+					daylight = 0;
 				}
 			}
 		}
@@ -224,11 +240,24 @@ auto HSS_Time::Serialization::TimeSerializer::deserializeTimeSpan(const HSS::Tim
 	return ret;
 }
 
-HSS::Times::WTimeZone* HSS_Time::Serialization::TimeSerializer::serializeTimeZone(const HSS_Time::WorldLocation& worldLocation) {
+HSS::Times::WTimeZone* HSS_Time::Serialization::TimeSerializer::serializeTimeZone(const HSS_Time::WorldLocation& worldLocation, const std::uint32_t version) {
 	auto ret = new HSS::Times::WTimeZone();
-	ret->set_version(1);
-	if (worldLocation.m_timezoneInfo()) {
-		ret->set_timezoneindex(worldLocation.m_timezoneInfo()->m_id);
+	ret->set_version(version);
+	const TimeZoneInfo* tzi;
+	if (version == 1)
+		tzi = worldLocation.DowngradeTimeZone();
+	else
+		tzi = worldLocation.m_timezoneInfo();
+
+	if (tzi) {
+		if (version == 1) {
+			ret->set_timezoneindex(tzi->m_id);
+		}
+		else {
+			auto msg = ret->mutable_tztimezone();
+			msg->set_allocated_name(new std::string(tzi->m_name));
+			msg->set_daylight(tzi->m_dst.GetTotalSeconds() ? true : false);
+		}
 	} else {
 		auto msg = ret->mutable_timezonedetails();
 		msg->set_allocated_amttimezone(serializeTimeSpan(worldLocation.m_timezone()));
@@ -240,12 +269,16 @@ HSS::Times::WTimeZone* HSS_Time::Serialization::TimeSerializer::serializeTimeZon
 }
 
 void HSS_Time::Serialization::TimeSerializer::deserializeTimeZone(const HSS::Times::WTimeZone& zone, HSS_Time::WorldLocation& worldLocation, std::shared_ptr<validation::validation_object> valid, const std::string& name) {
-	if (zone.version() != 1) {
+	if ((zone.version() != 1) && (zone.version() != 2)) {
 		weak_assert(false);
 		if (valid)
 			valid->add_child_validation("HSS.Times.WTimeZone", name, validation::error_level::SEVERE, validation::id::version_mismatch, std::to_string(zone.version()));
 		throw std::invalid_argument("HSS.Times.WTimeZone: Version is invalid");
 	}
+
+#ifdef _DEBUG
+	auto z = zone.msg_case();
+#endif
 
 	if (zone.msg_case() == HSS::Times::WTimeZone::kTimezoneDetails) {
 		auto vt = validation::conditional_make_object(valid, "HSS.Times.WTimeZone", name);
@@ -274,9 +307,16 @@ void HSS_Time::Serialization::TimeSerializer::deserializeTimeZone(const HSS::Tim
 			}
 			tzz++;
 		}
-	} else {
+	} else if (zone.msg_case() == HSS::Times::WTimeZone::kTimezoneIndex) {
 		if (!worldLocation.SetTimeZoneOffset(zone.timezoneindex()) && (valid)) {
 			valid->add_child_validation("HSS.Times.WTimeZone", name, validation::error_level::WARNING, validation::id::index_invalid, std::to_string(zone.timezoneindex()));
 		}
-	}
+	} else if (zone.msg_case() == HSS::Times::WTimeZone::kTztimezone) {
+		const TimeZoneInfo* tzi;
+		if (!(tzi = worldLocation.TimeZoneFromName(zone.tztimezone().name(), zone.tztimezone().has_daylight() && zone.tztimezone().daylight() ? 1 : 0)))
+			valid->add_child_validation("HSS.Times.WTimeZone", name, validation::error_level::WARNING, validation::id::index_invalid, zone.tztimezone().name());
+		else
+			worldLocation.SetTimeZoneOffset(tzi);
+	} else if (valid)
+		valid->add_child_validation("HSS.Times.WTimeZone", name, validation::error_level::WARNING, validation::id::object_invalid, "Time Zone");
 }
