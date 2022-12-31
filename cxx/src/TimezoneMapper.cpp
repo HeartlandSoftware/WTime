@@ -31,6 +31,10 @@
 #error No StdLib definition.
 #endif
 
+#ifdef __GNUC__
+#include <strings.h>
+#endif
+
 // from ZoneDetect
 #include "open/out_v1/timezone21.h"
 #include "open/tzdb-2021e-src/africa.h"
