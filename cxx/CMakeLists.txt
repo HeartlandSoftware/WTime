@@ -100,11 +100,18 @@ add_library(WTime SHARED
     include/WTime.h
     include/wtime.pb.h
 )
+if (MSVC)
 target_compile_definitions(WTime PRIVATE
     DATE_BUILD_DLL
     TIMES_EXPORT
     ZD_EXPORT
 )
+else ()
+target_compile_definitions(WTime PRIVATE
+    DATE_BUILD_DLL
+    TIMES_EXPORT
+)
+endif ()
 
 add_executable(WTimeTest
     test/gtest.cpp
