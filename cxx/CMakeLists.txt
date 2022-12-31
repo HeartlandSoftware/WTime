@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.13)
 if (MSVC)
 set (CMAKE_SYSTEM_VERSION 10.0.22000.0)
 endif (MSVC)
-project (Math VERSION 2.5.0.12 DESCRIPTION "HSS Math Library")
+project (Math VERSION 2.5.0.13 DESCRIPTION "HSS Math Library")
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_STANDARD 11)
