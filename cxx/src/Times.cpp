@@ -371,8 +371,8 @@ INTNM::int32_t WTimeSpan::GetMinutes() const						{ return (INTNM::int32_t)(GetT
 INTNM::int64_t WTimeSpan::GetTotalSeconds() const					{ return m_timeSpan / 1000000LL; }
 INTNM::int32_t WTimeSpan::GetSeconds() const						{ return (INTNM::int32_t)(GetTotalSeconds() - GetTotalMinutes() * 60); }
 INTNM::int32_t WTimeSpan::GetMilliSeconds() const					{ return (INTNM::int32_t)(GetTotalMilliSeconds() - GetTotalSeconds() * 1000); }
-INTNM::int32_t WTimeSpan::GetTotalMilliSeconds() const				{ return m_timeSpan / 1000LL; }
-INTNM::int32_t WTimeSpan::GetMicroSeconds() const					{ return m_timeSpan % 1000000LL; }
+INTNM::int64_t WTimeSpan::GetTotalMilliSeconds() const				{ return m_timeSpan / 1000LL; }
+INTNM::int32_t WTimeSpan::GetMicroSeconds() const					{ return (INTNM::int32_t)(m_timeSpan % 1000000LL); }
 INTNM::int64_t WTimeSpan::GetTotalMicroSeconds() const				{ return m_timeSpan; }
 
 double WTimeSpan::GetDaysFraction() const							{ return ((double)m_timeSpan) / (24.0 * 60.0 * 60.0 * 1000000.0); }
@@ -381,7 +381,7 @@ double WTimeSpan::GetFractionOfSecond() const						{ return ((double)(m_timeSpan
 double WTimeSpan::GetFractionOfMinute() const						{ return ((double)(m_timeSpan % (60LL * 1000000LL))) / (60.0 * 1000000.0); }
 double WTimeSpan::GetFractionOfHour() const							{ return ((double)(m_timeSpan % (60LL * 60LL * 1000000LL))) / (60.0 * 60.0 * 1000000.0); }
 double WTimeSpan::GetFractionOfDay() const							{ return ((double)(m_timeSpan % (24LL * 60LL * 60LL * 1000000LL))) / (24.0 * 60.0 * 60.0 * 1000000.0); }
-INTNM::int32_t WTimeSpan::GetSecondsOfDay() const					{ return m_timeSpan % (24LL * 60LL * 60LL * 1000000LL); }
+INTNM::int32_t WTimeSpan::GetSecondsOfDay() const					{ return (INTNM::int32_t)(m_timeSpan % (24LL * 60LL * 60LL * 1000000LL)); }
 
 void WTimeSpan::PurgeToSecond()										{ m_timeSpan = m_timeSpan - (m_timeSpan % (1000000LL)); }
 void WTimeSpan::PurgeToMinute()										{ m_timeSpan = m_timeSpan - (m_timeSpan % (60LL * 1000000LL)); }
@@ -512,7 +512,7 @@ std::string WTimeSpan::ToString(INTNM::uint32_t flags) const {
 						str += ".";
 						std::string temp = "";
 						std::string::size_type zeroIdx = 5;
-						for (int i = zeroIdx; i >= 0; i--)
+						for (size_t i = zeroIdx; i >= 0; i--)
 						{
 							INTNM::int32_t digit = usecs % 10;
 							temp = ((char)(digit + '0')) + temp;
@@ -1180,14 +1180,14 @@ INTNM::int32_t WTime::GetYear(INTNM::uint32_t mode) const {
 	INTNM::uint64_t z = adjusted_tm(mode) / 24 / 60 / 60 / 1000000;
 	z += 2305448;
 
-	INTNM::int32_t a = z + 32044;
-	INTNM::int32_t b = (4*a+3)/146097;
-	INTNM::int32_t c = a - (b*146097)/4;
-	INTNM::int32_t d = (4*c+3)/1461;
-	INTNM::int32_t e = c - (1461*d)/4;
-	INTNM::int32_t m = (5*e+2)/153;
-	INTNM::int32_t nyear = b*100 + d - 4800 + m/10;
-	return nyear;
+	INTNM::int64_t a = z + 32044;
+	INTNM::int64_t b = (4*a+3)/146097;
+	INTNM::int64_t c = a - (b*146097)/4;
+	INTNM::int64_t d = (4*c+3)/1461;
+	INTNM::int64_t e = c - (1461*d)/4;
+	INTNM::int64_t m = (5*e+2)/153;
+	INTNM::int64_t nyear = b*100 + d - 4800 + m/10;
+	return (INTNM::int32_t)nyear;
 }
 
 
@@ -1197,14 +1197,14 @@ INTNM::int32_t WTime::GetMonth(INTNM::uint32_t mode) const {
 
 	INTNM::uint64_t z = adjusted_tm(mode) / 24 / 60 / 60 / 1000000;
 	z += 2305448;
-	INTNM::int32_t a = z + 32044;
-	INTNM::int32_t b = (4*a+3)/146097;
-	INTNM::int32_t c = a - (b*146097)/4;
-	INTNM::int32_t d = (4*c+3)/1461;
-	INTNM::int32_t e = c - (1461*d)/4;
-	INTNM::int32_t m = (5*e+2)/153;
-	INTNM::int32_t nmonth = m + 3 - 12*(m/10);
-	return nmonth;
+	INTNM::int64_t a = z + 32044;
+	INTNM::int64_t b = (4*a+3)/146097;
+	INTNM::int64_t c = a - (b*146097)/4;
+	INTNM::int64_t d = (4*c+3)/1461;
+	INTNM::int64_t e = c - (1461*d)/4;
+	INTNM::int64_t m = (5*e+2)/153;
+	INTNM::int64_t nmonth = m + 3 - 12*(m/10);
+	return (INTNM::int32_t)nmonth;
 }
 
 
@@ -1215,14 +1215,14 @@ INTNM::int32_t WTime::GetDay(INTNM::uint32_t mode) const {
 	INTNM::uint64_t z = adjusted_tm(mode) / 24 / 60 / 60 / 1000000;
 	z += 2305448;
 
-	INTNM::int32_t a = z + 32044;
-	INTNM::int32_t b = (4*a+3)/146097;
-	INTNM::int32_t c = a - (b*146097)/4;
-	INTNM::int32_t d = (4*c+3)/1461;
-	INTNM::int32_t e = c - (1461*d)/4;
-	INTNM::int32_t m = (5*e+2)/153;
-	INTNM::int32_t nday = e - (153*m+2)/5 + 1;
-	return nday;
+	INTNM::int64_t a = z + 32044;
+	INTNM::int64_t b = (4*a+3)/146097;
+	INTNM::int64_t c = a - (b*146097)/4;
+	INTNM::int64_t d = (4*c+3)/1461;
+	INTNM::int64_t e = c - (1461*d)/4;
+	INTNM::int64_t m = (5*e+2)/153;
+	INTNM::int64_t nday = e - (153*m+2)/5 + 1;
+	return (INTNM::int32_t)nday;
 }
 
 
@@ -1242,7 +1242,7 @@ INTNM::int32_t WTime::GetDayOfWeek(INTNM::uint32_t flags) const			{ if (m_time =
 
 INTNM::uint64_t WTime::GetSecondsIntoYear(INTNM::uint32_t mode) const {
 	if (m_time == (INTNM::uint64_t)(-1))
-		return -1;
+		return (INTNM::uint64_t)-1;
 
 	INTNM::uint64_t atm = adjusted_tm(mode) / 1000000;
 	WTime year(GetYear(mode), 1, 1, 0, 0, 0, m_tm);
@@ -1275,7 +1275,7 @@ INTNM::int32_t WTime::GetDayOfYear(INTNM::uint32_t mode) const {
 	INTNM::uint64_t atm = adjusted_tm(mode) / 24 / 60 / 60 / 1000000;
 	WTime year(GetYear(mode), 1, 1, 0, 0, 0.0, m_tm);
 	INTNM::uint64_t year_atm = year.adjusted_tm(0) / 24 / 60 / 60 / 1000000;
-	return (atm - year_atm) + 1;
+	return (INTNM::uint32_t)(atm - year_atm) + 1;
 }
 
 
