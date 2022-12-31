@@ -826,7 +826,7 @@ const WTimeManager WTimeManager::GetSystemTimeManager(WorldLocation& location)
 		char buffer[128];
 		memset(buffer, 0, 128);
 		wcstombs(buffer, dtzi.TimeZoneKeyName, len);
-		auto zone = WorldLocation::TimeZoneFromWindowsName(buffer);
+		auto zone = WorldLocation::TimeZoneFromName(buffer, dtzi.DaylightBias);
 
 		bool isDST = false;
 		if (dtzi.DaylightBias != 0)
@@ -1174,7 +1174,7 @@ INTNM::uint64_t WTime::GetTime(INTNM::uint32_t mode) const			{ if (m_time != (IN
 INTNM::uint64_t WTime::GetTotalSeconds() const						{ if (m_time != (INTNM::uint64_t)(-1)) return m_time / 1000000LL; return m_time; };
 INTNM::uint64_t WTime::GetTotalMilliSeconds() const					{ if (m_time != (INTNM::uint64_t)(-1)) return m_time / 1000LL; return m_time; }
 INTNM::uint64_t WTime::GetTotalMicroSeconds() const					{ return m_time; };
-const WTimeManager *WTime::GetTimeManager() const					{ return m_tm; };
+const WTimeManager* WTime::GetTimeManager() const					{ return m_tm; };
 const WTimeManager *WTime::SetTimeManager(const WTimeManager *tm)	{ m_tm = tm; return m_tm; };
 bool WTime::IsValid() const											{ return (m_time != (INTNM::uint64_t)-1); }
 

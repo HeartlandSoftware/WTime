@@ -183,6 +183,7 @@ public:
 public:
 	WorldLocation();
 	WorldLocation(const WorldLocation &wl);
+
 	///<summary>
 	/// Construct a new timezone at the given latitude and longitude. Optionally guess the timezone from those coordinates.
 	///</summary>
@@ -191,7 +192,6 @@ public:
 	///<param name="guessTimezone">True if the timezone should be guessed from the latitude and longitude</param>
 	WorldLocation(double latitude, double longitude, bool guessTimezone);
 	~WorldLocation();
-
 
 				// ***** input/output...
 #if defined(TIMES_WINDOWS) && !defined(_NO_MFC)
@@ -208,7 +208,35 @@ public:
 
 	bool InsideCanada(const double latitude, const double longitude) const;
 	bool InsideCanada() const;
+	bool InsideAlaska(const double latitude, const double longitude) const;
+	bool InsideAlaska() const;
+	bool InsideWashington(const double latitude, const double longitude) const;
+	bool InsideWashington() const;
+	bool InsideOregon(const double latitude, const double longitude) const;
+	bool InsideOregon() const;
+	bool InsideIdaho(const double latitude, const double longitude) const;
+	bool InsideIdaho() const;
+	bool InsideMontana(const double latitude, const double longitude) const;
+	bool InsideMontana() const;
+	bool InsideNorthDakota(const double latitude, const double longitude) const;
+	bool InsideNorthDakota() const;
+	bool InsideMinnesota(const double latitude, const double longitude) const;
+	bool InsideMinnesota() const;
+	bool InsideYukon(const double latitude, const double longitude) const;
+	bool InsideYukon() const;
+	bool InsideAlberta(const double latitude, const double longitude) const;
+	bool InsideAlberta() const;
+	bool InsideSaskatchewan(const double latitude, const double longitude) const;
+	bool InsideSaskatchewan() const;
+	bool InsideManitoba(const double latitude, const double longitude) const;
+	bool InsideManitoba() const;
+	bool InsideNewBrunswick(const double latitude, const double longitude) const;
+	bool InsideNewBrunswick() const;
+	bool InsidePEI(const double latitude, const double longitude) const;
+	bool InsidePEI() const;
+	bool InsideNewZealand(const double latitude, const double longitude) const;
 	bool InsideNewZealand() const;
+	bool InsideTasmania(const double latitude, const double longitude) const;
 	bool InsideTasmania() const;
 	bool InsideAustraliaMainland() const;
 
@@ -220,11 +248,12 @@ public:
 	void SetTimeZoneOffset(const TimeZoneInfo* timezone);
 	bool SetTimeZoneOffset(std::uint32_t id);
 
+	bool UpdateTimeZone();
+	const TimeZoneInfo* DowngradeTimeZone() const;
+
 	static const struct TimeZoneInfo m_std_timezones[];
 	static const struct TimeZoneInfo m_dst_timezones[];
 	static const struct TimeZoneInfo m_mil_timezones[];
-	static const struct TimeZoneInfo m_std_extra_timezones[];
-	static const struct TimeZoneInfo m_dst_extra_timezones[];
 
 public:
 	///<summary>
@@ -235,7 +264,7 @@ public:
 	///<param name="longitude">The locations longitude (in radians).</param>
 	///<param name="set">Whether we want back a STD or DST timezone</param>
 	///<param name="valid">If supplied, will be set to 1 if a timezone was found for the corresponding location, and 0 otherwise</param>
-	static WorldLocation FromLatLon(const double latitude, const double longitude, INTNM::int16_t set, bool* valid = NULL);
+	static WorldLocation FromLatLon(const double latitude, const double longitude, INTNM::int16_t set, bool* valid = nullptr);
 	///<summary>
 	///Get a TimeZoneInfo object with the timezone data set correctly for the given latitude/longitude. If the area uses
 	///daylight savings time at any point in the year it will be enabled.
@@ -244,7 +273,7 @@ public:
 	///<param name="longitude">The locations longitude.</param>
 	///<param name="set">Whether we want back a STD or DST timezone</param>
 	///<param name="valid">If supplied, will be set to 1 if a timezone was found for the corresponding location, and 0 otherwise</param>
-	static const TimeZoneInfo* TimeZoneFromLatLon(const double latitude, const double longitude, INTNM::int16_t set, bool* valid = NULL);
+	static const TimeZoneInfo* TimeZoneFromLatLon(const double latitude, const double longitude, INTNM::int16_t set, bool* valid = nullptr);
 	///<summary>
 	///Get a TimeZoneInfo object with the timezone data set correctly for the given location name. If the area uses
 	///daylight savings time at any point in the year it will be enabled.
@@ -252,25 +281,9 @@ public:
 	///<param name="name">The locations name (eg. America/Winnipeg).</param>
 	///<param name="set">Whether we want back a STD or DST timezone</param>
 	///<param name="valid">If supplied, will be set to 1 if a timezone was found for the corresponding location, and 0 otherwise</param>
-	static const TimeZoneInfo* TimeZoneFromLocation(const std::string& name, INTNM::int16_t set, bool* valid = NULL);
-
 	static const TimeZoneInfo* TimeZoneFromName(const std::string& name, INTNM::int16_t set, bool* hidden = nullptr);
 
 	static const TimeZoneInfo* TimeZoneFromId(std::uint32_t id, bool* hidden = nullptr);
-
-	/// <summary>
-	/// Get a timezone from a Windows zone name.
-	/// </summary>
-	/// <param name="name">The name of the Windows zone.</param>
-	/// <returns>A TimeZone that represents the Windows zone, or nullptr if one couldn't be found.</returns>
-	static const TimeZoneInfo* TimeZoneFromWindowsName(const std::string& name);
-
-	/// <summary>
-	/// Get a timezone from a region name (ex. America/Winnipeg).
-	/// </summary>
-	/// <param name="region">The name of the region to try to find the timezone for.</param>
-	/// <returns>A TimeZone that represents the region, or nullptr if one couldn't be found.</returns>
-	static const TimeZoneInfo* TimeZoneFromRegionName(const std::string& region);
 
 	/// <summary>
 	/// Get the daylight savings version of a standard timezone.
@@ -286,6 +299,8 @@ public:
 	static const TimeZoneInfo* GetStandardTimeZone(const TimeZoneInfo* info);
 
     private:
+	static const TimeZoneInfo* TimeZoneFromIndex(const INTNM::int32_t zi, INTNM::int16_t set, bool* valid);
+	
 	struct sun_key {
 		INTNM::uint64_t	m_sun_cache_tm;
 		double			m_sun_cache_lat,
