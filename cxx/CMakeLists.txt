@@ -105,7 +105,6 @@ target_compile_options(WTime PRIVATE "-DTIMES_EXPORT -DDATE_BUILD_DLL")
 add_executable(WTimeTest
     test/gtest.cpp
     test/spanGTest.cpp
-    test/timeGTest.cpp
 )
 
 target_include_directories(WTime PUBLIC
