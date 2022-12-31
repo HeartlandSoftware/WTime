@@ -145,7 +145,7 @@ class TIMES_API WTimeSpan {
 	INTNM::int64_t GetTotalSeconds() const;
 	INTNM::int32_t GetSeconds() const;
 	INTNM::int32_t GetMilliSeconds() const;
-	INTNM::int32_t GetTotalMilliSeconds() const;
+	INTNM::int64_t GetTotalMilliSeconds() const;
 	INTNM::int32_t GetMicroSeconds() const;
 	INTNM::int64_t GetTotalMicroSeconds() const;
 
