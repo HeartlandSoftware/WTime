@@ -685,7 +685,7 @@ jobs:
       id: build-notes
       uses: mikepenz/release-changelog-builder-action@v3.5.0
       with:
-        toTag: v${{ needs.build.outputs.release_version }}
+        toTag: c${{ needs.build.outputs.release_version }}
         fromTag: ${{ steps.previoustag.outputs.tag }}
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
