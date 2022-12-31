@@ -15,6 +15,7 @@
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
 extern PROTOBUF_INTERNAL_EXPORT_wtime_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_WTimeSpan_wtime_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_wtime_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_WTimeZone_TZTimeZone_wtime_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_wtime_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_WTimeZone_WTZDetails_wtime_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_google_2fprotobuf_2fwrappers_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_Int32Value_google_2fprotobuf_2fwrappers_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_google_2fprotobuf_2fwrappers_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_StringValue_google_2fprotobuf_2fwrappers_2eproto;
@@ -32,11 +33,16 @@ class WTimeZone_WTZDetailsDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WTimeZone_WTZDetails> _instance;
 } _WTimeZone_WTZDetails_default_instance_;
+class WTimeZone_TZTimeZoneDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WTimeZone_TZTimeZone> _instance;
+} _WTimeZone_TZTimeZone_default_instance_;
 class WTimeZoneDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WTimeZone> _instance;
   ::PROTOBUF_NAMESPACE_ID::int32 timezoneindex_;
   const ::HSS::Times::WTimeZone_WTZDetails* timezonedetails_;
+  const ::HSS::Times::WTimeZone_TZTimeZone* tztimezone_;
 } _WTimeZone_default_instance_;
 }  // namespace Times
 }  // namespace HSS
@@ -81,9 +87,24 @@ static void InitDefaultsscc_info_WTimeZone_wtime_2eproto() {
   ::HSS::Times::WTimeZone::InitAsDefaultInstance();
 }
 
-TIMES_API ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_WTimeZone_wtime_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_WTimeZone_wtime_2eproto}, {
-      &scc_info_WTimeZone_WTZDetails_wtime_2eproto.base,}};
+TIMES_API ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_WTimeZone_wtime_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 2, 0, InitDefaultsscc_info_WTimeZone_wtime_2eproto}, {
+      &scc_info_WTimeZone_WTZDetails_wtime_2eproto.base,
+      &scc_info_WTimeZone_TZTimeZone_wtime_2eproto.base,}};
+
+static void InitDefaultsscc_info_WTimeZone_TZTimeZone_wtime_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::HSS::Times::_WTimeZone_TZTimeZone_default_instance_;
+    new (ptr) ::HSS::Times::WTimeZone_TZTimeZone();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::HSS::Times::WTimeZone_TZTimeZone::InitAsDefaultInstance();
+}
+
+TIMES_API ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_WTimeZone_TZTimeZone_wtime_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_WTimeZone_TZTimeZone_wtime_2eproto}, {}};
 
 static void InitDefaultsscc_info_WTimeZone_WTZDetails_wtime_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -100,7 +121,7 @@ TIMES_API ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_WTimeZone_WTZDe
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_WTimeZone_WTZDetails_wtime_2eproto}, {
       &scc_info_WTimeSpan_wtime_2eproto.base,}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_wtime_2eproto[4];
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_wtime_2eproto[5];
 static constexpr ::PROTOBUF_NAMESPACE_ID::EnumDescriptor const** file_level_enum_descriptors_wtime_2eproto = nullptr;
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_wtime_2eproto = nullptr;
 
@@ -129,6 +150,15 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_wtime_2eproto::offsets[] PROTO
   PROTOBUF_FIELD_OFFSET(::HSS::Times::WTimeZone_WTZDetails, startdst_),
   PROTOBUF_FIELD_OFFSET(::HSS::Times::WTimeZone_WTZDetails, enddst_),
   PROTOBUF_FIELD_OFFSET(::HSS::Times::WTimeZone_WTZDetails, amtdst_),
+  PROTOBUF_FIELD_OFFSET(::HSS::Times::WTimeZone_TZTimeZone, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::HSS::Times::WTimeZone_TZTimeZone, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::HSS::Times::WTimeZone_TZTimeZone, name_),
+  PROTOBUF_FIELD_OFFSET(::HSS::Times::WTimeZone_TZTimeZone, daylight_),
+  ~0u,
+  0,
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::HSS::Times::WTimeZone, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -137,55 +167,62 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_wtime_2eproto::offsets[] PROTO
   PROTOBUF_FIELD_OFFSET(::HSS::Times::WTimeZone, version_),
   offsetof(::HSS::Times::WTimeZoneDefaultTypeInternal, timezoneindex_),
   offsetof(::HSS::Times::WTimeZoneDefaultTypeInternal, timezonedetails_),
+  offsetof(::HSS::Times::WTimeZoneDefaultTypeInternal, tztimezone_),
   PROTOBUF_FIELD_OFFSET(::HSS::Times::WTimeZone, msg_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, sizeof(::HSS::Times::WTime)},
   { 9, -1, sizeof(::HSS::Times::WTimeSpan)},
   { 15, -1, sizeof(::HSS::Times::WTimeZone_WTZDetails)},
-  { 24, -1, sizeof(::HSS::Times::WTimeZone)},
+  { 24, 31, sizeof(::HSS::Times::WTimeZone_TZTimeZone)},
+  { 33, -1, sizeof(::HSS::Times::WTimeZone)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::HSS::Times::_WTime_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::HSS::Times::_WTimeSpan_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::HSS::Times::_WTimeZone_WTZDetails_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::HSS::Times::_WTimeZone_TZTimeZone_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::HSS::Times::_WTimeZone_default_instance_),
 };
 
 const char descriptor_table_protodef_wtime_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\013wtime.proto\022\tHSS.Times\032\036google/protobu"
-  "f/wrappers.proto\"\247\001\n\005WTime\022\014\n\004time\030\001 \001(\t"
+  "f/wrappers.proto\"\253\001\n\005WTime\022\014\n\004time\030\001 \001(\t"
   "\022.\n\010daylight\030\002 \001(\0132\034.google.protobuf.Str"
   "ingValue\022.\n\010timezone\030\003 \001(\0132\034.google.prot"
-  "obuf.StringValue\0220\n\013timezone_id\030\004 \001(\0132\033."
-  "google.protobuf.Int32Value\"\031\n\tWTimeSpan\022"
-  "\014\n\004time\030\001 \001(\t\"\246\002\n\tWTimeZone\022\017\n\007version\030\001"
-  " \001(\005\022\027\n\rtimezoneIndex\030\002 \001(\005H\000\022:\n\017timezon"
-  "eDetails\030\003 \001(\0132\037.HSS.Times.WTimeZone.WTZ"
-  "DetailsH\000\032\253\001\n\nWTZDetails\022)\n\013amtTimeZone\030"
-  "\001 \001(\0132\024.HSS.Times.WTimeSpan\022&\n\010startDST\030"
-  "\002 \001(\0132\024.HSS.Times.WTimeSpan\022$\n\006endDST\030\003 "
-  "\001(\0132\024.HSS.Times.WTimeSpan\022$\n\006amtDST\030\004 \001("
-  "\0132\024.HSS.Times.WTimeSpanB\005\n\003msgB0\n\022ca.hss"
-  ".times.protoB\014WTimePackageP\001\252\002\tHSS.Times"
-  "b\006proto3"
+  "obuf.StringValue\0224\n\013timezone_id\030\004 \001(\0132\033."
+  "google.protobuf.Int32ValueB\002\030\001\"\031\n\tWTimeS"
+  "pan\022\014\n\004time\030\001 \001(\t\"\241\003\n\tWTimeZone\022\017\n\007versi"
+  "on\030\001 \001(\005\022\027\n\rtimezoneIndex\030\002 \001(\005H\000\022>\n\017tim"
+  "ezoneDetails\030\003 \001(\0132\037.HSS.Times.WTimeZone"
+  ".WTZDetailsB\002\030\001H\000\0225\n\ntztimezone\030\004 \001(\0132\037."
+  "HSS.Times.WTimeZone.TZTimeZoneH\000\032\253\001\n\nWTZ"
+  "Details\022)\n\013amtTimeZone\030\001 \001(\0132\024.HSS.Times"
+  ".WTimeSpan\022&\n\010startDST\030\002 \001(\0132\024.HSS.Times"
+  ".WTimeSpan\022$\n\006endDST\030\003 \001(\0132\024.HSS.Times.W"
+  "TimeSpan\022$\n\006amtDST\030\004 \001(\0132\024.HSS.Times.WTi"
+  "meSpan\032>\n\nTZTimeZone\022\014\n\004name\030\001 \001(\t\022\025\n\010da"
+  "ylight\030\002 \001(\010H\000\210\001\001B\013\n\t_daylightB\005\n\003msgB0\n"
+  "\022ca.hss.times.protoB\014WTimePackageP\001\252\002\tHS"
+  "S.Timesb\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_wtime_2eproto_deps[1] = {
   &::descriptor_table_google_2fprotobuf_2fwrappers_2eproto,
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_wtime_2eproto_sccs[4] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_wtime_2eproto_sccs[5] = {
   &scc_info_WTime_wtime_2eproto.base,
   &scc_info_WTimeSpan_wtime_2eproto.base,
   &scc_info_WTimeZone_wtime_2eproto.base,
+  &scc_info_WTimeZone_TZTimeZone_wtime_2eproto.base,
   &scc_info_WTimeZone_WTZDetails_wtime_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_wtime_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_wtime_2eproto = {
-  false, false, descriptor_table_protodef_wtime_2eproto, "wtime.proto", 608,
-  &descriptor_table_wtime_2eproto_once, descriptor_table_wtime_2eproto_sccs, descriptor_table_wtime_2eproto_deps, 4, 1,
+  false, false, descriptor_table_protodef_wtime_2eproto, "wtime.proto", 735,
+  &descriptor_table_wtime_2eproto_once, descriptor_table_wtime_2eproto_sccs, descriptor_table_wtime_2eproto_deps, 5, 1,
   schemas, file_default_instances, TableStruct_wtime_2eproto::offsets,
-  file_level_metadata_wtime_2eproto, 4, file_level_enum_descriptors_wtime_2eproto, file_level_service_descriptors_wtime_2eproto,
+  file_level_metadata_wtime_2eproto, 5, file_level_enum_descriptors_wtime_2eproto, file_level_service_descriptors_wtime_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -362,7 +399,7 @@ const char* WTime::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::inte
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .google.protobuf.Int32Value timezone_id = 4;
+      // .google.protobuf.Int32Value timezone_id = 4 [deprecated = true];
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
           ptr = ctx->ParseMessage(_internal_mutable_timezone_id(), ptr);
@@ -423,7 +460,7 @@ failure:
         3, _Internal::timezone(this), target, stream);
   }
 
-  // .google.protobuf.Int32Value timezone_id = 4;
+  // .google.protobuf.Int32Value timezone_id = 4 [deprecated = true];
   if (this->has_timezone_id()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
@@ -468,7 +505,7 @@ size_t WTime::ByteSizeLong() const {
         *timezone_);
   }
 
-  // .google.protobuf.Int32Value timezone_id = 4;
+  // .google.protobuf.Int32Value timezone_id = 4 [deprecated = true];
   if (this->has_timezone_id()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
@@ -1114,19 +1151,271 @@ void WTimeZone_WTZDetails::InternalSwap(WTimeZone_WTZDetails* other) {
 
 // ===================================================================
 
+void WTimeZone_TZTimeZone::InitAsDefaultInstance() {
+}
+class WTimeZone_TZTimeZone::_Internal {
+ public:
+  using HasBits = decltype(std::declval<WTimeZone_TZTimeZone>()._has_bits_);
+  static void set_has_daylight(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+WTimeZone_TZTimeZone::WTimeZone_TZTimeZone(::PROTOBUF_NAMESPACE_ID::Arena* arena)
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
+  SharedCtor();
+  RegisterArenaDtor(arena);
+  // @@protoc_insertion_point(arena_constructor:HSS.Times.WTimeZone.TZTimeZone)
+}
+WTimeZone_TZTimeZone::WTimeZone_TZTimeZone(const WTimeZone_TZTimeZone& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _has_bits_(from._has_bits_) {
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_name().empty()) {
+    name_.Set(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from._internal_name(),
+      GetArena());
+  }
+  daylight_ = from.daylight_;
+  // @@protoc_insertion_point(copy_constructor:HSS.Times.WTimeZone.TZTimeZone)
+}
+
+void WTimeZone_TZTimeZone::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_WTimeZone_TZTimeZone_wtime_2eproto.base);
+  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  daylight_ = false;
+}
+
+WTimeZone_TZTimeZone::~WTimeZone_TZTimeZone() {
+  // @@protoc_insertion_point(destructor:HSS.Times.WTimeZone.TZTimeZone)
+  SharedDtor();
+  _internal_metadata_.Delete<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+void WTimeZone_TZTimeZone::SharedDtor() {
+  GOOGLE_DCHECK(GetArena() == nullptr);
+  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void WTimeZone_TZTimeZone::ArenaDtor(void* object) {
+  WTimeZone_TZTimeZone* _this = reinterpret_cast< WTimeZone_TZTimeZone* >(object);
+  (void)_this;
+}
+void WTimeZone_TZTimeZone::RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena*) {
+}
+void WTimeZone_TZTimeZone::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const WTimeZone_TZTimeZone& WTimeZone_TZTimeZone::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_WTimeZone_TZTimeZone_wtime_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void WTimeZone_TZTimeZone::Clear() {
+// @@protoc_insertion_point(message_clear_start:HSS.Times.WTimeZone.TZTimeZone)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  name_.ClearToEmpty(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  daylight_ = false;
+  _has_bits_.Clear();
+  _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
+}
+
+const char* WTimeZone_TZTimeZone::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  ::PROTOBUF_NAMESPACE_ID::Arena* arena = GetArena(); (void)arena;
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // string name = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          auto str = _internal_mutable_name();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "HSS.Times.WTimeZone.TZTimeZone.name"));
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // bool daylight = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          _Internal::set_has_daylight(&has_bits);
+          daylight_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag,
+            _internal_metadata_.mutable_unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(),
+            ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* WTimeZone_TZTimeZone::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:HSS.Times.WTimeZone.TZTimeZone)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  // string name = 1;
+  if (this->name().size() > 0) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "HSS.Times.WTimeZone.TZTimeZone.name");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_name(), target);
+  }
+
+  // bool daylight = 2;
+  if (_internal_has_daylight()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_daylight(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:HSS.Times.WTimeZone.TZTimeZone)
+  return target;
+}
+
+size_t WTimeZone_TZTimeZone::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:HSS.Times.WTimeZone.TZTimeZone)
+  size_t total_size = 0;
+
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // string name = 1;
+  if (this->name().size() > 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_name());
+  }
+
+  // bool daylight = 2;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 + 1;
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void WTimeZone_TZTimeZone::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:HSS.Times.WTimeZone.TZTimeZone)
+  GOOGLE_DCHECK_NE(&from, this);
+  const WTimeZone_TZTimeZone* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<WTimeZone_TZTimeZone>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:HSS.Times.WTimeZone.TZTimeZone)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:HSS.Times.WTimeZone.TZTimeZone)
+    MergeFrom(*source);
+  }
+}
+
+void WTimeZone_TZTimeZone::MergeFrom(const WTimeZone_TZTimeZone& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:HSS.Times.WTimeZone.TZTimeZone)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  if (from.name().size() > 0) {
+    _internal_set_name(from._internal_name());
+  }
+  if (from._internal_has_daylight()) {
+    _internal_set_daylight(from._internal_daylight());
+  }
+}
+
+void WTimeZone_TZTimeZone::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:HSS.Times.WTimeZone.TZTimeZone)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WTimeZone_TZTimeZone::CopyFrom(const WTimeZone_TZTimeZone& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:HSS.Times.WTimeZone.TZTimeZone)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WTimeZone_TZTimeZone::IsInitialized() const {
+  return true;
+}
+
+void WTimeZone_TZTimeZone::InternalSwap(WTimeZone_TZTimeZone* other) {
+  using std::swap;
+  _internal_metadata_.Swap<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  name_.Swap(&other->name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), GetArena());
+  swap(daylight_, other->daylight_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata WTimeZone_TZTimeZone::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
 void WTimeZone::InitAsDefaultInstance() {
   ::HSS::Times::_WTimeZone_default_instance_.timezoneindex_ = 0;
   ::HSS::Times::_WTimeZone_default_instance_.timezonedetails_ = const_cast< ::HSS::Times::WTimeZone_WTZDetails*>(
       ::HSS::Times::WTimeZone_WTZDetails::internal_default_instance());
+  ::HSS::Times::_WTimeZone_default_instance_.tztimezone_ = const_cast< ::HSS::Times::WTimeZone_TZTimeZone*>(
+      ::HSS::Times::WTimeZone_TZTimeZone::internal_default_instance());
 }
 class WTimeZone::_Internal {
  public:
   static const ::HSS::Times::WTimeZone_WTZDetails& timezonedetails(const WTimeZone* msg);
+  static const ::HSS::Times::WTimeZone_TZTimeZone& tztimezone(const WTimeZone* msg);
 };
 
 const ::HSS::Times::WTimeZone_WTZDetails&
 WTimeZone::_Internal::timezonedetails(const WTimeZone* msg) {
   return *msg->msg_.timezonedetails_;
+}
+const ::HSS::Times::WTimeZone_TZTimeZone&
+WTimeZone::_Internal::tztimezone(const WTimeZone* msg) {
+  return *msg->msg_.tztimezone_;
 }
 void WTimeZone::set_allocated_timezonedetails(::HSS::Times::WTimeZone_WTZDetails* timezonedetails) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
@@ -1142,6 +1431,21 @@ void WTimeZone::set_allocated_timezonedetails(::HSS::Times::WTimeZone_WTZDetails
     msg_.timezonedetails_ = timezonedetails;
   }
   // @@protoc_insertion_point(field_set_allocated:HSS.Times.WTimeZone.timezoneDetails)
+}
+void WTimeZone::set_allocated_tztimezone(::HSS::Times::WTimeZone_TZTimeZone* tztimezone) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArena();
+  clear_msg();
+  if (tztimezone) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena =
+      ::PROTOBUF_NAMESPACE_ID::Arena::GetArena(tztimezone);
+    if (message_arena != submessage_arena) {
+      tztimezone = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, tztimezone, submessage_arena);
+    }
+    set_has_tztimezone();
+    msg_.tztimezone_ = tztimezone;
+  }
+  // @@protoc_insertion_point(field_set_allocated:HSS.Times.WTimeZone.tztimezone)
 }
 WTimeZone::WTimeZone(::PROTOBUF_NAMESPACE_ID::Arena* arena)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena) {
@@ -1161,6 +1465,10 @@ WTimeZone::WTimeZone(const WTimeZone& from)
     }
     case kTimezoneDetails: {
       _internal_mutable_timezonedetails()->::HSS::Times::WTimeZone_WTZDetails::MergeFrom(from._internal_timezonedetails());
+      break;
+    }
+    case kTztimezone: {
+      _internal_mutable_tztimezone()->::HSS::Times::WTimeZone_TZTimeZone::MergeFrom(from._internal_tztimezone());
       break;
     }
     case MSG_NOT_SET: {
@@ -1217,6 +1525,12 @@ void WTimeZone::clear_msg() {
       }
       break;
     }
+    case kTztimezone: {
+      if (GetArena() == nullptr) {
+        delete msg_.tztimezone_;
+      }
+      break;
+    }
     case MSG_NOT_SET: {
       break;
     }
@@ -1258,10 +1572,17 @@ const char* WTimeZone::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .HSS.Times.WTimeZone.WTZDetails timezoneDetails = 3;
+      // .HSS.Times.WTimeZone.WTZDetails timezoneDetails = 3 [deprecated = true];
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_timezonedetails(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .HSS.Times.WTimeZone.TZTimeZone tztimezone = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_tztimezone(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -1305,12 +1626,20 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(2, this->_internal_timezoneindex(), target);
   }
 
-  // .HSS.Times.WTimeZone.WTZDetails timezoneDetails = 3;
+  // .HSS.Times.WTimeZone.WTZDetails timezoneDetails = 3 [deprecated = true];
   if (_internal_has_timezonedetails()) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
         3, _Internal::timezonedetails(this), target, stream);
+  }
+
+  // .HSS.Times.WTimeZone.TZTimeZone tztimezone = 4;
+  if (_internal_has_tztimezone()) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        4, _Internal::tztimezone(this), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1344,11 +1673,18 @@ size_t WTimeZone::ByteSizeLong() const {
           this->_internal_timezoneindex());
       break;
     }
-    // .HSS.Times.WTimeZone.WTZDetails timezoneDetails = 3;
+    // .HSS.Times.WTimeZone.WTZDetails timezoneDetails = 3 [deprecated = true];
     case kTimezoneDetails: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
           *msg_.timezonedetails_);
+      break;
+    }
+    // .HSS.Times.WTimeZone.TZTimeZone tztimezone = 4;
+    case kTztimezone: {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *msg_.tztimezone_);
       break;
     }
     case MSG_NOT_SET: {
@@ -1396,6 +1732,10 @@ void WTimeZone::MergeFrom(const WTimeZone& from) {
     }
     case kTimezoneDetails: {
       _internal_mutable_timezonedetails()->::HSS::Times::WTimeZone_WTZDetails::MergeFrom(from._internal_timezonedetails());
+      break;
+    }
+    case kTztimezone: {
+      _internal_mutable_tztimezone()->::HSS::Times::WTimeZone_TZTimeZone::MergeFrom(from._internal_tztimezone());
       break;
     }
     case MSG_NOT_SET: {
@@ -1447,6 +1787,9 @@ template<> PROTOBUF_NOINLINE ::HSS::Times::WTimeSpan* Arena::CreateMaybeMessage<
 }
 template<> PROTOBUF_NOINLINE ::HSS::Times::WTimeZone_WTZDetails* Arena::CreateMaybeMessage< ::HSS::Times::WTimeZone_WTZDetails >(Arena* arena) {
   return Arena::CreateMessageInternal< ::HSS::Times::WTimeZone_WTZDetails >(arena);
+}
+template<> PROTOBUF_NOINLINE ::HSS::Times::WTimeZone_TZTimeZone* Arena::CreateMaybeMessage< ::HSS::Times::WTimeZone_TZTimeZone >(Arena* arena) {
+  return Arena::CreateMessageInternal< ::HSS::Times::WTimeZone_TZTimeZone >(arena);
 }
 template<> PROTOBUF_NOINLINE ::HSS::Times::WTimeZone* Arena::CreateMaybeMessage< ::HSS::Times::WTimeZone >(Arena* arena) {
   return Arena::CreateMessageInternal< ::HSS::Times::WTimeZone >(arena);

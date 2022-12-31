@@ -74,17 +74,31 @@ add_library(WTime SHARED
     src/TimezoneMapper.cpp
     src/worldlocation.cpp
     src/WTimeProto.cpp
-    src/Canada_Detail.cpp
+    src/tz/tz.cpp
+    src/open/tzdb-2021e-src/africa.c
+    src/open/tzdb-2021e-src/antarctica.c
+    src/open/tzdb-2021e-src/asia.c
+    src/open/tzdb-2021e-src/australasia.c
+    src/open/tzdb-2021e-src/backward.c
+    src/open/tzdb-2021e-src/etcetera.c
+    src/open/tzdb-2021e-src/europe.c
+    src/open/tzdb-2021e-src/leapseconds.c
+    src/open/tzdb-2021e-src/northamerica.c
+    src/open/tzdb-2021e-src/southamerica.c
+    src/open/tzdb-2021e-src/version.c
+    src/open/tzdb-2021e-src/windowsZones.c
+    include/internal/RegionMap.inl
     include/internal/SunriseSunsetCalc.h
-    include/internal/times_internal.h
     include/internal/Times.h
+    include/internal/times_internal.h
     include/internal/worldlocation.h
     include/internal/WTimeProto.h
     include/config.h
+    include/TimeZoneMapper.h
     include/WTime.h
     include/wtime.pb.h
 )
-target_compile_options(WTime PRIVATE "-DTIMES_EXPORT")
+target_compile_options(WTime PRIVATE "-DTIMES_EXPORT -DDATE_BUILD_DLL")
 
 add_executable(WTimeTest
     test/gtest.cpp
