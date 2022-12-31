@@ -103,6 +103,7 @@ add_library(WTime SHARED
 target_compile_definitions(WTime PRIVATE
     DATE_BUILD_DLL
     TIMES_EXPORT
+    ZD_EXPORT
 )
 
 add_executable(WTimeTest
