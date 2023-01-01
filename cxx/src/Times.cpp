@@ -402,6 +402,7 @@ const WTimeSpan WTimeSpan::operator*=(INTNM::int32_t factor)		{ m_timeSpan *= fa
 const WTimeSpan WTimeSpan::operator/=(INTNM::int32_t factor)		{ m_timeSpan /= factor; return *this; }
 const WTimeSpan WTimeSpan::operator*=(double f)						{ long double ts = (long double)m_timeSpan; ts *= f; m_timeSpan = (INTNM::int64_t)ts; return *this; }
 const WTimeSpan WTimeSpan::operator/=(double f)						{ long double ts = (long double)m_timeSpan; ts /= f; m_timeSpan = (INTNM::int64_t)ts; return *this; }
+const WTimeSpan WTimeSpan::operator%(const WTimeSpan timeSpan) const{ return WTimeSpan(m_timeSpan % timeSpan.m_timeSpan, false); }
 
 #ifdef __cpp_impl_three_way_comparison
 auto WTimeSpan::operator<=>(const WTimeSpan& timeSpan) const		{ return (m_timeSpan <=> timeSpan.m_timeSpan); }
