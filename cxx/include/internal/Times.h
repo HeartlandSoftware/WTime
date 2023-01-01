@@ -177,6 +177,7 @@ class TIMES_API WTimeSpan {
 	const WTimeSpan operator/=(INTNM::int32_t factor);
 	const WTimeSpan operator*=(double f);
 	const WTimeSpan operator/=(double f);
+	const WTimeSpan operator%(const WTimeSpan timeSpan) const;
 
 #ifdef __cpp_impl_three_way_comparison
 	auto operator<=>(const WTimeSpan& timeSpan) const;
