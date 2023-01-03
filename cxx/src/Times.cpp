@@ -375,12 +375,12 @@ INTNM::int64_t WTimeSpan::GetTotalMilliSeconds() const				{ return m_timeSpan / 
 INTNM::int32_t WTimeSpan::GetMicroSeconds() const					{ return (INTNM::int32_t)(m_timeSpan % 1000000LL); }
 INTNM::int64_t WTimeSpan::GetTotalMicroSeconds() const				{ return m_timeSpan; }
 
-double WTimeSpan::GetDaysFraction() const							{ return ((double)m_timeSpan) / (24.0 * 60.0 * 60.0 * 1000000.0); }
-double WTimeSpan::GetSecondsFraction() const						{ return ((double)m_timeSpan) / 1000000.0; }
-double WTimeSpan::GetFractionOfSecond() const						{ return ((double)(m_timeSpan % (1000000LL))) / (1000000.0); }
-double WTimeSpan::GetFractionOfMinute() const						{ return ((double)(m_timeSpan % (60LL * 1000000LL))) / (60.0 * 1000000.0); }
-double WTimeSpan::GetFractionOfHour() const							{ return ((double)(m_timeSpan % (60LL * 60LL * 1000000LL))) / (60.0 * 60.0 * 1000000.0); }
-double WTimeSpan::GetFractionOfDay() const							{ return ((double)(m_timeSpan % (24LL * 60LL * 60LL * 1000000LL))) / (24.0 * 60.0 * 60.0 * 1000000.0); }
+double WTimeSpan::GetDaysFraction() const							{ return ((long double)m_timeSpan) / (24.0 * 60.0 * 60.0 * 1000000.0); }
+double WTimeSpan::GetSecondsFraction() const						{ return ((long double)m_timeSpan) / 1000000.0; }
+double WTimeSpan::GetFractionOfSecond() const						{ return ((long double)(m_timeSpan % (1000000LL))) / (1000000.0); }
+double WTimeSpan::GetFractionOfMinute() const						{ return ((long double)(m_timeSpan % (60LL * 1000000LL))) / (60.0 * 1000000.0); }
+double WTimeSpan::GetFractionOfHour() const							{ return ((long double)(m_timeSpan % (60LL * 60LL * 1000000LL))) / (60.0 * 60.0 * 1000000.0); }
+double WTimeSpan::GetFractionOfDay() const							{ return ((long double)(m_timeSpan % (24LL * 60LL * 60LL * 1000000LL))) / (24.0 * 60.0 * 60.0 * 1000000.0); }
 INTNM::int32_t WTimeSpan::GetSecondsOfDay() const					{ return (INTNM::int32_t)(m_timeSpan % (24LL * 60LL * 60LL * 1000000LL)); }
 
 void WTimeSpan::PurgeToSecond()										{ m_timeSpan = m_timeSpan - (m_timeSpan % (1000000LL)); }
@@ -395,7 +395,7 @@ const WTimeSpan& WTimeSpan::operator-=(const WTimeSpan &timeSpan)	{ m_timeSpan -
 const WTimeSpan& WTimeSpan::operator+=(const WTimeSpan &timeSpan)	{ m_timeSpan += timeSpan.m_timeSpan; return *this; }
 WTimeSpan WTimeSpan::operator*(INTNM::int32_t factor) const			{ return WTimeSpan(m_timeSpan * factor, false); }
 WTimeSpan WTimeSpan::operator/(INTNM::int32_t factor) const			{ return WTimeSpan(m_timeSpan / factor, false); }
-double WTimeSpan::operator/(const WTimeSpan &timeSpan) const		{ return (double)(((long double)m_timeSpan) / ((long double)timeSpan.m_timeSpan)); }
+double WTimeSpan::operator/(const WTimeSpan &timeSpan) const		{ return (long double)(((long double)m_timeSpan) / ((long double)timeSpan.m_timeSpan)); }
 WTimeSpan WTimeSpan::operator*(double factor) const					{ return WTimeSpan((INTNM::int64_t)((long double)m_timeSpan * factor), false); }
 WTimeSpan WTimeSpan::operator/(double factor) const					{ return WTimeSpan((INTNM::int64_t)((long double)m_timeSpan / factor), false); }
 const WTimeSpan WTimeSpan::operator*=(INTNM::int32_t factor)		{ m_timeSpan *= factor; return *this; }
@@ -1158,7 +1158,7 @@ INTNM::uint64_t WTime::GetTotalMilliSeconds() const					{ if (m_time != (INTNM::
 INTNM::uint64_t WTime::GetTotalMicroSeconds() const					{ return m_time; };
 const WTimeManager* WTime::GetTimeManager() const					{ return m_tm; };
 const WTimeManager *WTime::SetTimeManager(const WTimeManager *tm)	{ m_tm = tm; return m_tm; };
-bool WTime::IsValid() const											{ return (m_time != (INTNM::uint64_t)-1); }
+bool WTime::IsValid() const											{ if (m_time != (INTNM::uint64_t)-1) { weak_assert(m_tm); } return (m_time != (INTNM::uint64_t)-1); }
 
 
 GDALTime WTime::AsGDALTime(INTNM::uint32_t mode) const {
@@ -1234,10 +1234,10 @@ INTNM::int32_t WTime::GetMilliSeconds(INTNM::uint32_t flags) const		{ if (m_time
 INTNM::int32_t WTime::GetMicroSeconds(INTNM::uint32_t flags) const		{ if (m_time == (INTNM::uint64_t)(-1)) return -1; return (INTNM::int32_t)((adjusted_tm(flags) % 1000000LL)); };
 double WTime::GetSecondsFraction(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; return ((double)(adjusted_tm(flags) % 1000000LL)) / 1000000.0; };
 WTimeSpan WTime::GetTimeOfDay(INTNM::uint32_t flags) const				{ if (m_time == (INTNM::uint64_t)(-1)) return WTimeSpan(-1, false); INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL); return WTimeSpan(time, false); };
-double WTime::GetFractionOfSecond(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (1000000LL); return ((double)time) / (1000000.0); };
-double WTime::GetFractionOfMinute(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (60LL * 1000000LL); return ((double)time) / (60.0 * 1000000.0); };
-double WTime::GetFractionOfHour(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 1000000LL); return ((double)time) / (60.0 * 60.0 * 1000000.0); };
-double WTime::GetFractionOfDay(INTNM::uint32_t flags) const				{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL); return ((double)time) / (24.0 * 60.0 * 60.0 * 1000000.0); };
+double WTime::GetFractionOfSecond(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (1000000LL); return ((long double)time) / (1000000.0); };
+double WTime::GetFractionOfMinute(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (60LL * 1000000LL); return ((long double)time) / (60.0 * 1000000.0); };
+double WTime::GetFractionOfHour(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 1000000LL); return ((long double)time) / (60.0 * 60.0 * 1000000.0); };
+double WTime::GetFractionOfDay(INTNM::uint32_t flags) const				{ if (m_time == (INTNM::uint64_t)(-1)) return -1.0; INTNM::int64_t time = adjusted_tm(flags) % (60LL * 60LL * 24LL * 1000000LL); return ((long double)time) / (24.0 * 60.0 * 60.0 * 1000000.0); };
 INTNM::int32_t WTime::GetDayOfWeek(INTNM::uint32_t flags) const			{ if (m_time == (INTNM::uint64_t)(-1)) return -1; INTNM::int64_t days = adjusted_tm(flags) / (24LL * 60LL * 60LL * 1000000LL) + 0; INTNM::int32_t ret = (INTNM::int32_t)(days % 7); return ret == 0 ? 7L : ret; };
 
 
@@ -1287,7 +1287,7 @@ double WTime::GetDayFractionOfYear(INTNM::uint32_t mode) const {
 	INTNM::uint64_t atm = adjusted_tm(mode) / 1000000;
 	WTime year(GetYear(mode), 1, 1, 0, 0, 0.0, m_tm);
 	INTNM::uint64_t total_secs = atm - year.GetTotalSeconds();
-	return ((double)total_secs) / (24.0 * 60.0 * 60.0) + 1.0;
+	return ((long double)total_secs) / (24.0 * 60.0 * 60.0) + 1.0;
 }
 
 
