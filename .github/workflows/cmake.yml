@@ -642,7 +642,7 @@ jobs:
         cd java
         mvn --batch-mode deploy
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.HSS_PAT }}
 
   release:
     runs-on: ubuntu-latest
@@ -701,5 +701,5 @@ jobs:
           lib-Ubuntu-22.04.zip
           includes.zip
           proto_def.zip
+          WTime.jar
         tag_name: refs/tags/c${{ needs.build.outputs.release_version }}
-        
