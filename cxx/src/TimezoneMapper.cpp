@@ -58,7 +58,7 @@ ZoneDetect* TimezoneMapper::cd = nullptr;
 std::vector<::TimeZoneInfo*> TimezoneMapper::timezones;
 CThreadSemaphore TimezoneMapper::lock;
 
-static __inline double RADIAN_TO_DEGREE(const double X) {
+static double RADIAN_TO_DEGREE(const double X) {
 	return (X * 180.0) * 0.318309886183790671537768;
 }
 

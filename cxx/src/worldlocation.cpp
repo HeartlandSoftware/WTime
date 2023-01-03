@@ -36,12 +36,12 @@ using namespace HSS_Time_Private;
 #define Pi 3.14159265358979323846264
 #define TwoPi 6.28318530717958647692529
 
-static __inline double DEGREE_TO_RADIAN(const double X) {
+static double DEGREE_TO_RADIAN(const double X) {
 	return (X / 180.0) * 3.14159265358979323846264;
 }
 
 
-static __inline double RADIAN_TO_DEGREE(const double X) {
+static double RADIAN_TO_DEGREE(const double X) {
 	return (X * 180.0) * 0.318309886183790671537768;
 }
 
