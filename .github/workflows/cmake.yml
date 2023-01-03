@@ -64,7 +64,7 @@ jobs:
     - name: Download ErrorCalc include files
       uses: robinraju/release-downloader@v1.7
       with:
-        repository: "HeartlandSoftware/ErrorCalc"
+        repository: "HeartlandSoftware/ErrorCalc2"
         latest: true
         fileName: "includes.zip"
         tarBall: false
@@ -75,7 +75,7 @@ jobs:
     - name: Download Multithread include files
       uses: robinraju/release-downloader@v1.7
       with:
-        repository: "HeartlandSoftware/HSS_Multithread"
+        repository: "HeartlandSoftware/HSS_Multithread2"
         latest: true
         fileName: "includes.zip"
         tarBall: false
@@ -86,7 +86,7 @@ jobs:
     - name: Download Math include files
       uses: robinraju/release-downloader@v1.7
       with:
-        repository: "HeartlandSoftware/HSS_Math"
+        repository: "HeartlandSoftware/HSS_Math_2"
         latest: true
         fileName: "includes.zip"
         tarBall: false
@@ -97,7 +97,7 @@ jobs:
     - name: Download Geography include files
       uses: robinraju/release-downloader@v1.7
       with:
-        repository: "HeartlandSoftware/HSS_Geography"
+        repository: "HeartlandSoftware/HSS_Geography_2"
         latest: true
         fileName: "includes.zip"
         tarBall: false
@@ -108,7 +108,7 @@ jobs:
     - name: Download Math protobuf files
       uses: robinraju/release-downloader@v1.7
       with:
-        repository: "HeartlandSoftware/HSS_Math"
+        repository: "HeartlandSoftware/HSS_Math_2"
         latest: true
         fileName: "proto_def.zip"
         tarBall: false
@@ -119,7 +119,7 @@ jobs:
     - name: Download Geography protobuf files
       uses: robinraju/release-downloader@v1.7
       with:
-        repository: "HeartlandSoftware/HSS_Geography"
+        repository: "HeartlandSoftware/HSS_Geography_2"
         latest: true
         fileName: "proto_def.zip"
         tarBall: false
@@ -167,7 +167,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'windows-2019'
       with:
-        repository: "HeartlandSoftware/ErrorCalc"
+        repository: "HeartlandSoftware/ErrorCalc2"
         latest: true
         fileName: "windows.zip"
         tarBall: false
@@ -179,7 +179,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-20.04'
       with:
-        repository: "HeartlandSoftware/ErrorCalc"
+        repository: "HeartlandSoftware/ErrorCalc2"
         latest: true
         fileName: "ubuntu20.04.zip"
         tarBall: false
@@ -191,7 +191,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-22.04'
       with:
-        repository: "HeartlandSoftware/ErrorCalc"
+        repository: "HeartlandSoftware/ErrorCalc2"
         latest: true
         fileName: "ubuntu22.04.zip"
         tarBall: false
@@ -203,7 +203,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'windows-2019'
       with:
-        repository: "HeartlandSoftware/HSS_Multithread"
+        repository: "HeartlandSoftware/HSS_Multithread2"
         latest: true
         fileName: "lib-Windows-2019.zip"
         tarBall: false
@@ -215,7 +215,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-20.04'
       with:
-        repository: "HeartlandSoftware/HSS_Multithread"
+        repository: "HeartlandSoftware/HSS_Multithread2"
         latest: true
         fileName: "lib-Ubuntu-20.04.zip"
         tarBall: false
@@ -227,7 +227,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-22.04'
       with:
-        repository: "HeartlandSoftware/HSS_Multithread"
+        repository: "HeartlandSoftware/HSS_Multithread2"
         latest: true
         fileName: "lib-Ubuntu-22.04.zip"
         tarBall: false
@@ -239,7 +239,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'windows-2019'
       with:
-        repository: "HeartlandSoftware/HSS_Math"
+        repository: "HeartlandSoftware/HSS_Math_2"
         latest: true
         fileName: "lib-Windows-2019.zip"
         tarBall: false
@@ -251,7 +251,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-20.04'
       with:
-        repository: "HeartlandSoftware/HSS_Math"
+        repository: "HeartlandSoftware/HSS_Math_2"
         latest: true
         fileName: "lib-Ubuntu-20.04.zip"
         tarBall: false
@@ -263,7 +263,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-22.04'
       with:
-        repository: "HeartlandSoftware/HSS_Math"
+        repository: "HeartlandSoftware/HSS_Math_2"
         latest: true
         fileName: "lib-Ubuntu-22.04.zip"
         tarBall: false
@@ -275,7 +275,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'windows-2019'
       with:
-        repository: "HeartlandSoftware/HSS_Geography"
+        repository: "HeartlandSoftware/HSS_Geography_2"
         latest: true
         fileName: "lib-Windows-2019.zip"
         tarBall: false
@@ -287,7 +287,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-20.04'
       with:
-        repository: "HeartlandSoftware/HSS_Geography"
+        repository: "HeartlandSoftware/HSS_Geography_2"
         latest: true
         fileName: "lib-Ubuntu-20.04.zip"
         tarBall: false
@@ -299,7 +299,7 @@ jobs:
       uses: robinraju/release-downloader@v1.7
       if: matrix.os == 'ubuntu-22.04'
       with:
-        repository: "HeartlandSoftware/HSS_Geography"
+        repository: "HeartlandSoftware/HSS_Geography_2"
         latest: true
         fileName: "lib-Ubuntu-22.04.zip"
         tarBall: false
@@ -414,7 +414,7 @@ jobs:
       shell: pwsh
       run: |
         cd cxx
-        Invoke-WebRequest "https://www.zlib.net/zlib1213.zip" -OutFile zlib.zip
+        Invoke-WebRequest "https://heartlandsoftwaresolutions.sharepoint.com/:u:/g/HSS_Releases/EUYThUR24ZZHq6GaiJ7fPFsBeilVSYM_agJV1Y8FTlJS0g?e=e3Nrmn&download=1" -OutFile zlib.zip
         Expand-Archive zlib.zip -DestinationPath zlib
         mv zlib/zlib-1.2.13/* zlib
         cd zlib
