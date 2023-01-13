@@ -21,7 +21,6 @@
 #include "worldlocation.h"
 #include "SunriseSunsetCalc.h"
 #include "str_printf.h"
-#include "Borders.h"
 
 #include <cmath>
 #include <vector>
@@ -154,7 +153,7 @@ bool WorldLocation::InsideCanada(const double latitude, const double longitude) 
 	if (longitude < DEGREE_TO_RADIAN(-141.0))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-52.0))	return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.Canada())
@@ -205,7 +204,7 @@ bool WorldLocation::InsideAlaska(const double latitude, const double longitude) 
 	if (__longitude < DEGREE_TO_RADIAN(-187.53833299999999))	return false;
 	if (__longitude > DEGREE_TO_RADIAN(-129.97416699999999))	return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.AK())
@@ -228,7 +227,7 @@ bool WorldLocation::InsideWashington(const double latitude, const double longitu
 	if (longitude < DEGREE_TO_RADIAN(-124.73317400000001))	return false; 
 	if (longitude > DEGREE_TO_RADIAN(-116.91598900000000))		return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.WA())
@@ -251,7 +250,7 @@ bool WorldLocation::InsideOregon(const double latitude, const double longitude) 
 	if (longitude < DEGREE_TO_RADIAN(-124.55244100000000))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-116.46350400000000))	return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.OR())
@@ -274,7 +273,7 @@ bool WorldLocation::InsideIdaho(const double latitude, const double longitude) c
 	if (longitude < DEGREE_TO_RADIAN(-117.24302700000000))		return false;
 	if (longitude > DEGREE_TO_RADIAN(-111.04356400000000))		return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.ID())
@@ -297,7 +296,7 @@ bool WorldLocation::InsideMontana(const double latitude, const double longitude)
 	if (longitude < DEGREE_TO_RADIAN(-116.04989399999999))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-104.03913799999999))	return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.MT())
@@ -320,7 +319,7 @@ bool WorldLocation::InsideNorthDakota(const double latitude, const double longit
 	if (longitude < DEGREE_TO_RADIAN(-104.04890000000000))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-96.554507000000001))	return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.ND())
@@ -343,7 +342,7 @@ bool WorldLocation::InsideMinnesota(const double latitude, const double longitud
 	if (longitude < DEGREE_TO_RADIAN(-97.239209000000002))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-89.489226000000002))	return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.MN())
@@ -366,7 +365,7 @@ bool WorldLocation::InsideYukon(const double latitude, const double longitude) c
 	if (_longitude < DEGREE_TO_RADIAN(-141.01807315799999))	return false;
 	if (_longitude > DEGREE_TO_RADIAN(-123.78932483600001))	return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.YT())
@@ -389,7 +388,7 @@ bool WorldLocation::InsideAlberta(const double latitude, const double longitude)
 	if (longitude < DEGREE_TO_RADIAN(-120.0))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-110.0))	return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.AB())
@@ -412,7 +411,7 @@ bool WorldLocation::InsideSaskatchewan(const double latitude, const double longi
 	if (longitude < DEGREE_TO_RADIAN(-110.0))				return false;
 	if (longitude > DEGREE_TO_RADIAN(-101.36230470900000))	return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.SK())
@@ -435,7 +434,7 @@ bool WorldLocation::InsideManitoba(const double latitude, const double longitude
 	if (longitude < DEGREE_TO_RADIAN(-102.0))					return false;
 	if (longitude > DEGREE_TO_RADIAN(-88.986493339999896))		return false; 
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.MB())
@@ -458,7 +457,7 @@ bool WorldLocation::InsideNewBrunswick(const double latitude, const double longi
 	if (longitude < DEGREE_TO_RADIAN(-69.053278519999907))	return false;
 	if (longitude > DEGREE_TO_RADIAN(-63.772017501999898))	return false;
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.NB())
@@ -481,7 +480,7 @@ bool WorldLocation::InsidePEI(const double latitude, const double longitude) con
 	if (longitude < DEGREE_TO_RADIAN(-64.413458053999904))		return false;
 	if (longitude > DEGREE_TO_RADIAN(-61.970709676999903))		return false;
 	
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.PEI())
@@ -495,7 +494,7 @@ bool WorldLocation::InsidePEI(const double latitude, const double longitude) con
 
 bool WorldLocation::InsideNewZealand(const double latitude, const double longitude) const {
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.NewZealand())
@@ -530,7 +529,7 @@ bool WorldLocation::InsideTasmania(const double latitude, const double longitude
 		}
 	}
 
-#if defined(_MSC_VER) || defined(__GEOGRAPHY_BORDERS_H)
+#if defined(__GEOGRAPHY_BORDERS_H)
 	XY_Point pt(RADIAN_TO_DEGREE(longitude), RADIAN_TO_DEGREE(latitude));
 	Borders borders;
 	if (borders.Tasmania())
