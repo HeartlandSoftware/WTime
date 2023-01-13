@@ -21,7 +21,6 @@
 #include "worldlocation.h"
 #include "SunriseSunsetCalc.h"
 #include "str_printf.h"
-#include "Borders.h"
 
 #include <cmath>
 #include <vector>
