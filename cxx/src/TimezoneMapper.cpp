@@ -229,8 +229,8 @@ const ::TimeZoneInfo* TimezoneMapper::getTz(const double lat, const double lng, 
 			}
 		}
 
-		zonestr.erase(std::remove(zonestr.begin(), zonestr.end(), '['));
-		zonestr.erase(std::remove(zonestr.begin(), zonestr.end(), ']'));
+		zonestr.erase(std::remove(zonestr.begin(), zonestr.end(), '['), zonestr.end());
+		zonestr.erase(std::remove(zonestr.begin(), zonestr.end(), ']'), zonestr.end());
 
 		date::zoned_time<date::days> zt1{ zonestr.c_str() };
 		auto tz = zt1.get_time_zone();
