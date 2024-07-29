@@ -259,5 +259,6 @@ const ::TimeZoneInfo* TimezoneMapper::getTz(const double lat, const double lng, 
 	}
 
 	weak_assert(tzi != nullptr);
+	*valid = (tzi != nullptr);
 	return tzi;
 }
