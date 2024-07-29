@@ -54,7 +54,7 @@ namespace HSS_Time
 
 			static HSS::Times::WTimeZone* serializeTimeZone(const WorldLocation& worldLocation, const std::uint32_t version);
 
-			static void deserializeTimeZone(const HSS::Times::WTimeZone& zone, WorldLocation& worldLocation, std::shared_ptr<validation::validation_object> valid, const std::string& name);
+			static bool deserializeTimeZone(const HSS::Times::WTimeZone& zone, WorldLocation& worldLocation, std::shared_ptr<validation::validation_object> valid, const std::string& name);
 		};
 	}
 }

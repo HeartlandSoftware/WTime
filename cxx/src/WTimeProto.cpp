@@ -268,7 +268,7 @@ HSS::Times::WTimeZone* HSS_Time::Serialization::TimeSerializer::serializeTimeZon
 	return ret;
 }
 
-void HSS_Time::Serialization::TimeSerializer::deserializeTimeZone(const HSS::Times::WTimeZone& zone, HSS_Time::WorldLocation& worldLocation, std::shared_ptr<validation::validation_object> valid, const std::string& name) {
+bool HSS_Time::Serialization::TimeSerializer::deserializeTimeZone(const HSS::Times::WTimeZone& zone, HSS_Time::WorldLocation& worldLocation, std::shared_ptr<validation::validation_object> valid, const std::string& name) {
 	if ((zone.version() != 1) && (zone.version() != 2)) {
 		weak_assert(false);
 		if (valid)
@@ -287,14 +287,14 @@ void HSS_Time::Serialization::TimeSerializer::deserializeTimeZone(const HSS::Tim
 		auto sdst = deserializeTimeSpan(zone.timezonedetails().startdst(), v, "timezoneDetails.startDST");
 		auto edst = deserializeTimeSpan(zone.timezonedetails().enddst(), v, "timezoneDetails.endDst");
 		auto adst = deserializeTimeSpan(zone.timezonedetails().amtdst(), v, "timezoneDetails.amtDST");
-		worldLocation.m_timezone(*tz);
-		worldLocation.m_startDST(*sdst);
-		worldLocation.m_endDST(*edst);
-		worldLocation.m_amtDST(*adst);
-		delete tz;
-		delete sdst;
-		delete edst;
-		delete adst;
+		if (tz)			worldLocation.m_timezone(*tz);
+		if (sdst)		worldLocation.m_startDST(*sdst);
+		if (edst)		worldLocation.m_endDST(*edst);
+		if (adst)		worldLocation.m_amtDST(*adst);
+		if (tz)			delete tz;
+		if (sdst)		delete sdst;
+		if (edst)		delete edst;
+		if (adst)		delete adst;
 
 		// try to guess what the timezone ID is
 		const HSS_Time::TimeZoneInfo* tzz;
@@ -307,16 +307,25 @@ void HSS_Time::Serialization::TimeSerializer::deserializeTimeZone(const HSS::Tim
 			}
 			tzz++;
 		}
+
+		if (!adst)
+			return false;
 	} else if (zone.msg_case() == HSS::Times::WTimeZone::kTimezoneIndex) {
 		if (!worldLocation.SetTimeZoneOffset(zone.timezoneindex()) && (valid)) {
-			valid->add_child_validation("HSS.Times.WTimeZone", name, validation::error_level::WARNING, validation::id::index_invalid, std::to_string(zone.timezoneindex()));
+			valid->add_child_validation("HSS.Times.WTimeZone", name, validation::error_level::SEVERE, validation::id::index_invalid, std::to_string(zone.timezoneindex()));
+			return false;
 		}
 	} else if (zone.msg_case() == HSS::Times::WTimeZone::kTztimezone) {
 		const TimeZoneInfo* tzi;
-		if (!(tzi = worldLocation.TimeZoneFromName(zone.tztimezone().name(), zone.tztimezone().has_daylight() && zone.tztimezone().daylight() ? 1 : 0)))
-			valid->add_child_validation("HSS.Times.WTimeZone", name, validation::error_level::WARNING, validation::id::index_invalid, zone.tztimezone().name());
+		if (!(tzi = worldLocation.TimeZoneFromName(zone.tztimezone().name(), zone.tztimezone().has_daylight() && zone.tztimezone().daylight() ? 1 : 0))) {
+			valid->add_child_validation("HSS.Times.WTimeZone", name, validation::error_level::SEVERE, validation::id::index_invalid, zone.tztimezone().name());
+			return false;
+		}
 		else
 			worldLocation.SetTimeZoneOffset(tzi);
-	} else if (valid)
+	} else if (valid) {
 		valid->add_child_validation("HSS.Times.WTimeZone", name, validation::error_level::WARNING, validation::id::object_invalid, "Time Zone");
+		return false;
+	}
+	return true;
 }
